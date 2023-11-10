@@ -1,4 +1,4 @@
-package com.awsprep.myapplication
+package com.awsprep.user
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.awsprep.myapplication.ui.theme.AwsPrepV2Theme
+import com.awsprep.user.ui.theme.AwsPrepV2Theme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

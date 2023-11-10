@@ -1,4 +1,4 @@
-package com.awsprep.myapplication
+package com.awsprep.user
 
 import org.junit.Test
 

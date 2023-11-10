@@ -1,4 +1,4 @@
-package com.awsprep.myapplication.ui.theme
+package com.awsprep.user.ui.theme
 
 import android.app.Activity
 import android.os.Build

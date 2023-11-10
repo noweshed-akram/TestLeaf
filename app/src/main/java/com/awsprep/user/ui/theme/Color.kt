@@ -1,4 +1,4 @@
-package com.awsprep.myapplication.ui.theme
+package com.awsprep.user.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
