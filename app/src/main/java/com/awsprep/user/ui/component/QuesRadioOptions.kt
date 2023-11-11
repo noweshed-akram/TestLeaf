@@ -47,7 +47,7 @@ fun QuesRadioOptions(
                 onClick = { onOptionSelected(text) }
             )
             Text(
-                text = text,
+                text = text.trim(),
                 style = Typography.bodyMedium,
                 modifier = Modifier.padding(start = 16.dp)
             )

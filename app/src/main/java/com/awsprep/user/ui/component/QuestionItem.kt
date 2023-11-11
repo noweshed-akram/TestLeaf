@@ -48,7 +48,7 @@ fun QuestionItem(
             Column(modifier = Modifier.weight(1.0f)) {
 
                 Text(
-                    text = question.ques,
+                    text = question.ques.trim(),
                     color = Color.Black
                 )
 

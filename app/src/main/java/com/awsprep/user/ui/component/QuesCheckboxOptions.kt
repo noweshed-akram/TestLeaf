@@ -41,7 +41,7 @@ fun QuesCheckboxOptions(
                 onCheckedChange = { isChecked = it }
             )
             Text(
-                text = text,
+                text = text.trim(),
                 style = Typography.bodyMedium,
                 modifier = Modifier.padding(start = 16.dp)
             )
