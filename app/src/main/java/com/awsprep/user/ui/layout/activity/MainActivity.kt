@@ -9,11 +9,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.awsprep.user.ui.layout.compose.MainScreen
 import com.awsprep.user.ui.theme.AwsPrepTheme
+import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.AuthViewModel
 import com.awsprep.user.viewmodel.UserViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,11 +38,13 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     val authViewModel: AuthViewModel by viewModels()
                     val userViewModel: UserViewModel by viewModels()
+                    val asesmntViewModel: AsesmntViewModel by viewModels()
 
                     MainScreen(
                         navController = navController,
                         authViewModel = authViewModel,
-                        userViewModel = userViewModel
+                        userViewModel = userViewModel,
+                        asesmntViewModel = asesmntViewModel
                     )
                 }
             }

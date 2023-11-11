@@ -1,0 +1,121 @@
+package com.awsprep.user.data.repo
+
+import com.awsprep.user.domain.models.Chapter
+import com.awsprep.user.domain.models.Course
+import com.awsprep.user.domain.models.Section
+import com.awsprep.user.domain.repositories.AsesmntRepository
+import com.awsprep.user.utils.AppConstant.COLL_CHAPTERS
+import com.awsprep.user.utils.AppConstant.COLL_COURSES
+import com.awsprep.user.utils.AppConstant.COLL_SECTIONS
+import com.awsprep.user.utils.Resource
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.tasks.await
+import retrofit2.HttpException
+import java.io.IOException
+import javax.inject.Inject
+import javax.inject.Singleton
+
+/**
+ * Created by Md. Noweshed Akram on 11/11/23.
+ */
+@Singleton
+class AsesmntRepositoryImpl @Inject constructor(
+    private val firebaseFirestore: FirebaseFirestore,
+    private val firebaseStorage: FirebaseStorage
+) : AsesmntRepository {
+
+    override suspend fun getCourseList(): Flow<Resource<List<Course>>> = flow {
+        emit(Resource.Loading())
+        try {
+
+            val courses = firebaseFirestore.collection(COLL_COURSES).get().await()
+            var courseList = emptyList<Course>()
+
+            for (course in courses) {
+
+                val newCourse: Course = course.toObject(Course::class.java)
+
+                courseList = courseList + newCourse
+            }
+
+            emit(Resource.Success(data = courseList))
+
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.localizedMessage ?: "Unknown Error"))
+        } catch (e: IOException) {
+            emit(
+                Resource.Error(
+                    message = e.localizedMessage ?: "Check Your Internet Connection"
+                )
+            )
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.localizedMessage ?: ""))
+        }
+    }
+
+    override suspend fun getChapterList(courseId: String): Flow<Resource<List<Chapter>>> = flow {
+        emit(Resource.Loading())
+        try {
+
+            val chapters = firebaseFirestore.collection(COLL_COURSES).document(courseId)
+                .collection(COLL_CHAPTERS).get().await()
+            var chapterList = emptyList<Chapter>()
+
+            for (chapter in chapters) {
+
+                val newChapter: Chapter = chapter.toObject(Chapter::class.java)
+
+                chapterList = chapterList + newChapter
+            }
+
+            emit(Resource.Success(data = chapterList))
+
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.localizedMessage ?: "Unknown Error"))
+        } catch (e: IOException) {
+            emit(
+                Resource.Error(
+                    message = e.localizedMessage ?: "Check Your Internet Connection"
+                )
+            )
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.localizedMessage ?: ""))
+        }
+    }
+
+    override suspend fun getSectionList(
+        courseId: String,
+        chapterId: String
+    ): Flow<Resource<List<Section>>> = flow {
+        emit(Resource.Loading())
+        try {
+            val sections = firebaseFirestore.collection(COLL_COURSES).document(courseId)
+                .collection(COLL_CHAPTERS).document(chapterId).collection(COLL_SECTIONS).get()
+                .await()
+            var sectionList = emptyList<Section>()
+
+            for (section in sections) {
+
+                val newSection: Section = section.toObject(Section::class.java)
+
+                sectionList = sectionList + newSection
+            }
+
+            emit(Resource.Success(data = sectionList))
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.localizedMessage ?: "Unknown Error"))
+        } catch (e: IOException) {
+            emit(
+                Resource.Error(
+                    message = e.localizedMessage ?: "Check Your Internet Connection"
+                )
+            )
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.localizedMessage ?: ""))
+        }
+    }
+
+}

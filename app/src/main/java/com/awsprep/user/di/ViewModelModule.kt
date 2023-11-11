@@ -1,8 +1,10 @@
 package com.awsprep.user.di
 
 import android.app.Application
+import com.awsprep.user.domain.usecase.AsesmntUseCase
 import com.awsprep.user.domain.usecase.AuthUseCase
 import com.awsprep.user.domain.usecase.UserUseCase
+import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.AuthViewModel
 import com.awsprep.user.viewmodel.UserViewModel
 import dagger.Module
@@ -34,6 +36,15 @@ object ViewModelModule {
         userUseCase: UserUseCase,
     ): UserViewModel {
         return UserViewModel(app, userUseCase)
+    }
+
+    @Singleton
+    @Provides
+    fun providesAsesmntViewModel(
+        app: Application,
+        asesmntUseCase: AsesmntUseCase
+    ): AsesmntViewModel {
+        return AsesmntViewModel(app, asesmntUseCase)
     }
 
 }

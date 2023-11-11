@@ -1,4 +1,4 @@
-package com.awsprep.user.ui.layout.compose.bottombar
+package com.awsprep.user.ui.layout.compose
 
 import android.util.Log
 import androidx.compose.foundation.border
@@ -37,56 +37,49 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.awsprep.user.domain.models.User
+import com.awsprep.user.domain.models.Chapter
+import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.ProgressBar
+import com.awsprep.user.ui.theme.PrimaryColorLight
+import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.awsprep.user.ui.theme.PrimaryColorLight
-import com.awsprep.user.viewmodel.UserViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
+/**
+ * Created by Md. Noweshed Akram on 11/11/23.
+ */
 @Composable
-fun TimelineScreen(
+fun ChapterScreen(
     navController: NavController,
-    userViewModel: UserViewModel
+    asesmntViewModel: AsesmntViewModel
 ) {
-
-    var userName by rememberSaveable { mutableStateOf("") }
-    var userEmail by rememberSaveable { mutableStateOf("") }
-    var userPhone by rememberSaveable { mutableStateOf("") }
-    var userLat by rememberSaveable { mutableStateOf("") }
-    var userlng by rememberSaveable { mutableStateOf("") }
-    var userImageUrl by rememberSaveable { mutableStateOf("") }
 
     var showProgress by rememberSaveable { mutableStateOf(false) }
     var showError by rememberSaveable { mutableStateOf(false) }
-    var activeStatus by rememberSaveable { mutableStateOf(false) }
     var errorMsg by rememberSaveable { mutableStateOf("") }
 
-    var userList by rememberSaveable {
-        mutableStateOf(emptyList<User>())
+    var chapterList by rememberSaveable {
+        mutableStateOf(emptyList<Chapter>())
     }
 
     LaunchedEffect(key1 = true) {
-        userViewModel.getUserData()
+        asesmntViewModel.getChapterList("gAIzFo3oMkeA5vtMdtHd")
 
-        userViewModel.userData.collect {
+        asesmntViewModel.chaptersData.collect {
             if (it.isLoading) {
                 showProgress = true
-                Log.d("EmailSignScreen: ", "Loading")
+                Log.d("ChapterScreen: ", "Loading")
             }
             if (it.error.isNotBlank()) {
                 showProgress = false
                 showError = true
                 errorMsg = it.error
-                Log.d("EmailSignScreen: ", it.error)
+                Log.d("ChapterScreen: ", it.error)
             }
             it.data?.let {
                 showProgress = false
-                userName = it.name
-                userEmail = it.email
-                userPhone = it.phone
-                userImageUrl = it.image
+                chapterList = it as List<Chapter>
             }
         }
     }
@@ -107,7 +100,7 @@ fun TimelineScreen(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 items(
-                    items = userList
+                    items = chapterList
                 ) {
                     Box(
                         contentAlignment = Alignment.Center,
@@ -120,44 +113,41 @@ fun TimelineScreen(
                                 RoundedCornerShape(8.dp)
                             )
                             .padding(10.dp)
-                            .clickable {}
+                            .clickable {
+                                navController.navigate(ContentNavScreen.Sections.route)
+                            }
                     ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
 
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
+                            AsyncImage(
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data(it.icon)
+                                    .crossfade(true)
+                                    .build(),
+                                contentDescription = "",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .size(44.dp)
+                                    .clip(CircleShape)
+                            )
 
-                                AsyncImage(
-                                    model = ImageRequest.Builder(LocalContext.current)
-                                        .data(it.image)
-                                        .crossfade(true)
-                                        .build(),
-                                    contentDescription = "",
-                                    contentScale = ContentScale.Crop,
-                                    modifier = Modifier
-                                        .size(44.dp)
-                                        .clip(CircleShape)
+                            Spacer(modifier = Modifier.width(10.dp))
+
+                            Column(modifier = Modifier.weight(1.0f)) {
+                                Text(
+                                    text = it.name,
+                                    color = Color.Black
                                 )
-
-                                Spacer(modifier = Modifier.width(10.dp))
-
-                                Column(modifier = Modifier.weight(1.0f)) {
-                                    Text(
-                                        text = it.name,
-                                        color = Color.Black
-                                    )
-                                    Spacer(modifier = Modifier.height(5.dp))
-                                    Text(
-                                        text = it.email,
-                                        color = Color.Black
-                                    )
-                                }
-
+                                Spacer(modifier = Modifier.height(5.dp))
+                                Text(
+                                    text = it.name,
+                                    color = Color.Black
+                                )
                             }
+
                         }
                     }
                 }
@@ -174,4 +164,5 @@ fun TimelineScreen(
         showError = false
         SweetToastUtil.SweetError(message = errorMsg, padding = PaddingValues(10.dp))
     }
+
 }

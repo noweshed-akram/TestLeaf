@@ -1,4 +1,4 @@
-package com.awsprep.user.ui.layout.compose.bottombar
+package com.awsprep.user.ui.layout.compose
 
 import android.util.Log
 import androidx.compose.foundation.border
@@ -33,12 +33,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.awsprep.user.domain.models.Course
+import com.awsprep.user.domain.models.Section
 import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.PrimaryColorLight
@@ -49,10 +48,10 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 /**
- * Created by Md. Noweshed Akram on 10/11/23.
+ * Created by Md. Noweshed Akram on 11/11/23.
  */
 @Composable
-fun AssessmentScreen(
+fun SectionScreen(
     navController: NavController,
     asesmntViewModel: AsesmntViewModel
 ) {
@@ -61,27 +60,27 @@ fun AssessmentScreen(
     var showError by rememberSaveable { mutableStateOf(false) }
     var errorMsg by rememberSaveable { mutableStateOf("") }
 
-    var courseList by rememberSaveable {
-        mutableStateOf(emptyList<Course>())
+    var sectionsList by rememberSaveable {
+        mutableStateOf(emptyList<Section>())
     }
 
     LaunchedEffect(key1 = true) {
-        asesmntViewModel.getCourseList()
+        asesmntViewModel.getSectionList("gAIzFo3oMkeA5vtMdtHd", "SPMy3zbDGh1grrxSE242")
 
-        asesmntViewModel.coursesData.collect {
+        asesmntViewModel.sectionsData.collect {
             if (it.isLoading) {
                 showProgress = true
-                Log.d("AssessmentScreen: ", "Loading")
+                Log.d("SectionScreen: ", "Loading")
             }
             if (it.error.isNotBlank()) {
                 showProgress = false
                 showError = true
                 errorMsg = it.error
-                Log.d("AssessmentScreen: ", it.error)
+                Log.d("SectionScreen: ", it.error)
             }
             it.data?.let {
                 showProgress = false
-                courseList = it as List<Course>
+                sectionsList = it as List<Section>
             }
         }
     }
@@ -91,10 +90,6 @@ fun AssessmentScreen(
             .fillMaxSize()
             .padding(horizontal = 10.dp, vertical = 10.dp)
     ) {
-
-        Text(text = "Courses", style = Typography.titleLarge)
-
-        Spacer(modifier = Modifier.height(10.dp))
 
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing = false),
@@ -106,7 +101,7 @@ fun AssessmentScreen(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 items(
-                    items = courseList
+                    items = sectionsList
                 ) {
                     Box(
                         contentAlignment = Alignment.Center,
@@ -120,7 +115,7 @@ fun AssessmentScreen(
                             )
                             .padding(10.dp)
                             .clickable {
-                                navController.navigate(ContentNavScreen.Chapters.route)
+                                navController.navigate(ContentNavScreen.Sections.route)
                             }
                     ) {
                         Row(
@@ -170,4 +165,5 @@ fun AssessmentScreen(
         showError = false
         SweetToastUtil.SweetError(message = errorMsg, padding = PaddingValues(10.dp))
     }
+
 }

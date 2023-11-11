@@ -26,8 +26,8 @@ fun BottomMenuItem(
     item: BottomMenuContent,
     isSelected: Boolean = false,
     activeHighlightColor: Color = Color.White,
-    activeTextColor: Color = Color.White,
-    inactiveTextColor: Color = Color.White,
+    activeColor: Color = PrimaryColorLight,
+    inactiveColor: Color = Color.Gray,
     onItemClick: () -> Unit
 ) {
     Column(
@@ -49,13 +49,13 @@ fun BottomMenuItem(
                     id = item.defaultIcon
                 ),
                 contentDescription = item.title,
-                tint = if (isSelected) PrimaryColorLight else inactiveTextColor,
+                tint = if (isSelected) activeColor else inactiveColor,
                 modifier = Modifier.size(20.dp)
             )
         }
         Text(
             text = item.title,
-            color = if (isSelected) activeTextColor else inactiveTextColor,
+            color = if (isSelected) activeColor else inactiveColor,
             style = Typography.labelSmall
         )
     }

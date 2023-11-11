@@ -5,8 +5,13 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.awsprep.user.ui.layout.compose.ChapterScreen
 import com.awsprep.user.ui.layout.compose.EditProfileScreen
 import com.awsprep.user.ui.layout.compose.NotificationScreen
+import com.awsprep.user.ui.layout.compose.QuestionScreen
+import com.awsprep.user.ui.layout.compose.SectionScreen
+import com.awsprep.user.ui.layout.compose.TimerScreen
+import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.UserViewModel
 
 /**
@@ -17,7 +22,8 @@ fun NavGraphBuilder.ContentNavGraph(
     navController: NavHostController,
     route: String = Graph.CONTENT,
     startDestination: String = ContentNavScreen.EditProfile.route,
-    userViewModel: UserViewModel
+    userViewModel: UserViewModel,
+    asesmntViewModel: AsesmntViewModel
 ) {
 
     navigation(
@@ -30,6 +36,22 @@ fun NavGraphBuilder.ContentNavGraph(
 
         composable(ContentNavScreen.Notification.route) {
             NotificationScreen(navController = navController)
+        }
+
+        composable(ContentNavScreen.Chapters.route) {
+            ChapterScreen(navController = navController, asesmntViewModel = asesmntViewModel)
+        }
+
+        composable(ContentNavScreen.Sections.route) {
+            SectionScreen(navController = navController, asesmntViewModel = asesmntViewModel)
+        }
+
+        composable(ContentNavScreen.Timer.route) {
+            TimerScreen(navController = navController)
+        }
+
+        composable(ContentNavScreen.Question.route) {
+            QuestionScreen(navController = navController)
         }
     }
 

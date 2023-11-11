@@ -15,6 +15,7 @@ import com.awsprep.user.navigation.CurrentRoute
 import com.awsprep.user.navigation.Graph
 import com.awsprep.user.navigation.RootNavGraph
 import com.awsprep.user.ui.component.AppBarWithArrow
+import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.AuthViewModel
 import com.awsprep.user.viewmodel.UserViewModel
 
@@ -26,7 +27,8 @@ import com.awsprep.user.viewmodel.UserViewModel
 fun MainScreen(
     navController: NavHostController,
     authViewModel: AuthViewModel,
-    userViewModel: UserViewModel
+    userViewModel: UserViewModel,
+    asesmntViewModel: AsesmntViewModel
 ) {
 
     Scaffold(
@@ -56,7 +58,8 @@ fun MainScreen(
                 navController = navController,
                 startDestination = startDestination,
                 authViewModel = authViewModel,
-                userViewModel = userViewModel
+                userViewModel = userViewModel,
+                asesmntViewModel = asesmntViewModel
             )
         }
     }

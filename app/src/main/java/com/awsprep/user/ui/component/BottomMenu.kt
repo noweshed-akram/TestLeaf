@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.awsprep.user.domain.models.BottomMenuContent
 import com.awsprep.user.ui.theme.PrimaryColorDark
+import com.awsprep.user.ui.theme.PrimaryColorLight
 
 @Composable
 fun BottomMenu(
@@ -22,8 +23,8 @@ fun BottomMenu(
     modifier: Modifier = Modifier,
     navController: NavController,
     activeHighlightColor: Color = Color.White,
-    activeTextColor: Color = Color.White,
-    inactiveTextColor: Color = Color.White,
+    activeColor: Color = PrimaryColorLight,
+    inactiveColor: Color = Color.Gray,
 ) {
 
     Row(
@@ -31,7 +32,7 @@ fun BottomMenu(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .background(PrimaryColorDark)
+            .background(Color.White)
             .padding(10.dp)
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -41,8 +42,8 @@ fun BottomMenu(
                 item = item,
                 isSelected = currentRoute == item.route,
                 activeHighlightColor = activeHighlightColor,
-                activeTextColor = activeTextColor,
-                inactiveTextColor = inactiveTextColor
+                activeColor = activeColor,
+                inactiveColor = inactiveColor
             ) {
                 navController.navigate(item.route) {
                     navController.graph.startDestinationRoute?.let { route ->

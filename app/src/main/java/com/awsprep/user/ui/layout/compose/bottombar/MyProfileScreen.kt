@@ -1,21 +1,19 @@
 package com.awsprep.user.ui.layout.compose.bottombar
 
 import android.util.Log
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,26 +24,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.awsprep.user.R
 import com.awsprep.user.navigation.ContentNavScreen
-import com.awsprep.user.ui.component.ImageButton
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.PrimaryColorLight
+import com.awsprep.user.ui.theme.Typography
 import com.awsprep.user.viewmodel.UserViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyProfileScreen(
     navController: NavController, userViewModel: UserViewModel
@@ -88,38 +84,50 @@ fun MyProfileScreen(
 
     }
 
-    Column(
+    Row(
         modifier = Modifier
             .fillMaxSize()
             .padding(10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalAlignment = Alignment.CenterVertically
     ) {
 
         AsyncImage(
             model = imageUrl,
             contentDescription = "Profile picture",
             modifier = Modifier
-                .size(150.dp)
+                .size(80.dp)
                 .clip(CircleShape),
             contentScale = ContentScale.Crop,
             error = painterResource(id = R.drawable.ic_person)
         )
 
-        Text(text = inputName)
+        Column(
+            modifier = Modifier.weight(1.0f)
+        ) {
 
-        Text(text = inputEmail)
+            Text(text = inputName, style = Typography.bodyMedium)
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Text(text = inputEmail)
+        }
 
-        ImageButton(
+        Spacer(modifier = Modifier.width(16.dp))
+
+        IconButton(
             onClick = {
                 navController.navigate(ContentNavScreen.EditProfile.route)
-            },
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_edit),
-            buttonText = "Update Profile",
-            backgroundColor = PrimaryColorLight,
-            fontColor = Color.White
-        )
+            }) {
+            Icon(
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_edit),
+                contentDescription = "edit",
+                modifier = Modifier
+                    .shadow(2.dp, RoundedCornerShape(40))
+                    .background(PrimaryColorLight)
+                    .padding(horizontal = 10.dp, vertical = 4.dp)
+                    .size(30.dp),
+                tint = Color.White
+            )
+        }
+
     }
 
     if (showProgress) {

@@ -10,4 +10,8 @@ sealed class ContentNavScreen(
 ) {
     object EditProfile : ContentNavScreen(route = "edit_profile_screen")
     object Notification : ContentNavScreen(route = "notification_screen")
+    object Chapters : ContentNavScreen(route = "chapters_screen")
+    object Sections : ContentNavScreen(route = "sections_screen")
+    object Timer : ContentNavScreen(route = "timer_screen")
+    object Question : ContentNavScreen(route = "question_screen")
 }

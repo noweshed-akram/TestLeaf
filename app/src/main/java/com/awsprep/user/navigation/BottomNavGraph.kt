@@ -12,6 +12,7 @@ import com.awsprep.user.ui.layout.compose.bottombar.AssessmentScreen
 import com.awsprep.user.ui.layout.compose.bottombar.DefinitionScreen
 import com.awsprep.user.ui.layout.compose.bottombar.PractisesScreen
 import com.awsprep.user.ui.layout.compose.bottombar.MyProfileScreen
+import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.UserViewModel
 
 /**
@@ -22,7 +23,8 @@ fun BottomNavigation(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startDestination: String = BottomNavScreen.Assessment.route,
-    userViewModel: UserViewModel
+    userViewModel: UserViewModel,
+    asesmntViewModel: AsesmntViewModel
 ) {
     NavHost(
         navController = navController,
@@ -34,7 +36,7 @@ fun BottomNavigation(
         composable(BottomNavScreen.Assessment.route) {
             AssessmentScreen(
                 navController = navController,
-                userViewModel = userViewModel
+                asesmntViewModel = asesmntViewModel
             )
         }
 
@@ -67,7 +69,8 @@ fun BottomNavigation(
 
         ContentNavGraph(
             navController = navController,
-            userViewModel = userViewModel
+            userViewModel = userViewModel,
+            asesmntViewModel = asesmntViewModel
         )
     }
 }

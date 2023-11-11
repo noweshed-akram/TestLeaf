@@ -25,6 +25,7 @@ import com.awsprep.user.navigation.CurrentRoute
 import com.awsprep.user.ui.component.AppBarWithArrow
 import com.awsprep.user.ui.component.BottomMenu
 import com.awsprep.user.ui.component.HomeTopView
+import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.UserViewModel
 
 /**
@@ -34,7 +35,8 @@ import com.awsprep.user.viewmodel.UserViewModel
 @Composable
 fun HomeScreen(
     navController: NavHostController = rememberNavController(),
-    userViewModel: UserViewModel
+    userViewModel: UserViewModel,
+    asesmntViewModel: AsesmntViewModel
 ) {
 
     val context = LocalContext.current
@@ -87,6 +89,22 @@ fun HomeScreen(
                     AppBarWithArrow(title = "Notification") {
                         navController.popBackStack()
                     }
+                } else if (CurrentRoute(navController = navController) == ContentNavScreen.Chapters.route) {
+                    AppBarWithArrow(title = "Chapters") {
+                        navController.popBackStack()
+                    }
+                } else if (CurrentRoute(navController = navController) == ContentNavScreen.Sections.route) {
+                    AppBarWithArrow(title = "Sections") {
+                        navController.popBackStack()
+                    }
+                } else if (CurrentRoute(navController = navController) == ContentNavScreen.Timer.route) {
+                    AppBarWithArrow(title = "Timer") {
+                        navController.popBackStack()
+                    }
+                } else if (CurrentRoute(navController = navController) == ContentNavScreen.Question.route) {
+                    AppBarWithArrow(title = "Question") {
+                        navController.popBackStack()
+                    }
                 }
             }
         },
@@ -135,7 +153,8 @@ fun HomeScreen(
             BottomNavigation(
                 navController = navController,
                 startDestination = BottomNavScreen.Assessment.route,
-                userViewModel = userViewModel
+                userViewModel = userViewModel,
+                asesmntViewModel = asesmntViewModel
             )
         }
     }
