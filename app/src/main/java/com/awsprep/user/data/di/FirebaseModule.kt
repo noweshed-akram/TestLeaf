@@ -12,7 +12,9 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.awsprep.user.data.repo.AuthRepositoryImpl
+import com.awsprep.user.data.repo.QuesRepositoryImpl
 import com.awsprep.user.domain.repositories.AsesmntRepository
+import com.awsprep.user.domain.repositories.QuesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -76,6 +78,15 @@ object FirebaseModule {
         firebaseFirestore: FirebaseFirestore,
         firebaseStorage: FirebaseStorage,
     ): AsesmntRepository = AsesmntRepositoryImpl(
+        firebaseFirestore, firebaseStorage
+    )
+
+    @Singleton
+    @Provides
+    fun providesQuesRepository(
+        firebaseFirestore: FirebaseFirestore,
+        firebaseStorage: FirebaseStorage,
+    ): QuesRepository = QuesRepositoryImpl(
         firebaseFirestore, firebaseStorage
     )
 

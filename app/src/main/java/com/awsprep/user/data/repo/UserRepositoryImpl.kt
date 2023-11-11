@@ -1,21 +1,12 @@
 package com.awsprep.user.data.repo
 
 import android.net.Uri
-import com.google.android.gms.maps.model.LatLng
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import com.google.maps.android.SphericalUtil
 import com.awsprep.user.domain.models.User
 import com.awsprep.user.domain.repositories.UserRepository
 import com.awsprep.user.utils.AppConstant.DATE_TIME_FORMAT
-import com.awsprep.user.utils.AppConstant.FIELD_ACTIVE
 import com.awsprep.user.utils.AppConstant.FIELD_ADDRESS
 import com.awsprep.user.utils.AppConstant.FIELD_EMAIL
 import com.awsprep.user.utils.AppConstant.FIELD_IMAGE_URL
-import com.awsprep.user.utils.AppConstant.FIELD_LAT
-import com.awsprep.user.utils.AppConstant.FIELD_LNG
 import com.awsprep.user.utils.AppConstant.FIELD_NAME
 import com.awsprep.user.utils.AppConstant.FIELD_PHONE
 import com.awsprep.user.utils.AppConstant.FIELD_UPDATED_AT
@@ -23,6 +14,10 @@ import com.awsprep.user.utils.AppConstant.STORAGE_PROFILE_PIC
 import com.awsprep.user.utils.Resource
 import com.awsprep.user.utils.getCurrentDateTime
 import com.awsprep.user.utils.toString
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await

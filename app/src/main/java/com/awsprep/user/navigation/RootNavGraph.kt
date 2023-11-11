@@ -9,6 +9,7 @@ import com.awsprep.user.viewmodel.AuthViewModel
 import com.awsprep.user.viewmodel.UserViewModel
 import com.awsprep.user.ui.layout.compose.HomeScreen
 import com.awsprep.user.viewmodel.AsesmntViewModel
+import com.awsprep.user.viewmodel.QuesViewModel
 
 /**
  * Created by noweshedakram on 5/8/23.
@@ -20,7 +21,8 @@ fun RootNavGraph(
     startDestination: String = Graph.AUTHENTICATION,
     authViewModel: AuthViewModel,
     userViewModel: UserViewModel,
-    asesmntViewModel: AsesmntViewModel
+    asesmntViewModel: AsesmntViewModel,
+    quesViewModel: QuesViewModel
 ) {
     NavHost(
         navController = navController,
@@ -37,7 +39,8 @@ fun RootNavGraph(
         composable(Graph.HOME) {
             HomeScreen(
                 userViewModel = userViewModel,
-                asesmntViewModel = asesmntViewModel
+                asesmntViewModel = asesmntViewModel,
+                quesViewModel = quesViewModel
             )
         }
     }

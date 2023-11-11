@@ -10,13 +10,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.awsprep.user.navigation.AuthScreen
-import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.navigation.CurrentRoute
 import com.awsprep.user.navigation.Graph
 import com.awsprep.user.navigation.RootNavGraph
 import com.awsprep.user.ui.component.AppBarWithArrow
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.AuthViewModel
+import com.awsprep.user.viewmodel.QuesViewModel
 import com.awsprep.user.viewmodel.UserViewModel
 
 /**
@@ -28,7 +28,8 @@ fun MainScreen(
     navController: NavHostController,
     authViewModel: AuthViewModel,
     userViewModel: UserViewModel,
-    asesmntViewModel: AsesmntViewModel
+    asesmntViewModel: AsesmntViewModel,
+    quesViewModel: QuesViewModel
 ) {
 
     Scaffold(
@@ -59,7 +60,8 @@ fun MainScreen(
                 startDestination = startDestination,
                 authViewModel = authViewModel,
                 userViewModel = userViewModel,
-                asesmntViewModel = asesmntViewModel
+                asesmntViewModel = asesmntViewModel,
+                quesViewModel = quesViewModel
             )
         }
     }

@@ -12,6 +12,7 @@ import com.awsprep.user.ui.layout.compose.QuestionScreen
 import com.awsprep.user.ui.layout.compose.SectionScreen
 import com.awsprep.user.ui.layout.compose.TimerScreen
 import com.awsprep.user.viewmodel.AsesmntViewModel
+import com.awsprep.user.viewmodel.QuesViewModel
 import com.awsprep.user.viewmodel.UserViewModel
 
 /**
@@ -23,7 +24,8 @@ fun NavGraphBuilder.ContentNavGraph(
     route: String = Graph.CONTENT,
     startDestination: String = ContentNavScreen.EditProfile.route,
     userViewModel: UserViewModel,
-    asesmntViewModel: AsesmntViewModel
+    asesmntViewModel: AsesmntViewModel,
+    quesViewModel: QuesViewModel
 ) {
 
     navigation(
@@ -51,7 +53,7 @@ fun NavGraphBuilder.ContentNavGraph(
         }
 
         composable(ContentNavScreen.Question.route) {
-            QuestionScreen(navController = navController)
+            QuestionScreen(navController = navController, quesViewModel = quesViewModel)
         }
     }
 

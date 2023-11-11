@@ -48,7 +48,7 @@ fun HomeTopView(
             Column(
                 modifier = Modifier.weight(1.0f)
             ) {
-                Text(text = "Good Evening,", color = Color.White)
+                Text(text = "Welcome,", color = Color.White)
                 Spacer(modifier = Modifier.height(5.dp))
                 Text(
                     text = userName,

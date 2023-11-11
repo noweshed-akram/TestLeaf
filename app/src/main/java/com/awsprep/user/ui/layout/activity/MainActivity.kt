@@ -13,21 +13,16 @@ import com.awsprep.user.ui.layout.compose.MainScreen
 import com.awsprep.user.ui.theme.AwsPrepTheme
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.AuthViewModel
+import com.awsprep.user.viewmodel.QuesViewModel
 import com.awsprep.user.viewmodel.UserViewModel
-import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-
-//        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-//        askPermissions()
 
         setContent {
             AwsPrepTheme {
@@ -39,35 +34,18 @@ class MainActivity : ComponentActivity() {
                     val authViewModel: AuthViewModel by viewModels()
                     val userViewModel: UserViewModel by viewModels()
                     val asesmntViewModel: AsesmntViewModel by viewModels()
+                    val quesViewModel: QuesViewModel by viewModels()
 
                     MainScreen(
                         navController = navController,
                         authViewModel = authViewModel,
                         userViewModel = userViewModel,
-                        asesmntViewModel = asesmntViewModel
+                        asesmntViewModel = asesmntViewModel,
+                        quesViewModel = quesViewModel
                     )
                 }
             }
         }
     }
 
-//    private val requestPermissionLauncher = registerForActivityResult(
-//        ActivityResultContracts.RequestPermission()
-//    ) { isGranted: Boolean ->
-//        if (isGranted) {
-//            mapViewModel.getDeviceLocation(fusedLocationProviderClient)
-//        }
-//    }
-//
-//    private fun askPermissions() = when (PackageManager.PERMISSION_GRANTED) {
-//        ContextCompat.checkSelfPermission(
-//            this, ACCESS_FINE_LOCATION
-//        ) -> {
-//            mapViewModel.getDeviceLocation(fusedLocationProviderClient)
-//        }
-//
-//        else -> {
-//            requestPermissionLauncher.launch(ACCESS_FINE_LOCATION)
-//        }
-//    }
 }

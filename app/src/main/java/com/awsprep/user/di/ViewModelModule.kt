@@ -3,9 +3,11 @@ package com.awsprep.user.di
 import android.app.Application
 import com.awsprep.user.domain.usecase.AsesmntUseCase
 import com.awsprep.user.domain.usecase.AuthUseCase
+import com.awsprep.user.domain.usecase.QuesUseCase
 import com.awsprep.user.domain.usecase.UserUseCase
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.AuthViewModel
+import com.awsprep.user.viewmodel.QuesViewModel
 import com.awsprep.user.viewmodel.UserViewModel
 import dagger.Module
 import dagger.Provides
@@ -45,6 +47,15 @@ object ViewModelModule {
         asesmntUseCase: AsesmntUseCase
     ): AsesmntViewModel {
         return AsesmntViewModel(app, asesmntUseCase)
+    }
+
+    @Singleton
+    @Provides
+    fun providesQuesViewModel(
+        app: Application,
+        quesUseCase: QuesUseCase
+    ): QuesViewModel {
+        return QuesViewModel(app, quesUseCase)
     }
 
 }

@@ -12,6 +12,7 @@ object AppConstant {
     const val COLL_COURSES = "courses"
     const val COLL_CHAPTERS = "chapters"
     const val COLL_SECTIONS = "sections"
+    const val COLL_QUESTIONS = "questions"
 
     // Storage Reference
     const val STORAGE_PROFILE_PIC = "profile_pic"
@@ -21,9 +22,6 @@ object AppConstant {
     const val FIELD_IMAGE_URL = "image"
     const val FIELD_EMAIL = "email"
     const val FIELD_PHONE = "phone"
-    const val FIELD_ACTIVE = "isActive"
-    const val FIELD_LAT = "lat"
-    const val FIELD_LNG = "lng"
     const val FIELD_ADDRESS = "address"
     const val FIELD_CREATED_AT = "createdAt"
     const val FIELD_UPDATED_AT = "updatedAt"

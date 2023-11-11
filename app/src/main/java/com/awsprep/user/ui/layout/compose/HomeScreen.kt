@@ -26,6 +26,7 @@ import com.awsprep.user.ui.component.AppBarWithArrow
 import com.awsprep.user.ui.component.BottomMenu
 import com.awsprep.user.ui.component.HomeTopView
 import com.awsprep.user.viewmodel.AsesmntViewModel
+import com.awsprep.user.viewmodel.QuesViewModel
 import com.awsprep.user.viewmodel.UserViewModel
 
 /**
@@ -36,7 +37,8 @@ import com.awsprep.user.viewmodel.UserViewModel
 fun HomeScreen(
     navController: NavHostController = rememberNavController(),
     userViewModel: UserViewModel,
-    asesmntViewModel: AsesmntViewModel
+    asesmntViewModel: AsesmntViewModel,
+    quesViewModel: QuesViewModel
 ) {
 
     val context = LocalContext.current
@@ -154,7 +156,8 @@ fun HomeScreen(
                 navController = navController,
                 startDestination = BottomNavScreen.Assessment.route,
                 userViewModel = userViewModel,
-                asesmntViewModel = asesmntViewModel
+                asesmntViewModel = asesmntViewModel,
+                quesViewModel = quesViewModel
             )
         }
     }

@@ -5,7 +5,7 @@ package com.awsprep.user.domain.models
  */
 data class Question(
     val ques: String = "",
-    val ans: Array<String> = emptyArray(),
+    val ans: List<String> = emptyList(),
     val optionA: String = "",
     val optionB: String = "",
     val optionC: String = "",

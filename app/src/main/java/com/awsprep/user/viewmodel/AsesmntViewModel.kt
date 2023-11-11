@@ -61,17 +61,17 @@ class AsesmntViewModel @Inject constructor(
             asesmntUseCase.getChapterList(courseId).onEach {
                 when (it) {
                     is Resource.Loading -> {
-                        Log.d("getCourseList: ", it.data.toString())
+                        Log.d("getChapterList: ", it.data.toString())
                         _chaptersData.value = ResponseState(isLoading = true)
                     }
 
                     is Resource.Error -> {
-                        Log.d("getCourseList: ", it.data.toString())
+                        Log.d("getChapterList: ", it.data.toString())
                         _chaptersData.value = ResponseState(error = it.message ?: "")
                     }
 
                     is Resource.Success -> {
-                        Log.d("getCourseList: ", it.data.toString())
+                        Log.d("getChapterList: ", it.data.toString())
                         _chaptersData.value = ResponseState(data = it.data)
                     }
                 }
@@ -84,17 +84,17 @@ class AsesmntViewModel @Inject constructor(
             asesmntUseCase.getSectionList(courseId, chapterId).onEach {
                 when (it) {
                     is Resource.Loading -> {
-                        Log.d("getCourseList: ", it.data.toString())
+                        Log.d("getSectionList: ", it.data.toString())
                         _sectionsData.value = ResponseState(isLoading = true)
                     }
 
                     is Resource.Error -> {
-                        Log.d("getCourseList: ", it.data.toString())
+                        Log.d("getSectionList: ", it.data.toString())
                         _sectionsData.value = ResponseState(error = it.message ?: "")
                     }
 
                     is Resource.Success -> {
-                        Log.d("getCourseList: ", it.data.toString())
+                        Log.d("getSectionList: ", it.data.toString())
                         _sectionsData.value = ResponseState(data = it.data)
                     }
                 }

@@ -120,7 +120,7 @@ fun MyProfileScreen(
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_edit),
                 contentDescription = "edit",
                 modifier = Modifier
-                    .shadow(2.dp, RoundedCornerShape(40))
+                    .shadow(2.dp, RoundedCornerShape(24))
                     .background(PrimaryColorLight)
                     .padding(horizontal = 10.dp, vertical = 4.dp)
                     .size(30.dp),
