@@ -37,7 +37,8 @@ fun QuesCheckboxOptions(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            Checkbox(checked = isChecked,
+            Checkbox(
+                checked = isChecked,
                 onCheckedChange = { isChecked = it }
             )
             Text(

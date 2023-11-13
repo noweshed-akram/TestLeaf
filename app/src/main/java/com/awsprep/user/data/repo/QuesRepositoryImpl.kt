@@ -34,7 +34,7 @@ class QuesRepositoryImpl @Inject constructor(
 
             val questions = firebaseFirestore.collection(COLL_COURSES).document(courseId)
                 .collection(COLL_CHAPTERS).document(chapterId).collection(COLL_SECTIONS)
-                .document(sectionId).collection(COLL_QUESTIONS).get()
+                .document(sectionId).collection(COLL_QUESTIONS).limit(5).get()
                 .await()
 
             var questionList = emptyList<Question>()

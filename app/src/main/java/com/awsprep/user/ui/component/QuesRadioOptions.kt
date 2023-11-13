@@ -1,5 +1,6 @@
 package com.awsprep.user.ui.component
 
+import android.util.Log
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -27,27 +28,25 @@ fun QuesRadioOptions(
         question.optionC, question.optionD
     )
 
+    val answers = listOf("A", "B", "C", "D")
+    val selectedAns: List<String> = emptyList()
     val (selectedOption, onOptionSelected) = rememberSaveable { mutableStateOf("") }
 
-    radioOptions.forEach { text ->
+    radioOptions.forEach { option ->
 
         Row(
-            Modifier
-                .fillMaxWidth()
-                .selectable(
-                    selected = (text == selectedOption),
-                    onClick = {
-                        onOptionSelected(text)
-                    },
-                ),
+            Modifier.fillMaxWidth(),
             verticalAlignment = CenterVertically
         ) {
             RadioButton(
-                selected = (text == selectedOption),
-                onClick = { onOptionSelected(text) }
+                selected = (option == selectedOption),
+                onClick = {
+                    onOptionSelected(option)
+                    Log.d("Question", "QuesRadioOptions: " )
+                }
             )
             Text(
-                text = text.trim(),
+                text = option.trim(),
                 style = Typography.bodyMedium,
                 modifier = Modifier.padding(start = 16.dp)
             )

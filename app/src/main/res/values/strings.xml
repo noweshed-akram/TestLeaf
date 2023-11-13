@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">AWS Prep</string>
+
+
+    <string name="question_count">\u00A0of %d</string>
+
 </resources>

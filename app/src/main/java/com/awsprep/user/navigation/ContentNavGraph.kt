@@ -53,8 +53,15 @@ fun NavGraphBuilder.ContentNavGraph(
         }
 
         composable(ContentNavScreen.Question.route) {
-            QuestionScreen(navController = navController, quesViewModel = quesViewModel)
+            QuestionScreen(onSubmitAnswers = {
+                navController.navigate(ContentNavScreen.Result.route)
+            }, quesViewModel = quesViewModel)
         }
+
+        composable(ContentNavScreen.Result.route) {
+
+        }
+
     }
 
 }
