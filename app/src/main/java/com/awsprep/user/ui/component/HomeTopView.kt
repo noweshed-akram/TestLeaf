@@ -38,7 +38,7 @@ fun HomeTopView(
 
             Box(
                 modifier = Modifier
-                    .clickable { onItemClick() }
+                    .clickable { }
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_menubar),

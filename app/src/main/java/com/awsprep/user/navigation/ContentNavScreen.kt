@@ -13,6 +13,6 @@ sealed class ContentNavScreen(
     object Chapters : ContentNavScreen(route = "chapters_screen")
     object Sections : ContentNavScreen(route = "sections_screen")
     object Timer : ContentNavScreen(route = "timer_screen")
-    object Question : ContentNavScreen(route = "question_screen")
+    object Test : ContentNavScreen(route = "test_screen")
     object Result : ContentNavScreen(route = "result_screen")
 }

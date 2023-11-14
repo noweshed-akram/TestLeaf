@@ -8,7 +8,7 @@ import androidx.navigation.navigation
 import com.awsprep.user.ui.layout.compose.ChapterScreen
 import com.awsprep.user.ui.layout.compose.EditProfileScreen
 import com.awsprep.user.ui.layout.compose.NotificationScreen
-import com.awsprep.user.ui.layout.compose.QuestionScreen
+import com.awsprep.user.ui.layout.compose.TestScreen
 import com.awsprep.user.ui.layout.compose.SectionScreen
 import com.awsprep.user.ui.layout.compose.TimerScreen
 import com.awsprep.user.viewmodel.AsesmntViewModel
@@ -52,8 +52,8 @@ fun NavGraphBuilder.ContentNavGraph(
             TimerScreen(navController = navController)
         }
 
-        composable(ContentNavScreen.Question.route) {
-            QuestionScreen(onSubmitAnswers = {
+        composable(ContentNavScreen.Test.route) {
+            TestScreen(onSubmitAnswers = {
                 navController.navigate(ContentNavScreen.Result.route)
             }, quesViewModel = quesViewModel)
         }

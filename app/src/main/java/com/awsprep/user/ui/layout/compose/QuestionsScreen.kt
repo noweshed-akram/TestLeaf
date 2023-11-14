@@ -10,7 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.outlined.Feedback
+import androidx.compose.material.icons.outlined.RotateLeft
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -104,7 +105,18 @@ fun QuestionTopAppBar(
                     modifier = Modifier.padding(4.dp)
                 ) {
                     Icon(
-                        Icons.Filled.Close,
+                        Icons.Outlined.RotateLeft,
+                        contentDescription = "Close",
+                        tint = MaterialTheme.colorScheme.onSurface.copy(0.6f)
+                    )
+                }
+
+                IconButton(
+                    onClick = {},
+                    modifier = Modifier.padding(4.dp)
+                ) {
+                    Icon(
+                        Icons.Outlined.Feedback,
                         contentDescription = "Close",
                         tint = MaterialTheme.colorScheme.onSurface.copy(0.6f)
                     )

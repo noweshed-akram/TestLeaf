@@ -115,7 +115,7 @@ fun SectionScreen(
                             )
                             .padding(10.dp)
                             .clickable {
-                                navController.navigate(ContentNavScreen.Question.route)
+                                navController.navigate(ContentNavScreen.Test.route)
                             }
                     ) {
                         Row(

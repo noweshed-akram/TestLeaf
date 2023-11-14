@@ -20,6 +20,7 @@ import com.awsprep.user.domain.models.Question
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.component.getTransitionDirection
 import com.awsprep.user.viewmodel.QuesViewModel
+import com.awsprep.user.viewmodel.QuestionType
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 private const val CONTENT_ANIMATION_DURATION = 300
@@ -28,7 +29,7 @@ private const val CONTENT_ANIMATION_DURATION = 300
  * Created by Md. Noweshed Akram on 11/11/23.
  */
 @Composable
-fun QuestionScreen(
+fun TestScreen(
     onSubmitAnswers: () -> Unit,
     quesViewModel: QuesViewModel
 ) {
@@ -36,6 +37,8 @@ fun QuestionScreen(
     var showProgress by rememberSaveable { mutableStateOf(false) }
     var showError by rememberSaveable { mutableStateOf(false) }
     var errorMsg by rememberSaveable { mutableStateOf("") }
+
+    val screenData = quesViewModel.screenData ?: return
 
     var questionList by rememberSaveable {
         mutableStateOf(emptyList<Question>())
@@ -67,7 +70,7 @@ fun QuestionScreen(
     }
 
     QuestionsScreen(
-        screenData = questionList,
+        screenData = screenData,
         isNextEnabled = quesViewModel.isNextEnabled,
         onPreviousPressed = { quesViewModel.onPreviousPressed() },
         onNextPressed = { quesViewModel.onNextPressed() },
@@ -77,13 +80,13 @@ fun QuestionScreen(
         val modifier = Modifier.padding(paddingValues)
 
         AnimatedContent(
-            targetState = questionList,
+            targetState = screenData,
             transitionSpec = {
                 val animationSpec: TweenSpec<IntOffset> = tween(CONTENT_ANIMATION_DURATION)
 
                 val direction = getTransitionDirection(
-                    initialIndex = 0,
-                    targetIndex = 1,
+                    initialIndex = initialState.questionIndex,
+                    targetIndex = initialState.questionCount,
                 )
 
                 slideIntoContainer(
@@ -97,6 +100,17 @@ fun QuestionScreen(
             label = "screenDataAnimation"
         ) { targetState ->
 
+            when (targetState.questionType) {
+
+                QuestionType.SINGLE_CHOICE -> {
+
+                }
+
+                QuestionType.MULTIPLE_CHOICE -> {
+
+                }
+
+            }
         }
     }
 

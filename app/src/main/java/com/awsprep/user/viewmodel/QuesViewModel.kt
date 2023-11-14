@@ -2,10 +2,10 @@ package com.awsprep.user.viewmodel
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.awsprep.user.domain.models.Question
 import com.awsprep.user.domain.models.ResponseState
 import com.awsprep.user.domain.usecase.QuesUseCase
 import com.awsprep.user.utils.Resource
@@ -61,6 +61,32 @@ class QuesViewModel @Inject constructor(
     /**
      * Returns true if the ViewModel handled the back press (i.e., it went back one question)
      */
+
+
+    // ----- Responses exposed as State -----
+
+    private val _multipleChoiceResponse = mutableStateListOf<String>()
+    val multipleChoiceResponse: List<String>
+        get() = _multipleChoiceResponse
+
+    private val _singleChoiceResponse = mutableStateListOf<String>()
+    val singleChoiceResponse: List<String>
+        get() = _singleChoiceResponse
+
+
+    private val questionOrder: List<QuestionType> = listOf(
+        QuestionType.SINGLE_CHOICE,
+        QuestionType.MULTIPLE_CHOICE
+    )
+
+    private val _screenData = mutableStateOf(createScreenData())
+    val screenData: ScreenData?
+        get() = _screenData.value
+
+    private val _isNextEnabled = mutableStateOf(false)
+    val isNextEnabled: Boolean
+        get() = _isNextEnabled.value
+
     fun onBackPressed(): Boolean {
         if (questionIndex == 0) {
             return false
@@ -83,7 +109,7 @@ class QuesViewModel @Inject constructor(
     private fun changeQuestion(newQuestionIndex: Int) {
         questionIndex = newQuestionIndex
         _isNextEnabled.value = getIsNextEnabled()
-        _surveyScreenData.value = createSurveyScreenData()
+        _screenData.value = createScreenData()
     }
 
     fun onDonePressed(onSurveyComplete: () -> Unit) {
@@ -93,15 +119,26 @@ class QuesViewModel @Inject constructor(
 
     private fun getIsNextEnabled(): Boolean {
         return when (questionOrder[questionIndex]) {
-            SurveyQuestion.FREE_TIME -> _freeTimeResponse.isNotEmpty()
-            SurveyQuestion.SUPERHERO -> _superheroResponse.value != null
-            SurveyQuestion.LAST_TAKEAWAY -> _takeawayResponse.value != null
-            SurveyQuestion.FEELING_ABOUT_SELFIES -> _feelingAboutSelfiesResponse.value != null
-            SurveyQuestion.TAKE_SELFIE -> _selfieUri.value != null
+            QuestionType.SINGLE_CHOICE -> _singleChoiceResponse.isNotEmpty()
+            QuestionType.MULTIPLE_CHOICE -> _multipleChoiceResponse.isNotEmpty()
         }
     }
 
+    private fun createScreenData(): ScreenData {
+        return ScreenData(
+            questionIndex = questionIndex,
+            questionCount = questionOrder.size,
+            shouldShowPreviousButton = questionIndex > 0,
+            shouldShowDoneButton = questionIndex == questionOrder.size - 1,
+            questionType = questionOrder[questionIndex],
+        )
+    }
 
+}
+
+enum class QuestionType {
+    SINGLE_CHOICE,
+    MULTIPLE_CHOICE
 }
 
 data class ScreenData(
@@ -109,5 +146,5 @@ data class ScreenData(
     val questionCount: Int,
     val shouldShowPreviousButton: Boolean,
     val shouldShowDoneButton: Boolean,
-    val question: Question
+    val questionType: QuestionType
 )
