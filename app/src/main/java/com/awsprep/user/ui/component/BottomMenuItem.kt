@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.awsprep.user.domain.models.BottomMenuContent
-import com.awsprep.user.ui.theme.PrimaryColorLight
+import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.ui.theme.Typography
 
 /**
@@ -29,7 +29,7 @@ fun BottomMenuItem(
     item: BottomMenuContent,
     isSelected: Boolean = false,
     activeHighlightColor: Color = Color.White,
-    activeColor: Color = PrimaryColorLight,
+    activeColor: Color = SecondaryColor,
     inactiveColor: Color = Color.Gray,
     onItemClick: () -> Unit
 ) {

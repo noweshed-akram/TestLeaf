@@ -27,11 +27,11 @@ class AsesmntRepositoryImpl @Inject constructor(
     private val firebaseStorage: FirebaseStorage
 ) : AsesmntRepository {
 
-    override suspend fun getCourseList(): Flow<Resource<List<Course>>> = flow {
+    override suspend fun getCourseList(limit: Long): Flow<Resource<List<Course>>> = flow {
         emit(Resource.Loading())
         try {
 
-            val courses = firebaseFirestore.collection(COLL_COURSES).get().await()
+            val courses = firebaseFirestore.collection(COLL_COURSES).limit(limit).get().await()
             var courseList = emptyList<Course>()
 
             for (course in courses) {

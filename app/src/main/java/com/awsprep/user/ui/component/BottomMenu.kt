@@ -14,8 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.awsprep.user.domain.models.BottomMenuContent
-import com.awsprep.user.ui.theme.PrimaryColorDark
-import com.awsprep.user.ui.theme.PrimaryColorLight
+import com.awsprep.user.ui.theme.SecondaryColor
 
 /**
  * Created by Md. Noweshed Akram on 14/11/23.
@@ -26,7 +25,7 @@ fun BottomMenu(
     modifier: Modifier = Modifier,
     navController: NavController,
     activeHighlightColor: Color = Color.White,
-    activeColor: Color = PrimaryColorLight,
+    activeColor: Color = SecondaryColor,
     inactiveColor: Color = Color.Gray,
 ) {
 

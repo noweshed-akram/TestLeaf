@@ -4,8 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -20,7 +22,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.awsprep.user.R
-import com.awsprep.user.ui.theme.PrimaryColorDark
+import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.Typography
 
 /**
@@ -32,7 +34,7 @@ fun HomeTopView(
     onItemClick: () -> Unit
 ) {
 
-    Box(modifier = Modifier.background(color = PrimaryColorDark)) {
+    Box(modifier = Modifier.background(color = PrimaryColor)) {
         Row(
             modifier = Modifier.padding(10.dp),
             horizontalArrangement = Arrangement.Center,
@@ -52,18 +54,19 @@ fun HomeTopView(
 
             Spacer(modifier = Modifier.width(10.dp))
 
-            Row(
-                modifier = Modifier.weight(1.0f)
+            Column(
+                modifier = Modifier.weight(1.0f),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Text(text = "Welcome,", color = Color.White, style = Typography.titleMedium)
+                Text(text = "Welcome", color = Color.White, style = Typography.headlineSmall)
 
-                Spacer(modifier = Modifier.width(5.dp))
+                Spacer(modifier = Modifier.height(5.dp))
 
                 Text(
                     text = userName,
                     color = Color.White,
-                    style = Typography.titleMedium
+                    style = Typography.bodyMedium
                 )
 
             }

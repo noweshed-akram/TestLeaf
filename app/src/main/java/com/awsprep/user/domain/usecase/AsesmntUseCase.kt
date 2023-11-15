@@ -15,9 +15,8 @@ class AsesmntUseCase @Inject constructor(
     private val asesmntRepository: AsesmntRepository
 ) {
 
-
-    suspend fun getCourseList(): Flow<Resource<List<Course>>> {
-        return asesmntRepository.getCourseList()
+    suspend fun getCourseList(limit: Long): Flow<Resource<List<Course>>> {
+        return asesmntRepository.getCourseList(limit = limit)
     }
 
     suspend fun getChapterList(courseId: String): Flow<Resource<List<Chapter>>> {

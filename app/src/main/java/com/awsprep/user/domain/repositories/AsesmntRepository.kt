@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
  */
 interface AsesmntRepository {
 
-    suspend fun getCourseList(): Flow<Resource<List<Course>>>
+    suspend fun getCourseList(limit: Long): Flow<Resource<List<Course>>>
 
     suspend fun getChapterList(courseId: String): Flow<Resource<List<Chapter>>>
 

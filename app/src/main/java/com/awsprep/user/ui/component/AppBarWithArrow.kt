@@ -17,7 +17,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.awsprep.user.R
-import com.awsprep.user.ui.theme.PrimaryColorDark
+import com.awsprep.user.ui.theme.PrimaryColor
+import com.awsprep.user.ui.theme.Typography
 
 /**
  * Created by Md. Noweshed Akram on 14/11/23.
@@ -35,7 +36,7 @@ fun AppBarWithArrow(
                 horizontalArrangement = Arrangement.Start,
                 modifier = Modifier.fillMaxWidth(fraction = 1f)
             ) {
-                Text(text = title, color = Color.White)
+                Text(text = title, color = Color.White, style = Typography.titleLarge)
             }
         },
         navigationIcon = {
@@ -48,7 +49,7 @@ fun AppBarWithArrow(
                 )
             }
         },
-        colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = PrimaryColorDark),
+        colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = PrimaryColor),
         scrollBehavior = scrollBehavior
     )
 

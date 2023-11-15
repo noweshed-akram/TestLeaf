@@ -33,9 +33,9 @@ class AsesmntViewModel @Inject constructor(
     private val _sectionsData = MutableStateFlow(ResponseState())
     val sectionsData: StateFlow<ResponseState> = _sectionsData
 
-    fun getCourseList() {
+    fun getCourseList(limit: Long) {
         viewModelScope.launch {
-            asesmntUseCase.getCourseList().onEach {
+            asesmntUseCase.getCourseList(limit = limit).onEach {
                 when (it) {
                     is Resource.Loading -> {
                         Log.d("getCourseList: ", it.data.toString())

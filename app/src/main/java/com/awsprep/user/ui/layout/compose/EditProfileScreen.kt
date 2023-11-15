@@ -47,7 +47,7 @@ import com.awsprep.user.R
 import com.awsprep.user.domain.models.User
 import com.awsprep.user.ui.component.ImageButton
 import com.awsprep.user.ui.component.ProgressBar
-import com.awsprep.user.ui.theme.PrimaryColorLight
+import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.viewmodel.UserViewModel
 import com.google.modernstorage.photopicker.PhotoPicker
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
@@ -146,7 +146,7 @@ fun EditProfileScreen(
                     contentDescription = "edit",
                     modifier = Modifier
                         .shadow(2.dp, RoundedCornerShape(40))
-                        .background(PrimaryColorLight)
+                        .background(SecondaryColor)
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                         .size(30.dp)
                         .align(Alignment.BottomEnd),
@@ -270,7 +270,7 @@ fun EditProfileScreen(
             },
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_edit),
             buttonText = "Update Profile",
-            backgroundColor = PrimaryColorLight,
+            backgroundColor = SecondaryColor,
             fontColor = Color.White
         )
     }

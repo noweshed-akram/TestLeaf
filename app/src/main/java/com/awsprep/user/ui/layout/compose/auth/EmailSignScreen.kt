@@ -49,7 +49,7 @@ import com.awsprep.user.navigation.AuthScreen
 import com.awsprep.user.navigation.Graph
 import com.awsprep.user.ui.component.ImageButton
 import com.awsprep.user.ui.component.ProgressBar
-import com.awsprep.user.ui.theme.PrimaryColorLight
+import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.viewmodel.AuthViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetError
 import kotlinx.coroutines.launch
@@ -107,7 +107,7 @@ fun EmailSignScreen(
             text = "Sign In",
             fontSize = 24.sp,
             fontWeight = FontWeight.ExtraBold,
-            color = PrimaryColorLight
+            color = SecondaryColor
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -205,7 +205,7 @@ fun EmailSignScreen(
             },
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_login),
             buttonText = "Sign In",
-            backgroundColor = PrimaryColorLight,
+            backgroundColor = SecondaryColor,
             fontColor = Color.White
         )
 

@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import com.awsprep.user.ui.theme.SelectedGreen
+import com.awsprep.user.ui.theme.SecondaryColor
 
 /**
  * Created by Md. Noweshed Akram on 14/11/23.
@@ -59,14 +59,14 @@ fun RadioButtonWithImageRow(
     Surface(
         shape = MaterialTheme.shapes.small,
         color = if (selected) {
-            SelectedGreen.copy(0.5f)
+            SecondaryColor
         } else {
             MaterialTheme.colorScheme.surface
         },
         border = BorderStroke(
             width = 1.dp,
             color = if (selected) {
-                SelectedGreen.copy(0.5f)
+                SecondaryColor
             } else {
                 MaterialTheme.colorScheme.outline
             }

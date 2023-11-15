@@ -1,6 +1,7 @@
 package com.awsprep.user.ui.layout.compose.bottombar
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,10 +15,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,7 +25,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -41,7 +39,8 @@ import com.awsprep.user.R
 import com.awsprep.user.domain.models.Course
 import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.ProgressBar
-import com.awsprep.user.ui.theme.PrimaryColorLight
+import com.awsprep.user.ui.theme.ColorAccent
+import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.Typography
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -66,7 +65,7 @@ fun AssessmentScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        asesmntViewModel.getCourseList()
+        asesmntViewModel.getCourseList(6)
 
         asesmntViewModel.coursesData.collect {
             if (it.isLoading) {
@@ -92,7 +91,7 @@ fun AssessmentScreen(
             .padding(horizontal = 10.dp, vertical = 10.dp)
     ) {
 
-        Text(text = "Courses", style = Typography.titleLarge)
+        Text(text = "Courses", style = Typography.headlineMedium)
 
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -100,69 +99,80 @@ fun AssessmentScreen(
             state = rememberSwipeRefreshState(isRefreshing = false),
             onRefresh = { }) {
 
-            LazyRow(
+            LazyVerticalGrid(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                columns = GridCells.Fixed(2),
+                horizontalArrangement = Arrangement.spacedBy(20.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                items(
-                    items = courseList
-                ) {
+                items(courseList.size) {
                     Box(
-                        contentAlignment = Alignment.Center,
                         modifier = Modifier
-                            .width(150.dp)
-                            .height(140.dp)
+                            .height(150.dp)
                             .clip(RoundedCornerShape(8.dp))
                             .border(
                                 1.dp,
-                                PrimaryColorLight,
+                                StrokeColor,
                                 RoundedCornerShape(8.dp)
                             )
-                            .padding(10.dp)
                             .clickable {
                                 navController.navigate(ContentNavScreen.Chapters.route)
                             }
                     ) {
                         Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight(),
+                            verticalArrangement = Arrangement.SpaceBetween
                         ) {
 
-                            AsyncImage(
-                                model = ImageRequest.Builder(LocalContext.current)
-                                    .data(it.icon)
-                                    .crossfade(true)
-                                    .build(),
-                                contentDescription = "",
-                                contentScale = ContentScale.Fit,
+                            Box(
                                 modifier = Modifier
-                                    .size(48.dp)
-                                    .clip(RoundedCornerShape(5.dp)),
-                                error = painterResource(id = R.drawable.ic_error_icon)
+                                    .padding(10.dp)
+                                    .border(
+                                        1.dp,
+                                        Color.Transparent,
+                                        RoundedCornerShape(50.dp)
+                                    )
+                            ) {
+                                AsyncImage(
+                                    model = ImageRequest.Builder(LocalContext.current)
+                                        .data(courseList[it].icon)
+                                        .crossfade(true)
+                                        .build(),
+                                    contentDescription = "",
+                                    contentScale = ContentScale.Fit,
+                                    modifier = Modifier
+                                        .size(52.dp)
+                                        .clip(RoundedCornerShape(5.dp)),
+                                    error = painterResource(id = R.drawable.ic_error_icon)
+                                )
+                            }
+
+                            Text(
+                                modifier = Modifier.padding(10.dp),
+                                text = courseList[it].name,
+                                style = Typography.bodyLarge,
+                                color = Color.Black,
+                                maxLines = 1
                             )
 
-                            Spacer(modifier = Modifier.height(10.dp))
-
-                            Column(
-                                horizontalAlignment = Alignment.Start
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp))
+                                    .background(color = ColorAccent)
                             ) {
                                 Text(
-                                    text = it.name.trim(),
-                                    style = Typography.bodyMedium,
-                                    color = Color.Black,
-                                    maxLines = 1
-                                )
-                                Spacer(modifier = Modifier.height(5.dp))
-                                Text(
-                                    text = "10 Chapters",
+                                    modifier = Modifier.padding(10.dp),
+                                    text = "10+ Chapters",
                                     style = Typography.bodySmall,
                                     color = Color.Black,
                                     maxLines = 1
                                 )
                             }
-
                         }
                     }
                 }

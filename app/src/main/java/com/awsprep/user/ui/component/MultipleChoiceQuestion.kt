@@ -15,9 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.awsprep.user.ui.theme.SelectedGreen
+import com.awsprep.user.ui.theme.SecondaryColor
 
 /**
  * Created by noweshedakram on 11/14/23.
@@ -58,14 +57,14 @@ fun CheckboxRow(
     Surface(
         shape = MaterialTheme.shapes.small,
         color = if (selected) {
-            SelectedGreen.copy(0.5f)
+            SecondaryColor
         } else {
             MaterialTheme.colorScheme.surface
         },
         border = BorderStroke(
             width = 1.dp,
             color = if (selected) {
-                SelectedGreen.copy(0.5f)
+                SecondaryColor
             } else {
                 MaterialTheme.colorScheme.outline
             }

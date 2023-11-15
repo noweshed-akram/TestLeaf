@@ -38,7 +38,7 @@ import coil.compose.AsyncImage
 import com.awsprep.user.R
 import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.ProgressBar
-import com.awsprep.user.ui.theme.PrimaryColorLight
+import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.ui.theme.Typography
 import com.awsprep.user.viewmodel.UserViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
@@ -126,7 +126,7 @@ fun MyProfileScreen(
                     contentDescription = "edit",
                     modifier = Modifier
                         .shadow(2.dp, RoundedCornerShape(24))
-                        .background(PrimaryColorLight)
+                        .background(SecondaryColor)
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                         .size(30.dp),
                     tint = Color.White

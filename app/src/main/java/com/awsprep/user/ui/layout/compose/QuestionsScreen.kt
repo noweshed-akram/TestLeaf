@@ -31,7 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.awsprep.user.R
-import com.awsprep.user.ui.theme.PrimaryColorDark
+import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.viewmodel.ScreenData
 
 /**
@@ -111,7 +111,7 @@ fun QuestionTopAppBar(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_arrow_back),
                         contentDescription = "Back",
-                        tint = PrimaryColorDark
+                        tint = PrimaryColor
                     )
                 }
             },
@@ -129,7 +129,7 @@ fun QuestionTopAppBar(
                     Icon(
                         Icons.Outlined.RotateLeft,
                         contentDescription = "review",
-                        tint = PrimaryColorDark.copy(0.6f)
+                        tint = PrimaryColor.copy(0.6f)
                     )
                 }
 
@@ -140,7 +140,7 @@ fun QuestionTopAppBar(
                     Icon(
                         Icons.Outlined.Feedback,
                         contentDescription = "feedback",
-                        tint = PrimaryColorDark.copy(0.6f)
+                        tint = PrimaryColor.copy(0.6f)
                     )
                 }
             }

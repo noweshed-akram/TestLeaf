@@ -49,7 +49,7 @@ import com.awsprep.user.navigation.AuthScreen
 import com.awsprep.user.navigation.Graph
 import com.awsprep.user.ui.component.ImageButton
 import com.awsprep.user.ui.component.ProgressBar
-import com.awsprep.user.ui.theme.PrimaryColorLight
+import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.utils.AppConstant.DATE_TIME_FORMAT
 import com.awsprep.user.utils.Resource
 import com.awsprep.user.utils.getCurrentDateTime
@@ -133,7 +133,7 @@ fun EmailRegisterScreen(
             text = "Sign Up",
             fontSize = 24.sp,
             fontWeight = FontWeight.ExtraBold,
-            color = PrimaryColorLight
+            color = SecondaryColor
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -248,7 +248,7 @@ fun EmailRegisterScreen(
             },
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_login),
             buttonText = "Sign Up",
-            backgroundColor = PrimaryColorLight,
+            backgroundColor = SecondaryColor,
             fontColor = Color.White
         )
 
