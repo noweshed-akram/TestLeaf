@@ -16,8 +16,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.awsprep.user.R
 import com.awsprep.user.domain.models.Question
+import com.awsprep.user.ui.component.MultipleChoiceQuestion
 import com.awsprep.user.ui.component.ProgressBar
+import com.awsprep.user.ui.component.SingleChoiceQuestion
 import com.awsprep.user.ui.component.getTransitionDirection
 import com.awsprep.user.viewmodel.QuesViewModel
 import com.awsprep.user.viewmodel.QuestionType
@@ -30,6 +33,7 @@ private const val CONTENT_ANIMATION_DURATION = 300
  */
 @Composable
 fun TestScreen(
+    onBackPressed: () -> Unit,
     onSubmitAnswers: () -> Unit,
     quesViewModel: QuesViewModel
 ) {
@@ -72,6 +76,7 @@ fun TestScreen(
     QuestionsScreen(
         screenData = screenData,
         isNextEnabled = quesViewModel.isNextEnabled,
+        onBackPressed = onBackPressed,
         onPreviousPressed = { quesViewModel.onPreviousPressed() },
         onNextPressed = { quesViewModel.onNextPressed() },
         onDonePressed = { quesViewModel.onDonePressed(onSubmitAnswers) }
@@ -100,17 +105,63 @@ fun TestScreen(
             label = "screenDataAnimation"
         ) { targetState ->
 
-            when (targetState.questionType) {
 
-                QuestionType.SINGLE_CHOICE -> {
+            for (question in questionList) {
+
+                when (targetState.questionType) {
+
+                    QuestionType.SINGLE_CHOICE -> {
+                        SingleChoiceQuestion(
+                            questionTitle = question.ques,
+                            directionsResourceId = R.string.select_one,
+                            possibleAnswers = listOf(
+                                question.optionA,
+                                question.optionB,
+                                question.optionC,
+                                question.optionD
+                            ),
+                            selectedAnswer = quesViewModel.singleChoiceResponse,
+                            onOptionSelected = quesViewModel::onSingleChoiceResponse,
+                            modifier = modifier,
+                        )
+                    }
+
+                    QuestionType.MULTIPLE_CHOICE -> {
+                        MultipleChoiceQuestion(
+                            questionTitle = question.ques,
+                            directionsResourceId = R.string.select_all,
+                            possibleAnswers = listOf(
+                                question.optionA,
+                                question.optionB,
+                                question.optionC,
+                                question.optionD,
+                                question.optionE
+                            ),
+                            selectedAnswers = quesViewModel.multipleChoiceResponse,
+                            onOptionSelected = quesViewModel::onMultipleChoiceResponse,
+                            modifier = modifier,
+                        )
+                    }
+
+                    QuestionType.SINGLE_CHOICE -> {
+                        SingleChoiceQuestion(
+                            questionTitle = question.ques,
+                            directionsResourceId = R.string.select_one,
+                            possibleAnswers = listOf(
+                                question.optionA,
+                                question.optionB,
+                                question.optionC,
+                                question.optionD
+                            ),
+                            selectedAnswer = quesViewModel.singleChoiceResponse,
+                            onOptionSelected = quesViewModel::onSingleChoiceResponse,
+                            modifier = modifier,
+                        )
+                    }
 
                 }
-
-                QuestionType.MULTIPLE_CHOICE -> {
-
-                }
-
             }
+
         }
     }
 

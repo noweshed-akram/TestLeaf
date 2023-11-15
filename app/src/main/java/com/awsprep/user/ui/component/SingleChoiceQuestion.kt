@@ -18,11 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import com.awsprep.user.ui.theme.SelectedGreen
 
-
+/**
+ * Created by Md. Noweshed Akram on 14/11/23.
+ */
 @Composable
 fun SingleChoiceQuestion(
-    @StringRes titleResourceId: Int,
+    questionTitle: String,
     @StringRes directionsResourceId: Int,
     possibleAnswers: List<String>,
     selectedAnswer: String,
@@ -30,7 +33,7 @@ fun SingleChoiceQuestion(
     modifier: Modifier = Modifier,
 ) {
     QuestionWrapper(
-        titleResourceId = titleResourceId,
+        questionTitle = questionTitle,
         directionsResourceId = directionsResourceId,
         modifier = modifier.selectableGroup(),
     ) {
@@ -56,14 +59,14 @@ fun RadioButtonWithImageRow(
     Surface(
         shape = MaterialTheme.shapes.small,
         color = if (selected) {
-            MaterialTheme.colorScheme.primaryContainer
+            SelectedGreen.copy(0.5f)
         } else {
             MaterialTheme.colorScheme.surface
         },
         border = BorderStroke(
             width = 1.dp,
             color = if (selected) {
-                MaterialTheme.colorScheme.primary
+                SelectedGreen.copy(0.5f)
             } else {
                 MaterialTheme.colorScheme.outline
             }

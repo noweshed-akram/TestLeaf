@@ -21,6 +21,9 @@ import com.awsprep.user.domain.models.BottomMenuContent
 import com.awsprep.user.ui.theme.PrimaryColorLight
 import com.awsprep.user.ui.theme.Typography
 
+/**
+ * Created by Md. Noweshed Akram on 14/11/23.
+ */
 @Composable
 fun BottomMenuItem(
     item: BottomMenuContent,

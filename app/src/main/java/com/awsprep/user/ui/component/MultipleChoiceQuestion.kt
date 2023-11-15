@@ -17,27 +17,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.awsprep.user.ui.theme.SelectedGreen
 
-
+/**
+ * Created by noweshedakram on 11/14/23.
+ */
 @Composable
 fun MultipleChoiceQuestion(
-    @StringRes titleResourceId: Int,
+    questionTitle: String,
     @StringRes directionsResourceId: Int,
-    possibleAnswers: List<Int>,
-    selectedAnswers: List<Int>,
-    onOptionSelected: (selected: Boolean, answer: Int) -> Unit,
+    possibleAnswers: List<String>,
+    selectedAnswers: List<String>,
+    onOptionSelected: (selected: Boolean, answer: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     QuestionWrapper(
         modifier = modifier,
-        titleResourceId = titleResourceId,
+        questionTitle = questionTitle,
         directionsResourceId = directionsResourceId,
     ) {
         possibleAnswers.forEach {
             val selected = selectedAnswers.contains(it)
             CheckboxRow(
                 modifier = Modifier.padding(vertical = 8.dp),
-                text = stringResource(id = it),
+                text = it,
                 selected = selected,
                 onOptionSelected = { onOptionSelected(!selected, it) }
             )
@@ -55,14 +58,14 @@ fun CheckboxRow(
     Surface(
         shape = MaterialTheme.shapes.small,
         color = if (selected) {
-            MaterialTheme.colorScheme.primaryContainer
+            SelectedGreen.copy(0.5f)
         } else {
             MaterialTheme.colorScheme.surface
         },
         border = BorderStroke(
             width = 1.dp,
             color = if (selected) {
-                MaterialTheme.colorScheme.primary
+                SelectedGreen.copy(0.5f)
             } else {
                 MaterialTheme.colorScheme.outline
             }

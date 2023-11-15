@@ -16,10 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
-
+/**
+ * Created by Md. Noweshed Akram on 14/11/23.
+ */
 @Composable
 fun QuestionWrapper(
-    @StringRes titleResourceId: Int,
+    questionTitle: String,
     modifier: Modifier = Modifier,
     @StringRes directionsResourceId: Int? = null,
     content: @Composable () -> Unit,
@@ -30,7 +32,7 @@ fun QuestionWrapper(
             .verticalScroll(rememberScrollState())
     ) {
         Spacer(Modifier.height(32.dp))
-        QuestionTitle(titleResourceId)
+        QuestionTitle(questionTitle)
         directionsResourceId?.let {
             Spacer(Modifier.height(18.dp))
             QuestionDirections(it)
@@ -43,11 +45,11 @@ fun QuestionWrapper(
 
 @Composable
 private fun QuestionTitle(
-    @StringRes title: Int,
+    title: String,
     modifier: Modifier = Modifier,
 ) {
     Text(
-        text = stringResource(id = title),
+        text = title,
         style = MaterialTheme.typography.titleMedium,
         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.87f),
         modifier = modifier

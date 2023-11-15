@@ -6,6 +6,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.awsprep.user.ui.theme.SelectedGreen
 
 /**
  * Created by Md. Noweshed Akram on 7/20/2023.
@@ -13,9 +14,8 @@ import androidx.compose.ui.Modifier
 @Composable
 fun ProgressBar() {
     Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ){
-        CircularProgressIndicator()
+        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator(color = SelectedGreen)
     }
 }

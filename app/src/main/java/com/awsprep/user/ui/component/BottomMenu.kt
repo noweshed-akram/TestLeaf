@@ -17,6 +17,9 @@ import com.awsprep.user.domain.models.BottomMenuContent
 import com.awsprep.user.ui.theme.PrimaryColorDark
 import com.awsprep.user.ui.theme.PrimaryColorLight
 
+/**
+ * Created by Md. Noweshed Akram on 14/11/23.
+ */
 @Composable
 fun BottomMenu(
     items: List<BottomMenuContent>,

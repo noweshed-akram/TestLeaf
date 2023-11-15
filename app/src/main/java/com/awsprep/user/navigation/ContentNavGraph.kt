@@ -53,9 +53,14 @@ fun NavGraphBuilder.ContentNavGraph(
         }
 
         composable(ContentNavScreen.Test.route) {
-            TestScreen(onSubmitAnswers = {
-                navController.navigate(ContentNavScreen.Result.route)
-            }, quesViewModel = quesViewModel)
+            TestScreen(
+                onBackPressed = {
+                    navController.navigate(Graph.HOME)
+                },
+                onSubmitAnswers = {
+                    navController.navigate(ContentNavScreen.Result.route)
+                }, quesViewModel = quesViewModel
+            )
         }
 
         composable(ContentNavScreen.Result.route) {

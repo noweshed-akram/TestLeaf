@@ -27,16 +27,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.awsprep.user.R
+import com.awsprep.user.ui.theme.PrimaryColorDark
 import com.awsprep.user.viewmodel.ScreenData
 
+/**
+ * Created by Md. Noweshed Akram on 14/11/23.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestionsScreen(
     screenData: ScreenData,
     isNextEnabled: Boolean,
+    onBackPressed: () -> Unit,
     onPreviousPressed: () -> Unit,
     onNextPressed: () -> Unit,
     onDonePressed: () -> Unit,
@@ -46,6 +52,7 @@ fun QuestionsScreen(
     Scaffold(
         topBar = {
             QuestionTopAppBar(
+                onBackPressed = onBackPressed,
                 questionIndex = screenData.questionIndex,
                 totalQuestionsCount = screenData.questionCount
             )
@@ -72,14 +79,14 @@ private fun TopAppBarTitle(
 ) {
     Row(modifier = modifier) {
         Text(
-            text = (questionIndex + 1).toString(),
+            text = "Q" + (questionIndex + 1).toString(),
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
         )
         Text(
             text = stringResource(R.string.question_count, totalQuestionsCount),
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
         )
     }
 }
@@ -87,12 +94,27 @@ private fun TopAppBarTitle(
 @OptIn(ExperimentalMaterial3Api::class) // CenterAlignedTopAppBar is experimental in m3
 @Composable
 fun QuestionTopAppBar(
+    onBackPressed: () -> Unit,
     questionIndex: Int,
     totalQuestionsCount: Int
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
 
         CenterAlignedTopAppBar(
+            navigationIcon = {
+                IconButton(
+                    onClick = {
+                        onBackPressed()
+                    },
+                    enabled = true,
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_arrow_back),
+                        contentDescription = "Back",
+                        tint = PrimaryColorDark
+                    )
+                }
+            },
             title = {
                 TopAppBarTitle(
                     questionIndex = questionIndex,
@@ -106,8 +128,8 @@ fun QuestionTopAppBar(
                 ) {
                     Icon(
                         Icons.Outlined.RotateLeft,
-                        contentDescription = "Close",
-                        tint = MaterialTheme.colorScheme.onSurface.copy(0.6f)
+                        contentDescription = "review",
+                        tint = PrimaryColorDark.copy(0.6f)
                     )
                 }
 
@@ -117,8 +139,8 @@ fun QuestionTopAppBar(
                 ) {
                     Icon(
                         Icons.Outlined.Feedback,
-                        contentDescription = "Close",
-                        tint = MaterialTheme.colorScheme.onSurface.copy(0.6f)
+                        contentDescription = "feedback",
+                        tint = PrimaryColorDark.copy(0.6f)
                     )
                 }
             }

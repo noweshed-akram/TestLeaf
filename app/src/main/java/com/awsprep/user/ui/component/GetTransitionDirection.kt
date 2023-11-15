@@ -2,6 +2,9 @@ package com.awsprep.user.ui.component
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 
+/**
+ * Created by Md. Noweshed Akram on 14/11/23.
+ */
 fun getTransitionDirection(
     initialIndex: Int,
     targetIndex: Int

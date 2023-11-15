@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -42,6 +43,9 @@ import com.awsprep.user.ui.theme.Typography
 import com.awsprep.user.viewmodel.UserViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
+/**
+ * Created by Md. Noweshed Akram on 10/11/23.
+ */
 @Composable
 fun MyProfileScreen(
     navController: NavController, userViewModel: UserViewModel
@@ -84,49 +88,56 @@ fun MyProfileScreen(
 
     }
 
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(10.dp),
-        verticalAlignment = Alignment.CenterVertically
+            .padding(10.dp)
     ) {
-
-        AsyncImage(
-            model = imageUrl,
-            contentDescription = "Profile picture",
-            modifier = Modifier
-                .size(80.dp)
-                .clip(CircleShape),
-            contentScale = ContentScale.Crop,
-            error = painterResource(id = R.drawable.ic_person)
-        )
-
-        Column(
-            modifier = Modifier.weight(1.0f)
+        Row(
+            verticalAlignment = Alignment.CenterVertically
         ) {
 
-            Text(text = inputName, style = Typography.bodyMedium)
+            AsyncImage(
+                model = imageUrl,
+                contentDescription = "Profile picture",
+                modifier = Modifier
+                    .size(80.dp)
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop,
+                error = painterResource(id = R.drawable.ic_person)
+            )
 
-            Text(text = inputEmail)
-        }
+            Column(
+                modifier = Modifier.weight(1.0f)
+            ) {
 
-        Spacer(modifier = Modifier.width(16.dp))
+                Text(text = inputName, style = Typography.bodyMedium)
 
-        IconButton(
-            onClick = {
+                Text(text = inputEmail)
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            IconButton(onClick = {
                 navController.navigate(ContentNavScreen.EditProfile.route)
             }) {
-            Icon(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_edit),
-                contentDescription = "edit",
-                modifier = Modifier
-                    .shadow(2.dp, RoundedCornerShape(24))
-                    .background(PrimaryColorLight)
-                    .padding(horizontal = 10.dp, vertical = 4.dp)
-                    .size(30.dp),
-                tint = Color.White
-            )
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_edit),
+                    contentDescription = "edit",
+                    modifier = Modifier
+                        .shadow(2.dp, RoundedCornerShape(24))
+                        .background(PrimaryColorLight)
+                        .padding(horizontal = 10.dp, vertical = 4.dp)
+                        .size(30.dp),
+                    tint = Color.White
+                )
+            }
+
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(text = "Test Summary", style = Typography.headlineSmall)
 
     }
 

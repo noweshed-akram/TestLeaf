@@ -69,9 +69,9 @@ class QuesViewModel @Inject constructor(
     val multipleChoiceResponse: List<String>
         get() = _multipleChoiceResponse
 
-    private val _singleChoiceResponse = mutableStateListOf<String>()
-    val singleChoiceResponse: List<String>
-        get() = _singleChoiceResponse
+    private val _singleChoiceResponse = mutableStateOf("")
+    val singleChoiceResponse: String
+        get() = _singleChoiceResponse.value
 
 
     private val questionOrder: List<QuestionType> = listOf(
@@ -93,6 +93,20 @@ class QuesViewModel @Inject constructor(
         }
         changeQuestion(questionIndex - 1)
         return true
+    }
+
+    fun onMultipleChoiceResponse(selected: Boolean, answer: String) {
+        if (selected) {
+            _multipleChoiceResponse.add(answer)
+        } else {
+            _multipleChoiceResponse.remove(answer)
+        }
+        _isNextEnabled.value = getIsNextEnabled()
+    }
+
+    fun onSingleChoiceResponse(answer: String) {
+        _singleChoiceResponse.value = answer
+        _isNextEnabled.value = getIsNextEnabled()
     }
 
     fun onPreviousPressed() {
@@ -119,7 +133,7 @@ class QuesViewModel @Inject constructor(
 
     private fun getIsNextEnabled(): Boolean {
         return when (questionOrder[questionIndex]) {
-            QuestionType.SINGLE_CHOICE -> _singleChoiceResponse.isNotEmpty()
+            QuestionType.SINGLE_CHOICE -> _singleChoiceResponse.value.isNotEmpty()
             QuestionType.MULTIPLE_CHOICE -> _multipleChoiceResponse.isNotEmpty()
         }
     }
