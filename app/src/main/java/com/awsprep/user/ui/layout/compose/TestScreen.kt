@@ -102,9 +102,8 @@ fun TestScreen(
                     animationSpec = animationSpec
                 )
             },
-            label = "screenDataAnimation"
+            label = "dataAnimation"
         ) { targetState ->
-
 
             for (question in questionList) {
 
@@ -126,67 +125,29 @@ fun TestScreen(
                         )
                     }
 
-                    QuestionType.MULTIPLE_CHOICE -> {
-                        MultipleChoiceQuestion(
-                            questionTitle = question.ques,
-                            directionsResourceId = R.string.select_all,
-                            possibleAnswers = listOf(
-                                question.optionA,
-                                question.optionB,
-                                question.optionC,
-                                question.optionD,
-                                question.optionE
-                            ),
-                            selectedAnswers = quesViewModel.multipleChoiceResponse,
-                            onOptionSelected = quesViewModel::onMultipleChoiceResponse,
-                            modifier = modifier,
-                        )
-                    }
+//                    QuestionType.MULTIPLE_CHOICE -> {
+//                        MultipleChoiceQuestion(
+//                            questionTitle = question.ques,
+//                            directionsResourceId = R.string.select_all,
+//                            possibleAnswers = listOf(
+//                                question.optionA,
+//                                question.optionB,
+//                                question.optionC,
+//                                question.optionD,
+//                                question.optionE
+//                            ),
+//                            selectedAnswers = quesViewModel.multipleChoiceResponse,
+//                            onOptionSelected = quesViewModel::onMultipleChoiceResponse,
+//                            modifier = modifier,
+//                        )
+//                    }
 
-                    QuestionType.SINGLE_CHOICE -> {
-                        SingleChoiceQuestion(
-                            questionTitle = question.ques,
-                            directionsResourceId = R.string.select_one,
-                            possibleAnswers = listOf(
-                                question.optionA,
-                                question.optionB,
-                                question.optionC,
-                                question.optionD
-                            ),
-                            selectedAnswer = quesViewModel.singleChoiceResponse,
-                            onOptionSelected = quesViewModel::onSingleChoiceResponse,
-                            modifier = modifier,
-                        )
-                    }
-
+                    else -> {}
                 }
             }
 
         }
     }
-
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .padding(horizontal = 10.dp, vertical = 10.dp)
-//    ) {
-//
-//        SwipeRefresh(
-//            state = rememberSwipeRefreshState(isRefreshing = false),
-//            onRefresh = { }) {
-//            LazyRow(
-//                modifier = Modifier.fillMaxSize(),
-//                horizontalArrangement = Arrangement.spacedBy(10.dp)
-//            ) {
-//                items(
-//                    items = questionList
-//                ) { question ->
-//                    QuestionItem(question = question)
-//                }
-//            }
-//        }
-//
-//    }
 
     if (showProgress) {
         ProgressBar()

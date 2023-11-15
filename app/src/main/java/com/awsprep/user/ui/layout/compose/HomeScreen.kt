@@ -103,6 +103,10 @@ fun HomeScreen(
                     AppBarWithArrow(title = "Timer") {
                         navController.popBackStack()
                     }
+                } else if (CurrentRoute(navController = navController) == ContentNavScreen.Result.route) {
+                    AppBarWithArrow(title = "Test Score") {
+                        navController.popBackStack()
+                    }
                 }
 //                else if (CurrentRoute(navController = navController) == ContentNavScreen.Test.route) {
 //                    AppBarWithArrow(title = "Test") {

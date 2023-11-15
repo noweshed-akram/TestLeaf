@@ -8,6 +8,7 @@ import androidx.navigation.navigation
 import com.awsprep.user.ui.layout.compose.ChapterScreen
 import com.awsprep.user.ui.layout.compose.EditProfileScreen
 import com.awsprep.user.ui.layout.compose.NotificationScreen
+import com.awsprep.user.ui.layout.compose.ResultScreen
 import com.awsprep.user.ui.layout.compose.TestScreen
 import com.awsprep.user.ui.layout.compose.SectionScreen
 import com.awsprep.user.ui.layout.compose.TimerScreen
@@ -64,7 +65,7 @@ fun NavGraphBuilder.ContentNavGraph(
         }
 
         composable(ContentNavScreen.Result.route) {
-
+            ResultScreen(userViewModel = userViewModel)
         }
 
     }

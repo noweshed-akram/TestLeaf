@@ -126,9 +126,8 @@ class QuesViewModel @Inject constructor(
         _screenData.value = createScreenData()
     }
 
-    fun onDonePressed(onSurveyComplete: () -> Unit) {
-        // Here is where you could validate that the requirements of the survey are complete
-        onSurveyComplete()
+    fun onDonePressed(onTestComplete: () -> Unit) {
+        onTestComplete()
     }
 
     private fun getIsNextEnabled(): Boolean {
