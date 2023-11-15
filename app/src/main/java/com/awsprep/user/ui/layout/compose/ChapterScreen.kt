@@ -139,12 +139,14 @@ fun ChapterScreen(
                             Column(modifier = Modifier.weight(1.0f)) {
                                 Text(
                                     text = it.name,
-                                    color = Color.Black
+                                    color = Color.Black,
+                                    maxLines = 1
                                 )
                                 Spacer(modifier = Modifier.height(5.dp))
                                 Text(
-                                    text = it.name,
-                                    color = Color.Black
+                                    text = "5 Sections",
+                                    color = Color.Black,
+                                    maxLines = 1
                                 )
                             }
 

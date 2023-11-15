@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,11 +32,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.awsprep.user.R
 import com.awsprep.user.domain.models.Course
 import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.ProgressBar
@@ -99,11 +99,12 @@ fun AssessmentScreen(
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing = false),
             onRefresh = { }) {
-            LazyColumn(
+
+            LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 items(
                     items = courseList
@@ -111,7 +112,8 @@ fun AssessmentScreen(
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .width(150.dp)
+                            .height(140.dp)
                             .clip(RoundedCornerShape(8.dp))
                             .border(
                                 1.dp,
@@ -123,9 +125,9 @@ fun AssessmentScreen(
                                 navController.navigate(ContentNavScreen.Chapters.route)
                             }
                     ) {
-                        Row(
+                        Column(
                             modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
 
                             AsyncImage(
@@ -134,23 +136,30 @@ fun AssessmentScreen(
                                     .crossfade(true)
                                     .build(),
                                 contentDescription = "",
-                                contentScale = ContentScale.Crop,
+                                contentScale = ContentScale.Fit,
                                 modifier = Modifier
-                                    .size(44.dp)
-                                    .clip(CircleShape)
+                                    .size(48.dp)
+                                    .clip(RoundedCornerShape(5.dp)),
+                                error = painterResource(id = R.drawable.ic_error_icon)
                             )
 
-                            Spacer(modifier = Modifier.width(10.dp))
+                            Spacer(modifier = Modifier.height(10.dp))
 
-                            Column(modifier = Modifier.weight(1.0f)) {
+                            Column(
+                                horizontalAlignment = Alignment.Start
+                            ) {
                                 Text(
-                                    text = it.name,
-                                    color = Color.Black
+                                    text = it.name.trim(),
+                                    style = Typography.bodyMedium,
+                                    color = Color.Black,
+                                    maxLines = 1
                                 )
                                 Spacer(modifier = Modifier.height(5.dp))
                                 Text(
-                                    text = it.name,
-                                    color = Color.Black
+                                    text = "10 Chapters",
+                                    style = Typography.bodySmall,
+                                    color = Color.Black,
+                                    maxLines = 1
                                 )
                             }
 

@@ -140,12 +140,14 @@ fun SectionScreen(
                             Column(modifier = Modifier.weight(1.0f)) {
                                 Text(
                                     text = it.name,
-                                    color = Color.Black
+                                    color = Color.Black,
+                                    maxLines = 1
                                 )
                                 Spacer(modifier = Modifier.height(5.dp))
                                 Text(
-                                    text = it.name,
-                                    color = Color.Black
+                                    text = "1000+ Questions",
+                                    color = Color.Black,
+                                    maxLines = 1
                                 )
                             }
 
