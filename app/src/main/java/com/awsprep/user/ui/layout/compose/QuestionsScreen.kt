@@ -27,12 +27,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.awsprep.user.R
 import com.awsprep.user.ui.theme.PrimaryColor
-import com.awsprep.user.viewmodel.ScreenData
+import com.awsprep.user.viewmodel.QuestionIndexData
 
 /**
  * Created by Md. Noweshed Akram on 14/11/23.
@@ -40,12 +42,12 @@ import com.awsprep.user.viewmodel.ScreenData
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestionsScreen(
-    screenData: ScreenData,
+    questionIndexData: QuestionIndexData,
     isNextEnabled: Boolean,
     onBackPressed: () -> Unit,
     onPreviousPressed: () -> Unit,
     onNextPressed: () -> Unit,
-    onDonePressed: () -> Unit,
+    onSubmitPressed: () -> Unit,
     content: @Composable (PaddingValues) -> Unit,
 ) {
 
@@ -53,19 +55,19 @@ fun QuestionsScreen(
         topBar = {
             QuestionTopAppBar(
                 onBackPressed = onBackPressed,
-                questionIndex = screenData.questionIndex,
-                totalQuestionsCount = screenData.questionCount
+                questionIndex = questionIndexData.questionIndex,
+                totalQuestionsCount = questionIndexData.questionCount
             )
         },
         content = content,
         bottomBar = {
             QuestionBottomBar(
-                shouldShowPreviousButton = screenData.shouldShowPreviousButton,
-                shouldShowDoneButton = screenData.shouldShowDoneButton,
+                shouldShowPreviousButton = questionIndexData.shouldShowPreviousButton,
+                shouldShowDoneButton = questionIndexData.shouldShowDoneButton,
                 isNextButtonEnabled = isNextEnabled,
                 onPreviousPressed = onPreviousPressed,
                 onNextPressed = onNextPressed,
-                onDonePressed = onDonePressed
+                onSubmitPressed = onSubmitPressed
             )
         }
     )
@@ -110,7 +112,7 @@ fun QuestionTopAppBar(
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_arrow_back),
-                        contentDescription = "Back",
+                        contentDescription = "back",
                         tint = PrimaryColor
                     )
                 }
@@ -118,29 +120,40 @@ fun QuestionTopAppBar(
             title = {
                 TopAppBarTitle(
                     questionIndex = questionIndex,
-                    totalQuestionsCount = totalQuestionsCount,
+                    totalQuestionsCount = totalQuestionsCount
                 )
             },
             actions = {
+
                 IconButton(
                     onClick = {},
-                    modifier = Modifier.padding(4.dp)
+                    modifier = Modifier.padding(2.dp)
+                ) {
+                    Icon(
+                        ImageVector.vectorResource(R.drawable.ic_assesment),
+                        contentDescription = "add_to_review_qs",
+                        tint = PrimaryColor
+                    )
+                }
+
+                IconButton(
+                    onClick = {}
                 ) {
                     Icon(
                         Icons.Outlined.RotateLeft,
-                        contentDescription = "review",
-                        tint = PrimaryColor.copy(0.6f)
+                        contentDescription = "recheck",
+                        tint = PrimaryColor
                     )
                 }
 
                 IconButton(
                     onClick = {},
-                    modifier = Modifier.padding(4.dp)
+                    modifier = Modifier.padding(2.dp)
                 ) {
                     Icon(
                         Icons.Outlined.Feedback,
-                        contentDescription = "feedback",
-                        tint = PrimaryColor.copy(0.6f)
+                        contentDescription = "send_feedback",
+                        tint = PrimaryColor
                     )
                 }
             }
@@ -167,7 +180,7 @@ fun QuestionBottomBar(
     isNextButtonEnabled: Boolean,
     onPreviousPressed: () -> Unit,
     onNextPressed: () -> Unit,
-    onDonePressed: () -> Unit
+    onSubmitPressed: () -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -195,10 +208,10 @@ fun QuestionBottomBar(
                     modifier = Modifier
                         .weight(1f)
                         .height(48.dp),
-                    onClick = onDonePressed,
+                    onClick = onSubmitPressed,
                     enabled = isNextButtonEnabled,
                 ) {
-                    Text(text = "Done")
+                    Text(text = "Submit")
                 }
             } else {
                 Button(

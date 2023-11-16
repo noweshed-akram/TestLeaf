@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -131,11 +132,7 @@ fun AssessmentScreen(
                             Box(
                                 modifier = Modifier
                                     .padding(10.dp)
-                                    .border(
-                                        1.dp,
-                                        Color.Transparent,
-                                        RoundedCornerShape(50.dp)
-                                    )
+                                    .background(color = StrokeColor, shape = CircleShape)
                             ) {
                                 AsyncImage(
                                     model = ImageRequest.Builder(LocalContext.current)
@@ -146,7 +143,7 @@ fun AssessmentScreen(
                                     contentScale = ContentScale.Fit,
                                     modifier = Modifier
                                         .size(52.dp)
-                                        .clip(RoundedCornerShape(5.dp)),
+                                        .padding(4.dp),
                                     error = painterResource(id = R.drawable.ic_error_icon)
                                 )
                             }

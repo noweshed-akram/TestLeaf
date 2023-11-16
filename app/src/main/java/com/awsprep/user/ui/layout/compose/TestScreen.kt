@@ -23,7 +23,6 @@ import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.component.SingleChoiceQuestion
 import com.awsprep.user.ui.component.getTransitionDirection
 import com.awsprep.user.viewmodel.QuesViewModel
-import com.awsprep.user.viewmodel.QuestionType
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 private const val CONTENT_ANIMATION_DURATION = 300
@@ -38,11 +37,12 @@ fun TestScreen(
     quesViewModel: QuesViewModel
 ) {
 
+    val TAG = "TestScreen"
     var showProgress by rememberSaveable { mutableStateOf(false) }
     var showError by rememberSaveable { mutableStateOf(false) }
     var errorMsg by rememberSaveable { mutableStateOf("") }
 
-    val screenData = quesViewModel.screenData ?: return
+    val questionIndexData = quesViewModel.questionIndexData ?: return
 
     var questionList by rememberSaveable {
         mutableStateOf(emptyList<Question>())
@@ -74,18 +74,18 @@ fun TestScreen(
     }
 
     QuestionsScreen(
-        screenData = screenData,
+        questionIndexData = questionIndexData,
         isNextEnabled = quesViewModel.isNextEnabled,
         onBackPressed = onBackPressed,
         onPreviousPressed = { quesViewModel.onPreviousPressed() },
         onNextPressed = { quesViewModel.onNextPressed() },
-        onDonePressed = { quesViewModel.onDonePressed(onSubmitAnswers) }
+        onSubmitPressed = { quesViewModel.onDonePressed(onSubmitAnswers) }
     ) { paddingValues ->
 
         val modifier = Modifier.padding(paddingValues)
 
         AnimatedContent(
-            targetState = screenData,
+            targetState = questionIndexData,
             transitionSpec = {
                 val animationSpec: TweenSpec<IntOffset> = tween(CONTENT_ANIMATION_DURATION)
 
@@ -105,45 +105,44 @@ fun TestScreen(
             label = "dataAnimation"
         ) { targetState ->
 
+            Log.d(TAG, "TestScreen: " + targetState.toString())
+
+            // TODO need to read question from question index data
+
             for (question in questionList) {
 
-                when (targetState.questionType) {
-
-                    QuestionType.SINGLE_CHOICE -> {
-                        SingleChoiceQuestion(
-                            questionTitle = question.ques,
-                            directionsResourceId = R.string.select_one,
-                            possibleAnswers = listOf(
-                                question.optionA,
-                                question.optionB,
-                                question.optionC,
-                                question.optionD
-                            ),
-                            selectedAnswer = quesViewModel.singleChoiceResponse,
-                            onOptionSelected = quesViewModel::onSingleChoiceResponse,
-                            modifier = modifier,
-                        )
-                    }
-
-//                    QuestionType.MULTIPLE_CHOICE -> {
-//                        MultipleChoiceQuestion(
-//                            questionTitle = question.ques,
-//                            directionsResourceId = R.string.select_all,
-//                            possibleAnswers = listOf(
-//                                question.optionA,
-//                                question.optionB,
-//                                question.optionC,
-//                                question.optionD,
-//                                question.optionE
-//                            ),
-//                            selectedAnswers = quesViewModel.multipleChoiceResponse,
-//                            onOptionSelected = quesViewModel::onMultipleChoiceResponse,
-//                            modifier = modifier,
-//                        )
-//                    }
-
-                    else -> {}
+                Log.d(TAG, "TestScreen: " + question.ques)
+                if (question.optionE.isNotEmpty()) {
+                    SingleChoiceQuestion(
+                        questionTitle = question.ques,
+                        directionsResourceId = R.string.select_one,
+                        possibleAnswers = listOf(
+                            question.optionA,
+                            question.optionB,
+                            question.optionC,
+                            question.optionD
+                        ),
+                        selectedAnswer = quesViewModel.singleChoiceResponse,
+                        onOptionSelected = quesViewModel::onSingleChoiceResponse,
+                        modifier = modifier,
+                    )
+                } else {
+                    MultipleChoiceQuestion(
+                        questionTitle = question.ques,
+                        directionsResourceId = R.string.select_all,
+                        possibleAnswers = listOf(
+                            question.optionA,
+                            question.optionB,
+                            question.optionC,
+                            question.optionD,
+                            question.optionE
+                        ),
+                        selectedAnswers = quesViewModel.multipleChoiceResponse,
+                        onOptionSelected = quesViewModel::onMultipleChoiceResponse,
+                        modifier = modifier,
+                    )
                 }
+
             }
 
         }

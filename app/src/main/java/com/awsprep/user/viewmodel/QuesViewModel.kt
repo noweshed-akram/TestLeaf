@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.awsprep.user.domain.models.Question
 import com.awsprep.user.domain.models.ResponseState
 import com.awsprep.user.domain.usecase.QuesUseCase
 import com.awsprep.user.utils.Resource
@@ -58,42 +59,16 @@ class QuesViewModel @Inject constructor(
 
     private var questionIndex = 0
 
-    /**
-     * Returns true if the ViewModel handled the back press (i.e., it went back one question)
-     */
-
+    private val questionOrder: List<Question> = listOf(
+        // TODO need to populate question data
+        Question(ques = "")
+    )
 
     // ----- Responses exposed as State -----
 
     private val _multipleChoiceResponse = mutableStateListOf<String>()
     val multipleChoiceResponse: List<String>
         get() = _multipleChoiceResponse
-
-    private val _singleChoiceResponse = mutableStateOf("")
-    val singleChoiceResponse: String
-        get() = _singleChoiceResponse.value
-
-
-    private val questionOrder: List<QuestionType> = listOf(
-        QuestionType.SINGLE_CHOICE,
-        QuestionType.MULTIPLE_CHOICE
-    )
-
-    private val _screenData = mutableStateOf(createScreenData())
-    val screenData: ScreenData?
-        get() = _screenData.value
-
-    private val _isNextEnabled = mutableStateOf(false)
-    val isNextEnabled: Boolean
-        get() = _isNextEnabled.value
-
-    fun onBackPressed(): Boolean {
-        if (questionIndex == 0) {
-            return false
-        }
-        changeQuestion(questionIndex - 1)
-        return true
-    }
 
     fun onMultipleChoiceResponse(selected: Boolean, answer: String) {
         if (selected) {
@@ -104,10 +79,22 @@ class QuesViewModel @Inject constructor(
         _isNextEnabled.value = getIsNextEnabled()
     }
 
+    private val _singleChoiceResponse = mutableStateOf("")
+    val singleChoiceResponse: String
+        get() = _singleChoiceResponse.value
+
     fun onSingleChoiceResponse(answer: String) {
         _singleChoiceResponse.value = answer
         _isNextEnabled.value = getIsNextEnabled()
     }
+
+    private val _questionIndexData = mutableStateOf(createQuestionIndexData())
+    val questionIndexData: QuestionIndexData?
+        get() = _questionIndexData.value
+
+    private val _isNextEnabled = mutableStateOf(false)
+    val isNextEnabled: Boolean
+        get() = _isNextEnabled.value
 
     fun onPreviousPressed() {
         if (questionIndex == 0) {
@@ -123,7 +110,7 @@ class QuesViewModel @Inject constructor(
     private fun changeQuestion(newQuestionIndex: Int) {
         questionIndex = newQuestionIndex
         _isNextEnabled.value = getIsNextEnabled()
-        _screenData.value = createScreenData()
+        _questionIndexData.value = createQuestionIndexData()
     }
 
     fun onDonePressed(onTestComplete: () -> Unit) {
@@ -131,33 +118,25 @@ class QuesViewModel @Inject constructor(
     }
 
     private fun getIsNextEnabled(): Boolean {
-        return when (questionOrder[questionIndex]) {
-            QuestionType.SINGLE_CHOICE -> _singleChoiceResponse.value.isNotEmpty()
-            QuestionType.MULTIPLE_CHOICE -> _multipleChoiceResponse.isNotEmpty()
-        }
+        return questionIndex < questionOrder.size
     }
 
-    private fun createScreenData(): ScreenData {
-        return ScreenData(
+    private fun createQuestionIndexData(): QuestionIndexData {
+        return QuestionIndexData(
             questionIndex = questionIndex,
             questionCount = questionOrder.size,
             shouldShowPreviousButton = questionIndex > 0,
             shouldShowDoneButton = questionIndex == questionOrder.size - 1,
-            questionType = questionOrder[questionIndex],
+            question = questionOrder[questionIndex],
         )
     }
 
 }
 
-enum class QuestionType {
-    SINGLE_CHOICE,
-    MULTIPLE_CHOICE
-}
-
-data class ScreenData(
+data class QuestionIndexData(
     val questionIndex: Int,
     val questionCount: Int,
     val shouldShowPreviousButton: Boolean,
     val shouldShowDoneButton: Boolean,
-    val questionType: QuestionType
+    val question: Question
 )
