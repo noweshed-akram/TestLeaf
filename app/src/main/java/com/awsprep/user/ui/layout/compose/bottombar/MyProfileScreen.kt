@@ -38,6 +38,7 @@ import coil.compose.AsyncImage
 import com.awsprep.user.R
 import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.ProgressBar
+import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.ui.theme.Typography
 import com.awsprep.user.viewmodel.UserViewModel
@@ -93,7 +94,13 @@ fun MyProfileScreen(
             .fillMaxSize()
             .padding(10.dp)
     ) {
+
+        Text(text = "My Profile", style = Typography.titleLarge)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Row(
+            modifier = Modifier.background(color = ColorAccent, shape = RoundedCornerShape(8.dp)),
             verticalAlignment = Alignment.CenterVertically
         ) {
 
@@ -111,23 +118,25 @@ fun MyProfileScreen(
                 modifier = Modifier.weight(1.0f)
             ) {
 
-                Text(text = inputName, style = Typography.bodyMedium)
+                Text(text = inputName, style = Typography.bodyLarge)
 
-                Text(text = inputEmail)
+                Text(text = inputEmail, style = Typography.bodySmall)
             }
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            IconButton(onClick = {
-                navController.navigate(ContentNavScreen.EditProfile.route)
-            }) {
+            IconButton(
+                modifier = Modifier.padding(end = 8.dp),
+                onClick = {
+                    navController.navigate(ContentNavScreen.EditProfile.route)
+                }) {
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_edit),
                     contentDescription = "edit",
                     modifier = Modifier
-                        .shadow(2.dp, RoundedCornerShape(24))
+                        .shadow(2.dp, RoundedCornerShape(16))
                         .background(SecondaryColor)
-                        .padding(horizontal = 10.dp, vertical = 4.dp)
+                        .padding(10.dp)
                         .size(30.dp),
                     tint = Color.White
                 )
@@ -137,7 +146,7 @@ fun MyProfileScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = "Test Summary", style = Typography.headlineSmall)
+        Text(text = "Test Summary", style = Typography.titleLarge)
 
     }
 

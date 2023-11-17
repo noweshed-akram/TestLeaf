@@ -59,9 +59,16 @@ class QuesViewModel @Inject constructor(
 
     private var questionIndex = 0
 
-    private val questionOrder: List<Question> = listOf(
-        // TODO need to populate question data
-        Question(ques = "")
+    var questionOrder: List<Question> = listOf(
+        Question(
+            ques = "Test 1",
+            ans = listOf("A"),
+            optionA = "A",
+            optionB = "B",
+            optionC = "C",
+            optionD = "D",
+            optionE = ""
+        )
     )
 
     // ----- Responses exposed as State -----
@@ -118,7 +125,7 @@ class QuesViewModel @Inject constructor(
     }
 
     private fun getIsNextEnabled(): Boolean {
-        return questionIndex < questionOrder.size
+        return questionIndex < questionOrder.size // TODO fix to check of question is answered
     }
 
     private fun createQuestionIndexData(): QuestionIndexData {

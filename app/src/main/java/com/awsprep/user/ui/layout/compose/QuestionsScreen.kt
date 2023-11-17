@@ -1,6 +1,7 @@
 package com.awsprep.user.ui.layout.compose
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -9,11 +10,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Feedback
 import androidx.compose.material.icons.outlined.RotateLeft
 import androidx.compose.material3.Button
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,8 +25,10 @@ import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
@@ -33,7 +36,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.awsprep.user.R
+import com.awsprep.user.ui.component.CountDownTimer
 import com.awsprep.user.ui.theme.PrimaryColor
+import com.awsprep.user.ui.theme.Typography
 import com.awsprep.user.viewmodel.QuestionIndexData
 
 /**
@@ -82,12 +87,12 @@ private fun TopAppBarTitle(
     Row(modifier = modifier) {
         Text(
             text = "Q" + (questionIndex + 1).toString(),
-            style = MaterialTheme.typography.labelMedium,
+            style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
         )
         Text(
             text = stringResource(R.string.question_count, totalQuestionsCount),
-            style = MaterialTheme.typography.labelMedium,
+            style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
         )
     }
@@ -102,7 +107,7 @@ fun QuestionTopAppBar(
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
 
-        CenterAlignedTopAppBar(
+        TopAppBar(
             navigationIcon = {
                 IconButton(
                     onClick = {
@@ -170,6 +175,27 @@ fun QuestionTopAppBar(
                 .padding(horizontal = 20.dp),
             trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
         )
+
+        Spacer(Modifier.height(8.dp))
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.End)
+                .padding(horizontal = 20.dp)
+        )
+        {
+            Row(verticalAlignment = Alignment.Bottom) {
+                Text(
+                    text = "Time Remains: ",
+                    style = Typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface
+                        .copy(alpha = 0.87f),
+                )
+                CountDownTimer(timeInMillisecond = 650000)
+            }
+
+        }
+
     }
 }
 
@@ -197,7 +223,8 @@ fun QuestionBottomBar(
                     modifier = Modifier
                         .weight(1f)
                         .height(48.dp),
-                    onClick = onPreviousPressed
+                    onClick = onPreviousPressed,
+                    shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(text = "Previous")
                 }
@@ -210,6 +237,7 @@ fun QuestionBottomBar(
                         .height(48.dp),
                     onClick = onSubmitPressed,
                     enabled = isNextButtonEnabled,
+                    shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(text = "Submit")
                 }
@@ -220,6 +248,7 @@ fun QuestionBottomBar(
                         .height(48.dp),
                     onClick = onNextPressed,
                     enabled = isNextButtonEnabled,
+                    shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(text = "Next")
                 }

@@ -36,7 +36,7 @@ fun MainScreen(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             if (CurrentRoute(navController = navController) == AuthScreen.ForgotPassword.route) {
-                AppBarWithArrow(title = "Password Recover") {
+                AppBarWithArrow(title = "Forgot Password") {
                     navController.popBackStack()
                 }
             }

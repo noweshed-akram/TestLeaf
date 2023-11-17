@@ -30,11 +30,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -47,9 +44,10 @@ import androidx.navigation.NavController
 import com.awsprep.user.R
 import com.awsprep.user.navigation.AuthScreen
 import com.awsprep.user.navigation.Graph
-import com.awsprep.user.ui.component.ImageButton
+import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.SecondaryColor
+import com.awsprep.user.ui.theme.Typography
 import com.awsprep.user.viewmodel.AuthViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetError
 import kotlinx.coroutines.launch
@@ -99,20 +97,30 @@ fun EmailSignScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(10.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalArrangement = Arrangement.Center
     ) {
 
         Text(
-            text = "Sign In",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.ExtraBold,
-            color = SecondaryColor
+            text = "Welcome to",
+            textAlign = TextAlign.Start,
+            style = Typography.titleLarge
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = "AWS Test Prep",
+            textAlign = TextAlign.Start,
+            style = Typography.headlineLarge
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Text(text = "Welcome to AWS Test Prep\nSign-in to Continue", textAlign = TextAlign.Center)
+        Text(
+            text = "Please login to continue",
+            textAlign = TextAlign.Start,
+            style = Typography.bodySmall
+        )
 
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -136,7 +144,7 @@ fun EmailSignScreen(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
             ),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(8.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -162,7 +170,7 @@ fun EmailSignScreen(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
             ),
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(8.dp),
             trailingIcon = {
                 val image = if (passwordVisible)
                     Icons.Filled.Visibility
@@ -180,7 +188,11 @@ fun EmailSignScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(text = "Forgot Password?")
 
@@ -193,7 +205,7 @@ fun EmailSignScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ImageButton(
+        PrimaryButton(
             onClick = {
                 if (inputEmail.isNotEmpty() && inputPassword.isNotEmpty()) {
                     Log.d("EmailSignScreen: ", "Click Login Button")
@@ -203,16 +215,17 @@ fun EmailSignScreen(
                     errorMsg = "Please Fill the required filed"
                 }
             },
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_login),
-            buttonText = "Sign In",
-            backgroundColor = SecondaryColor,
-            fontColor = Color.White
+            buttonText = "Login"
         )
 
         Spacer(modifier = Modifier.height(32.dp))
 
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(text = "Don't Have an Account?")
 

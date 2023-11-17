@@ -10,15 +10,19 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import com.awsprep.user.ui.theme.GreyColor
 import com.awsprep.user.ui.theme.SecondaryColor
+import com.awsprep.user.ui.theme.WhiteColor
 
 /**
  * Created by Md. Noweshed Akram on 14/11/23.
@@ -82,12 +86,16 @@ fun RadioButtonWithImageRow(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(Modifier.padding(8.dp)) {
-                RadioButton(selected, onClick = null)
-            }
+            RadioButton(
+                selected, onClick = { },
+                colors = RadioButtonDefaults.colors(
+                    selectedColor = WhiteColor,
+                    unselectedColor = GreyColor
+                )
+            )
             Text(text, Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
 
         }

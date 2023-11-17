@@ -69,6 +69,7 @@ fun TestScreen(
             it.data?.let {
                 showProgress = false
                 questionList = it as List<Question>
+                quesViewModel.questionOrder = questionList
             }
         }
     }
@@ -107,42 +108,35 @@ fun TestScreen(
 
             Log.d(TAG, "TestScreen: " + targetState.toString())
 
-            // TODO need to read question from question index data
-
-            for (question in questionList) {
-
-                Log.d(TAG, "TestScreen: " + question.ques)
-                if (question.optionE.isNotEmpty()) {
-                    SingleChoiceQuestion(
-                        questionTitle = question.ques,
-                        directionsResourceId = R.string.select_one,
-                        possibleAnswers = listOf(
-                            question.optionA,
-                            question.optionB,
-                            question.optionC,
-                            question.optionD
-                        ),
-                        selectedAnswer = quesViewModel.singleChoiceResponse,
-                        onOptionSelected = quesViewModel::onSingleChoiceResponse,
-                        modifier = modifier,
-                    )
-                } else {
-                    MultipleChoiceQuestion(
-                        questionTitle = question.ques,
-                        directionsResourceId = R.string.select_all,
-                        possibleAnswers = listOf(
-                            question.optionA,
-                            question.optionB,
-                            question.optionC,
-                            question.optionD,
-                            question.optionE
-                        ),
-                        selectedAnswers = quesViewModel.multipleChoiceResponse,
-                        onOptionSelected = quesViewModel::onMultipleChoiceResponse,
-                        modifier = modifier,
-                    )
-                }
-
+            if (targetState.question.optionE.isNotEmpty()) {
+                MultipleChoiceQuestion(
+                    questionTitle = targetState.question.ques,
+                    directionsResourceId = R.string.select_all,
+                    possibleAnswers = listOf(
+                        targetState.question.optionA,
+                        targetState.question.optionB,
+                        targetState.question.optionC,
+                        targetState.question.optionD,
+                        targetState.question.optionE
+                    ),
+                    selectedAnswers = quesViewModel.multipleChoiceResponse,
+                    onOptionSelected = quesViewModel::onMultipleChoiceResponse,
+                    modifier = modifier,
+                )
+            } else {
+                SingleChoiceQuestion(
+                    questionTitle = targetState.question.ques,
+                    directionsResourceId = R.string.select_one,
+                    possibleAnswers = listOf(
+                        targetState.question.optionA,
+                        targetState.question.optionB,
+                        targetState.question.optionC,
+                        targetState.question.optionD
+                    ),
+                    selectedAnswer = quesViewModel.singleChoiceResponse,
+                    onOptionSelected = quesViewModel::onSingleChoiceResponse,
+                    modifier = modifier,
+                )
             }
 
         }

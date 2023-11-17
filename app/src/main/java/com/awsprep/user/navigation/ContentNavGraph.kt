@@ -5,10 +5,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.awsprep.user.ui.layout.compose.AllCourseScreen
 import com.awsprep.user.ui.layout.compose.ChapterScreen
 import com.awsprep.user.ui.layout.compose.EditProfileScreen
 import com.awsprep.user.ui.layout.compose.NotificationScreen
 import com.awsprep.user.ui.layout.compose.ResultScreen
+import com.awsprep.user.ui.layout.compose.ReviewQuesScreen
 import com.awsprep.user.ui.layout.compose.TestScreen
 import com.awsprep.user.ui.layout.compose.SectionScreen
 import com.awsprep.user.ui.layout.compose.TimerScreen
@@ -41,12 +43,20 @@ fun NavGraphBuilder.ContentNavGraph(
             NotificationScreen(navController = navController)
         }
 
+        composable(ContentNavScreen.AllCourse.route) {
+            AllCourseScreen(navController = navController, asesmntViewModel = asesmntViewModel)
+        }
+
         composable(ContentNavScreen.Chapters.route) {
             ChapterScreen(navController = navController, asesmntViewModel = asesmntViewModel)
         }
 
         composable(ContentNavScreen.Sections.route) {
             SectionScreen(navController = navController, asesmntViewModel = asesmntViewModel)
+        }
+
+        composable(ContentNavScreen.ReviewQues.route) {
+            ReviewQuesScreen(navController = navController)
         }
 
         composable(ContentNavScreen.Timer.route) {

@@ -1,4 +1,4 @@
-package com.awsprep.user.ui.layout.compose.bottombar
+package com.awsprep.user.ui.layout.compose
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -8,23 +8,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,26 +37,19 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.Course
-import com.awsprep.user.domain.models.User
 import com.awsprep.user.navigation.ContentNavScreen
-import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.component.ProgressBar
-import com.awsprep.user.ui.component.SetsItemView
 import com.awsprep.user.ui.theme.ColorAccent
-import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.Typography
-import com.awsprep.user.ui.theme.WhiteColor
 import com.awsprep.user.viewmodel.AsesmntViewModel
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 /**
- * Created by Md. Noweshed Akram on 10/11/23.
+ * Created by Md. Noweshed Akram on 17/11/23.
  */
 @Composable
-fun AssessmentScreen(
+fun AllCourseScreen(
     navController: NavController,
     asesmntViewModel: AsesmntViewModel
 ) {
@@ -77,7 +63,7 @@ fun AssessmentScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        asesmntViewModel.getCourseList(6)
+        asesmntViewModel.getCourseList(50)
 
         asesmntViewModel.coursesData.collect {
             if (it.isLoading) {
@@ -102,10 +88,6 @@ fun AssessmentScreen(
             .fillMaxSize()
             .padding(horizontal = 10.dp, vertical = 10.dp)
     ) {
-
-        Text(text = "Courses", style = Typography.titleLarge)
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         LazyVerticalGrid(
             modifier = Modifier.fillMaxWidth(),
@@ -156,7 +138,7 @@ fun AssessmentScreen(
                         Text(
                             modifier = Modifier.padding(10.dp),
                             text = courseList[it].name,
-                            style = Typography.titleMedium,
+                            style = Typography.bodyLarge,
                             color = Color.Black,
                             maxLines = 1
                         )
@@ -179,38 +161,6 @@ fun AssessmentScreen(
                 }
             }
         }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        PrimaryButton(
-            onClick = {
-                navController.navigate(ContentNavScreen.AllCourse.route)
-            },
-            buttonText = "Explore More Course",
-            backgroundColor = WhiteColor,
-            fontColor = PrimaryColor,
-            borderStrokeColor = PrimaryColor
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(text = "Sets", style = Typography.titleLarge)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        SetsItemView(
-            setsIcon = R.drawable.ic_random,
-            title = "Random",
-            subTitle = "100+ Random Sets"
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        SetsItemView(
-            setsIcon = R.drawable.ic_edit,
-            title = "Practice",
-            subTitle = "100+ Practice Sets"
-        )
 
     }
 

@@ -31,9 +31,6 @@ class UserViewModel @Inject constructor(
     private val _userData = MutableStateFlow(UserState())
     val userData: StateFlow<UserState> = _userData
 
-    private val _nearbyUserData = MutableStateFlow(UserState())
-    val nearbyUserData: StateFlow<UserState> = _nearbyUserData
-
     fun getUserData() {
         userUseCase.getUserData().onEach {
             when (it) {

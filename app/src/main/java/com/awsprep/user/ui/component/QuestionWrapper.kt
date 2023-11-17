@@ -15,6 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.awsprep.user.ui.theme.ColorAccent
+import com.awsprep.user.ui.theme.TextColor
 
 /**
  * Created by Md. Noweshed Akram on 14/11/23.
@@ -31,13 +33,17 @@ fun QuestionWrapper(
             .padding(horizontal = 16.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        Spacer(Modifier.height(32.dp))
+
+        Spacer(Modifier.height(16.dp))
+
         QuestionTitle(questionTitle)
+
         directionsResourceId?.let {
-            Spacer(Modifier.height(18.dp))
+            Spacer(Modifier.height(16.dp))
             QuestionDirections(it)
         }
-        Spacer(Modifier.height(18.dp))
+
+        Spacer(Modifier.height(16.dp))
 
         content()
     }
@@ -51,11 +57,11 @@ private fun QuestionTitle(
     Text(
         text = title,
         style = MaterialTheme.typography.titleMedium,
-        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.87f),
+        color = TextColor,
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = MaterialTheme.colorScheme.inverseOnSurface,
+                color = ColorAccent,
                 shape = MaterialTheme.shapes.small
             )
             .padding(vertical = 24.dp, horizontal = 16.dp)

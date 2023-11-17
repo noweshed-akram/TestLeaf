@@ -3,7 +3,6 @@ package com.awsprep.user.ui.component
 import android.os.CountDownTimer
 import android.util.Log
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -11,16 +10,19 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import com.awsprep.user.ui.theme.ErrorColor
+import com.awsprep.user.ui.theme.TextColor
+import com.awsprep.user.ui.theme.Typography
 
 /**
  * Created by noweshedakram on 27/7/23.
  */
 @Composable
 fun CountDownTimer(
-    onResendClick: () -> Unit
+    timeInMillisecond: Long
 ) {
 
-    var millisInFuture: Long = 61000
+    val millisInFuture: Long = timeInMillisecond
 
     val timeData = rememberSaveable {
         mutableLongStateOf(millisInFuture)
@@ -48,18 +50,18 @@ fun CountDownTimer(
         }
     }
 
-    TextButton(onClick = {
-        showTimer = true
-        millisInFuture = 61000
-        onResendClick()
-    }) {
-        Text(
-            text = if (timeData.value > 1000) String.format(
-                "%02d:%02d",
-                (timeData.value / (1000 * 60) % 60),
-                (timeData.value / 1000) % 60
-            ) else "Re-Send"
-        )
-    }
+    Text(
+        text = if (timeData.value > 1000) String.format(
+            "%02d:%02d",
+            (timeData.value / (1000 * 60) % 60),
+            (timeData.value / 1000) % 60
+        ) else "Time's Up",
+        color = if (timeData.value > 600000) {
+            TextColor
+        } else {
+            ErrorColor
+        },
+        style = Typography.titleMedium
+    )
 
 }

@@ -3,11 +3,11 @@ package com.awsprep.user.ui.component
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -16,7 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.awsprep.user.ui.theme.GreyColor
 import com.awsprep.user.ui.theme.SecondaryColor
+import com.awsprep.user.ui.theme.WhiteColor
 
 /**
  * Created by noweshedakram on 11/14/23.
@@ -76,12 +78,18 @@ fun CheckboxRow(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(Modifier.padding(8.dp)) {
-                Checkbox(selected, onCheckedChange = null)
-            }
+            Checkbox(
+                selected,
+                onCheckedChange = { },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = WhiteColor,
+                    uncheckedColor = GreyColor,
+                    checkmarkColor = SecondaryColor
+                )
+            )
             Text(text, Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
         }
     }

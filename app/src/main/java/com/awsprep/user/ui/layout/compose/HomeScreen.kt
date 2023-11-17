@@ -91,12 +91,20 @@ fun HomeScreen(
                     AppBarWithArrow(title = "Notification") {
                         navController.popBackStack()
                     }
+                } else if (CurrentRoute(navController = navController) == ContentNavScreen.AllCourse.route) {
+                    AppBarWithArrow(title = "All Course") {
+                        navController.popBackStack()
+                    }
                 } else if (CurrentRoute(navController = navController) == ContentNavScreen.Chapters.route) {
                     AppBarWithArrow(title = "Chapters") {
                         navController.popBackStack()
                     }
                 } else if (CurrentRoute(navController = navController) == ContentNavScreen.Sections.route) {
                     AppBarWithArrow(title = "Sections") {
+                        navController.popBackStack()
+                    }
+                } else if (CurrentRoute(navController = navController) == ContentNavScreen.ReviewQues.route) {
+                    AppBarWithArrow(title = "Review Questions") {
                         navController.popBackStack()
                     }
                 } else if (CurrentRoute(navController = navController) == ContentNavScreen.Timer.route) {

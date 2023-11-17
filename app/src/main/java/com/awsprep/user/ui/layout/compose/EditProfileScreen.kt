@@ -45,7 +45,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.User
-import com.awsprep.user.ui.component.ImageButton
+import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.viewmodel.UserViewModel
@@ -142,10 +142,10 @@ fun EditProfileScreen(
                     )
                 }) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_edit),
-                    contentDescription = "edit",
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_photo_camera),
+                    contentDescription = "edit_profile",
                     modifier = Modifier
-                        .shadow(2.dp, RoundedCornerShape(40))
+                        .shadow(2.dp, RoundedCornerShape(16))
                         .background(SecondaryColor)
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                         .size(30.dp)
@@ -177,7 +177,7 @@ fun EditProfileScreen(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
             ),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(8.dp)
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -202,7 +202,7 @@ fun EditProfileScreen(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
             ),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(8.dp)
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -227,7 +227,7 @@ fun EditProfileScreen(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
             ),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(8.dp)
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -252,12 +252,12 @@ fun EditProfileScreen(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
             ),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(8.dp)
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
-        ImageButton(
+        PrimaryButton(
             onClick = {
                 userViewModel.updateUser(
                     user = User(
@@ -268,10 +268,7 @@ fun EditProfileScreen(
                     )
                 )
             },
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_edit),
-            buttonText = "Update Profile",
-            backgroundColor = SecondaryColor,
-            fontColor = Color.White
+            buttonText = "Save Changes"
         )
     }
 

@@ -17,4 +17,6 @@ sealed class AuthScreen(
 
     object EmailRegistration : AuthScreen(route = "email_reg_screen")
 
+    object CheckEmail : AuthScreen(route = "check_email_screen")
+
 }

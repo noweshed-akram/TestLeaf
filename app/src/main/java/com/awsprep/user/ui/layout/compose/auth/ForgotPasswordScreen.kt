@@ -1,5 +1,6 @@
 package com.awsprep.user.ui.layout.compose.auth
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,7 +23,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
@@ -35,9 +35,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.awsprep.user.R
 import com.awsprep.user.navigation.AuthScreen
-import com.awsprep.user.ui.component.ImageButton
+import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.component.ProgressBar
-import com.awsprep.user.ui.theme.SecondaryColor
+import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.utils.Resource
 import com.awsprep.user.viewmodel.AuthViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetError
@@ -65,7 +65,7 @@ fun ForgotPasswordScreen(
             if (isPasswordResetEmailSent == true) {
                 SweetInfo(message = "Password Reset Email Sent. Please Check Inbox/Spam Folder!")
                 LaunchedEffect(isPasswordResetEmailSent) {
-                    navController.navigate(AuthScreen.EmailSignIn.route)
+                    navController.navigate(AuthScreen.CheckEmail.route)
                 }
             }
         }
@@ -82,25 +82,34 @@ fun ForgotPasswordScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(10.dp),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.SpaceAround,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Text(
-            text = "Password Reset",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.ExtraBold,
-            color = SecondaryColor
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_forgot_password),
+                contentDescription = "forgot_password"
+            )
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
-            text = "Please type your register valid email to get a password reset email.",
-            textAlign = TextAlign.Center
-        )
+            Text(
+                text = "Forgot Password",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.ExtraBold,
+                color = PrimaryColor
+            )
 
-        Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "Please enter your registered email to get a password recovery email.",
+                textAlign = TextAlign.Center
+            )
+        }
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
@@ -122,12 +131,10 @@ fun ForgotPasswordScreen(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Done
             ),
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(8.dp)
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        ImageButton(
+        PrimaryButton(
             onClick = {
                 if (inputEmail.isNotEmpty()) {
                     authViewModel.sendPasswordResetEmail(inputEmail)
@@ -136,10 +143,8 @@ fun ForgotPasswordScreen(
                     errorMsg = "Please Fill the required filed"
                 }
             },
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_login),
-            buttonText = "Reset Password",
-            backgroundColor = SecondaryColor,
-            fontColor = Color.White
+            buttonText = "Send",
+            backgroundColor = PrimaryColor
         )
 
         if (showProgress) {
