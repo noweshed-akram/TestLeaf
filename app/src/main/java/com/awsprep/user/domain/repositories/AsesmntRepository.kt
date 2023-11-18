@@ -1,8 +1,6 @@
 package com.awsprep.user.domain.repositories
 
-import com.awsprep.user.domain.models.Chapter
 import com.awsprep.user.domain.models.Course
-import com.awsprep.user.domain.models.Section
 import com.awsprep.user.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
@@ -13,8 +11,8 @@ interface AsesmntRepository {
 
     suspend fun getCourseList(limit: Long): Flow<Resource<List<Course>>>
 
-    suspend fun getChapterList(courseId: String): Flow<Resource<List<Chapter>>>
+    suspend fun getChapterList(courseId: String): Flow<Resource<List<Course>>>
 
-    suspend fun getSectionList(courseId: String, chapterId: String): Flow<Resource<List<Section>>>
+    suspend fun getSectionList(courseId: String, chapterId: String): Flow<Resource<List<Course>>>
 
 }

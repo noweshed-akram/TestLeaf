@@ -4,6 +4,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,6 +48,7 @@ import com.awsprep.user.R
 import com.awsprep.user.domain.models.User
 import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.component.ProgressBar
+import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.viewmodel.UserViewModel
 import com.google.modernstorage.photopicker.PhotoPicker
@@ -126,7 +128,8 @@ fun EditProfileScreen(
                 contentDescription = "Profile picture",
                 modifier = Modifier
                     .size(150.dp)
-                    .clip(CircleShape),
+                    .clip(CircleShape)
+                    .border(2.dp, PrimaryColor, CircleShape),
                 contentScale = ContentScale.Crop,
                 error = painterResource(id = R.drawable.ic_person)
             )
@@ -145,7 +148,7 @@ fun EditProfileScreen(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_photo_camera),
                     contentDescription = "edit_profile",
                     modifier = Modifier
-                        .shadow(2.dp, RoundedCornerShape(16))
+                        .shadow(2.dp, CircleShape)
                         .background(SecondaryColor)
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                         .size(30.dp)

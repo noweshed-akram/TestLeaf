@@ -12,7 +12,5 @@ data class Question(
     val optionC: String = "",
     val optionD: String = "",
     val optionE: String = "",
-    val explain: String = "",
-    val createdAt: String = "",
-    val updatedAt: String = ""
+    val explain: String = ""
 )

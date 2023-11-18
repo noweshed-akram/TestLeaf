@@ -1,8 +1,6 @@
 package com.awsprep.user.data.repo
 
-import com.awsprep.user.domain.models.Chapter
 import com.awsprep.user.domain.models.Course
-import com.awsprep.user.domain.models.Section
 import com.awsprep.user.domain.repositories.AsesmntRepository
 import com.awsprep.user.utils.AppConstant.COLL_CHAPTERS
 import com.awsprep.user.utils.AppConstant.COLL_COURSES
@@ -56,17 +54,17 @@ class AsesmntRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getChapterList(courseId: String): Flow<Resource<List<Chapter>>> = flow {
+    override suspend fun getChapterList(courseId: String): Flow<Resource<List<Course>>> = flow {
         emit(Resource.Loading())
         try {
 
             val chapters = firebaseFirestore.collection(COLL_COURSES).document(courseId)
                 .collection(COLL_CHAPTERS).get().await()
-            var chapterList = emptyList<Chapter>()
+            var chapterList = emptyList<Course>()
 
             for (chapter in chapters) {
 
-                val newChapter: Chapter = chapter.toObject(Chapter::class.java)
+                val newChapter: Course = chapter.toObject(Course::class.java)
 
                 chapterList = chapterList + newChapter
             }
@@ -89,17 +87,17 @@ class AsesmntRepositoryImpl @Inject constructor(
     override suspend fun getSectionList(
         courseId: String,
         chapterId: String
-    ): Flow<Resource<List<Section>>> = flow {
+    ): Flow<Resource<List<Course>>> = flow {
         emit(Resource.Loading())
         try {
             val sections = firebaseFirestore.collection(COLL_COURSES).document(courseId)
                 .collection(COLL_CHAPTERS).document(chapterId).collection(COLL_SECTIONS).get()
                 .await()
-            var sectionList = emptyList<Section>()
+            var sectionList = emptyList<Course>()
 
             for (section in sections) {
 
-                val newSection: Section = section.toObject(Section::class.java)
+                val newSection: Course = section.toObject(Course::class.java)
 
                 sectionList = sectionList + newSection
             }

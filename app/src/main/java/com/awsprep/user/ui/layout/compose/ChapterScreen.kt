@@ -36,7 +36,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.awsprep.user.R
-import com.awsprep.user.domain.models.Chapter
+import com.awsprep.user.domain.models.Course
 import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.ColorAccent
@@ -61,7 +61,7 @@ fun ChapterScreen(
     var errorMsg by rememberSaveable { mutableStateOf("") }
 
     var chapterList by rememberSaveable {
-        mutableStateOf(emptyList<Chapter>())
+        mutableStateOf(emptyList<Course>())
     }
 
     LaunchedEffect(key1 = true) {
@@ -80,7 +80,7 @@ fun ChapterScreen(
             }
             it.data?.let {
                 showProgress = false
-                chapterList = it as List<Chapter>
+                chapterList = it as List<Course>
             }
         }
     }

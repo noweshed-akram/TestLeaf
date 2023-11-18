@@ -70,7 +70,7 @@ fun NavGraphBuilder.ContentNavGraph(
         }
 
         composable(ContentNavScreen.Timer.route) {
-            TimerScreen(navController = navController)
+            TimerScreen(navController = navController, quesViewModel = quesViewModel)
         }
 
         composable(ContentNavScreen.Test.route) {

@@ -36,7 +36,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.awsprep.user.R
-import com.awsprep.user.domain.models.Section
+import com.awsprep.user.domain.models.Course
 import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.ColorAccent
@@ -61,7 +61,7 @@ fun SectionScreen(
     var errorMsg by rememberSaveable { mutableStateOf("") }
 
     var sectionsList by rememberSaveable {
-        mutableStateOf(emptyList<Section>())
+        mutableStateOf(emptyList<Course>())
     }
 
     LaunchedEffect(key1 = true) {
@@ -80,7 +80,7 @@ fun SectionScreen(
             }
             it.data?.let {
                 showProgress = false
-                sectionsList = it as List<Section>
+                sectionsList = it as List<Course>
             }
         }
     }
@@ -114,7 +114,7 @@ fun SectionScreen(
                                 RoundedCornerShape(8.dp)
                             )
                             .clickable {
-                                navController.navigate(ContentNavScreen.Test.route)
+                                navController.navigate(ContentNavScreen.Timer.route)
                             }
                     ) {
                         Column(

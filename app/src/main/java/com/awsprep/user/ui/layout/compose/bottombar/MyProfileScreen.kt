@@ -2,6 +2,7 @@ package com.awsprep.user.ui.layout.compose.bottombar
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -29,7 +30,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -39,6 +39,7 @@ import com.awsprep.user.R
 import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.ColorAccent
+import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.ui.theme.Typography
 import com.awsprep.user.viewmodel.UserViewModel
@@ -52,13 +53,10 @@ fun MyProfileScreen(
     navController: NavController, userViewModel: UserViewModel
 ) {
 
-    val context = LocalContext.current
-
     var inputName by rememberSaveable { mutableStateOf("") }
     var inputEmail by rememberSaveable { mutableStateOf("") }
     var inputPhone by rememberSaveable { mutableStateOf("") }
     var imageUrl by rememberSaveable { mutableStateOf("") }
-    var inputAddress by rememberSaveable { mutableStateOf("") }
 
     var showProgress by rememberSaveable { mutableStateOf(false) }
     var showError by rememberSaveable { mutableStateOf(false) }
@@ -109,7 +107,9 @@ fun MyProfileScreen(
                 contentDescription = "Profile picture",
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(CircleShape),
+                    .padding(8.dp)
+                    .clip(CircleShape)
+                    .border(1.dp, PrimaryColor, CircleShape),
                 contentScale = ContentScale.Crop,
                 error = painterResource(id = R.drawable.ic_person)
             )
