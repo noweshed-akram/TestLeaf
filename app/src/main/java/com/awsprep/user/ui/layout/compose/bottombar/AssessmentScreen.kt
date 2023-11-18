@@ -202,7 +202,9 @@ fun AssessmentScreen(
             setsIcon = R.drawable.ic_random,
             title = "Random",
             subTitle = "100+ Random Sets"
-        )
+        ) {
+            navController.navigate(ContentNavScreen.RandomSets.route)
+        }
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -210,7 +212,9 @@ fun AssessmentScreen(
             setsIcon = R.drawable.ic_edit,
             title = "Practice",
             subTitle = "100+ Practice Sets"
-        )
+        ) {
+            navController.navigate(ContentNavScreen.PracticeSets.route)
+        }
 
     }
 

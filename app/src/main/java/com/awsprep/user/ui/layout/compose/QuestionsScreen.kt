@@ -30,14 +30,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.awsprep.user.R
 import com.awsprep.user.ui.component.CountDownTimer
 import com.awsprep.user.ui.theme.PrimaryColor
+import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.ui.theme.Typography
 import com.awsprep.user.viewmodel.QuestionIndexData
 
@@ -135,9 +135,9 @@ fun QuestionTopAppBar(
                     modifier = Modifier.padding(2.dp)
                 ) {
                     Icon(
-                        ImageVector.vectorResource(R.drawable.ic_assesment),
+                        painterResource(id = R.drawable.ic_add_to_review),
                         contentDescription = "add_to_review_qs",
-                        tint = PrimaryColor
+                        tint = Color.Transparent
                     )
                 }
 
@@ -147,7 +147,7 @@ fun QuestionTopAppBar(
                     Icon(
                         Icons.Outlined.RotateLeft,
                         contentDescription = "recheck",
-                        tint = PrimaryColor
+                        tint = SecondaryColor
                     )
                 }
 
@@ -158,7 +158,7 @@ fun QuestionTopAppBar(
                     Icon(
                         Icons.Outlined.Feedback,
                         contentDescription = "send_feedback",
-                        tint = PrimaryColor
+                        tint = SecondaryColor
                     )
                 }
             }

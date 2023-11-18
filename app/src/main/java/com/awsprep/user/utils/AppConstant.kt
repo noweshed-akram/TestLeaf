@@ -8,11 +8,11 @@ object AppConstant {
     // ------------------- Firebase Firestore -------------------
     // Collection Reference
     const val COLL_USER = "users"
-    const val COLL_HISTORY = "history"
     const val COLL_COURSES = "courses"
     const val COLL_CHAPTERS = "chapters"
     const val COLL_SECTIONS = "sections"
     const val COLL_QUESTIONS = "questions"
+    const val COLL_TEST_RESULTS = "test_results"
 
     // Storage Reference
     const val STORAGE_PROFILE_PIC = "profile_pic"

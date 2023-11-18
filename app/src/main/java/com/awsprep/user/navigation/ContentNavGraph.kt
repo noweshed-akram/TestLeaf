@@ -9,6 +9,8 @@ import com.awsprep.user.ui.layout.compose.AllCourseScreen
 import com.awsprep.user.ui.layout.compose.ChapterScreen
 import com.awsprep.user.ui.layout.compose.EditProfileScreen
 import com.awsprep.user.ui.layout.compose.NotificationScreen
+import com.awsprep.user.ui.layout.compose.PracticeSetsScreen
+import com.awsprep.user.ui.layout.compose.RandomSetsScreen
 import com.awsprep.user.ui.layout.compose.ResultScreen
 import com.awsprep.user.ui.layout.compose.ReviewQuesScreen
 import com.awsprep.user.ui.layout.compose.TestScreen
@@ -59,6 +61,14 @@ fun NavGraphBuilder.ContentNavGraph(
             ReviewQuesScreen(navController = navController)
         }
 
+        composable(ContentNavScreen.RandomSets.route) {
+            RandomSetsScreen()
+        }
+
+        composable(ContentNavScreen.PracticeSets.route) {
+            PracticeSetsScreen()
+        }
+
         composable(ContentNavScreen.Timer.route) {
             TimerScreen(navController = navController)
         }
@@ -66,10 +76,14 @@ fun NavGraphBuilder.ContentNavGraph(
         composable(ContentNavScreen.Test.route) {
             TestScreen(
                 onBackPressed = {
-                    navController.navigate(Graph.HOME)
+                    navController.navigate(Graph.HOME) {
+                        popUpTo(ContentNavScreen.Test.route)
+                    }
                 },
                 onSubmitAnswers = {
-                    navController.navigate(ContentNavScreen.Result.route)
+                    navController.navigate(ContentNavScreen.Result.route) {
+                        popUpTo(ContentNavScreen.Test.route)
+                    }
                 }, quesViewModel = quesViewModel
             )
         }

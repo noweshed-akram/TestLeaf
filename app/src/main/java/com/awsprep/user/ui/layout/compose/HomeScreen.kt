@@ -107,6 +107,14 @@ fun HomeScreen(
                     AppBarWithArrow(title = "Review Questions") {
                         navController.popBackStack()
                     }
+                } else if (CurrentRoute(navController = navController) == ContentNavScreen.RandomSets.route) {
+                    AppBarWithArrow(title = "Random Sets") {
+                        navController.popBackStack()
+                    }
+                } else if (CurrentRoute(navController = navController) == ContentNavScreen.PracticeSets.route) {
+                    AppBarWithArrow(title = "Practice Sets") {
+                        navController.popBackStack()
+                    }
                 } else if (CurrentRoute(navController = navController) == ContentNavScreen.Timer.route) {
                     AppBarWithArrow(title = "Timer") {
                         navController.popBackStack()

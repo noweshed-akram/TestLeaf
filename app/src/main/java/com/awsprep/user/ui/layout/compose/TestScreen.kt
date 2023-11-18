@@ -1,6 +1,7 @@
 package com.awsprep.user.ui.layout.compose
 
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.tween

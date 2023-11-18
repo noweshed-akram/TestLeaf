@@ -30,11 +30,38 @@ class QuesViewModel @Inject constructor(
     private val _questionData = MutableStateFlow(ResponseState())
     val questionData: StateFlow<ResponseState> = _questionData
 
+    private var questionIndex = 0
+
+    var questionOrder: List<Question> = mutableStateListOf(
+        Question(
+            quesId = "1",
+            ques = "Test 1",
+            ans = listOf("A"),
+            optionA = "A",
+            optionB = "B",
+            optionC = "C",
+            optionD = "D",
+            optionE = ""
+        ),
+        Question(
+            quesId = "2",
+            ques = "Test 2",
+            ans = listOf("A", "D"),
+            optionA = "A",
+            optionB = "B",
+            optionC = "C",
+            optionD = "D",
+            optionE = "E"
+        )
+    )
+
     fun getQuestions(
         courseId: String,
         chapterId: String,
         sectionId: String
     ) {
+
+        Log.d("questionOrder: ", questionOrder.toString())
         viewModelScope.launch {
             quesUseCase.getQuestions(courseId, chapterId, sectionId).onEach {
                 when (it) {
@@ -56,20 +83,6 @@ class QuesViewModel @Inject constructor(
             }.launchIn(viewModelScope)
         }
     }
-
-    private var questionIndex = 0
-
-    var questionOrder: List<Question> = listOf(
-        Question(
-            ques = "Test 1",
-            ans = listOf("A"),
-            optionA = "A",
-            optionB = "B",
-            optionC = "C",
-            optionD = "D",
-            optionE = ""
-        )
-    )
 
     // ----- Responses exposed as State -----
 

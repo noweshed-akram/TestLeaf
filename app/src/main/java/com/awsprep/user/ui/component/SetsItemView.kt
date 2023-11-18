@@ -42,7 +42,8 @@ import com.awsprep.user.ui.theme.WhiteColor
 fun SetsItemView(
     @DrawableRes setsIcon: Int,
     title: String = "",
-    subTitle: String = ""
+    subTitle: String = "",
+    onClick: () -> Unit
 ) {
 
     Box(
@@ -56,7 +57,7 @@ fun SetsItemView(
                 RoundedCornerShape(8.dp)
             )
             .clickable {
-
+                onClick()
             }
     ) {
         Row(
