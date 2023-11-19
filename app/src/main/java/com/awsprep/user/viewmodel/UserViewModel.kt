@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.awsprep.user.domain.models.TestResult
 import com.awsprep.user.domain.models.User
 import com.awsprep.user.domain.models.UserState
 import com.awsprep.user.domain.usecase.UserUseCase
@@ -92,6 +93,53 @@ class UserViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun getTestResult(userUid: String) {
+        viewModelScope.launch {
+            userUseCase.getTestResult(userUid).onEach {
+                when (it) {
+                    is Resource.Loading -> {
+                        Log.d("getUserData: ", it.data.toString())
+                        _userData.value = UserState(isLoading = true)
+                    }
+
+                    is Resource.Error -> {
+                        Log.d("getUserData: ", it.data.toString())
+                        _userData.value = UserState(error = it.message ?: "")
+                    }
+
+                    is Resource.Success -> {
+                        Log.d("getUserData: ", it.data.toString())
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
+
+    fun insertTestResult(
+        userUid: String,
+        testResult: TestResult
+    ) {
+        viewModelScope.launch {
+            userUseCase.insertTestResult(userUid, testResult).onEach {
+                when (it) {
+                    is Resource.Loading -> {
+                        Log.d("getUserData: ", it.data.toString())
+                        _userData.value = UserState(isLoading = true)
+                    }
+
+                    is Resource.Error -> {
+                        Log.d("getUserData: ", it.data.toString())
+                        _userData.value = UserState(error = it.message ?: "")
+                    }
+
+                    is Resource.Success -> {
+                        Log.d("getUserData: ", it.data.toString())
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
     }
 
     fun logOut() {

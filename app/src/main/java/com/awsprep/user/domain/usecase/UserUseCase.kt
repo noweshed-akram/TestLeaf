@@ -1,6 +1,7 @@
 package com.awsprep.user.domain.usecase
 
 import android.net.Uri
+import com.awsprep.user.domain.models.TestResult
 import com.awsprep.user.domain.models.User
 import com.awsprep.user.domain.repositories.UserRepository
 import com.awsprep.user.utils.Resource
@@ -26,6 +27,17 @@ class UserUseCase @Inject constructor(
 
     fun updateProfilePic(imageUri: Uri): Flow<Resource<User>> {
         return userRepository.updateProfilePic(imageUri)
+    }
+
+    suspend fun getTestResult(userUid: String): Flow<Resource<List<TestResult>>> {
+        return userRepository.getTestResult(userUid)
+    }
+
+    suspend fun insertTestResult(
+        userUid: String,
+        testResult: TestResult
+    ): Flow<Resource<TestResult>> {
+        return userRepository.insertTestResult(userUid, testResult)
     }
 
     suspend fun logOut() {

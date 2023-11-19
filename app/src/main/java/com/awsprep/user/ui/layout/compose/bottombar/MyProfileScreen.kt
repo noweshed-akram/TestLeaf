@@ -3,15 +3,20 @@ package com.awsprep.user.ui.layout.compose.bottombar
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -40,8 +45,10 @@ import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.component.SetsItemView
 import com.awsprep.user.ui.theme.ColorAccent
+import com.awsprep.user.ui.theme.GreyColor
 import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.SecondaryColor
+import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.Typography
 import com.awsprep.user.viewmodel.UserViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
@@ -163,6 +170,107 @@ fun MyProfileScreen(
 
         Text(text = "Test Summary", style = Typography.titleLarge)
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Box(
+            modifier = Modifier
+                .wrapContentHeight()
+                .clip(RoundedCornerShape(8.dp))
+                .border(
+                    1.dp,
+                    StrokeColor,
+                    RoundedCornerShape(8.dp)
+                )
+                .clickable {
+                    navController.navigate(ContentNavScreen.Chapters.route)
+                }
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+
+                Text(
+                    modifier = Modifier.padding(10.dp),
+                    text = "Random",
+                    style = Typography.labelMedium,
+                    color = GreyColor,
+                    maxLines = 1
+                )
+
+                Text(
+                    modifier = Modifier.padding(horizontal = 10.dp),
+                    text = "AWS Trusted Advisor",
+                    style = Typography.titleMedium,
+                    color = PrimaryColor,
+                    maxLines = 1
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp))
+                        .background(color = ColorAccent)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+
+                        Column {
+                            Text(
+                                modifier = Modifier.padding(horizontal = 10.dp),
+                                text = "Correct Answer",
+                                style = Typography.labelMedium,
+                                color = GreyColor,
+                                maxLines = 1
+                            )
+
+                            Text(
+                                modifier = Modifier.padding(horizontal = 10.dp),
+                                text = "51",
+                                style = Typography.bodyLarge,
+                                color = Color.Black,
+                                maxLines = 1
+                            )
+                        }
+
+                        Column {
+                            Text(
+                                modifier = Modifier.padding(horizontal = 10.dp),
+                                text = "Correct Answer",
+                                style = Typography.labelMedium,
+                                color = GreyColor,
+                                maxLines = 1
+                            )
+
+                            Text(
+                                modifier = Modifier.padding(horizontal = 10.dp),
+                                text = "51",
+                                style = Typography.bodyLarge,
+                                color = Color.Black,
+                                maxLines = 1
+                            )
+                        }
+
+                        Text(
+                            modifier = Modifier.padding(horizontal = 10.dp),
+                            text = "Complete",
+                            style = Typography.bodyLarge,
+                            color = PrimaryColor,
+                            maxLines = 1
+                        )
+
+                    }
+
+                }
+
+            }
+        }
     }
 
     if (showProgress) {

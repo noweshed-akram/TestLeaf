@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.awsprep.user.domain.models.Question
+import com.awsprep.user.domain.models.QuestionIndexData
 import com.awsprep.user.domain.models.ResponseState
 import com.awsprep.user.domain.usecase.QuesUseCase
 import com.awsprep.user.utils.Resource
@@ -152,11 +153,3 @@ class QuesViewModel @Inject constructor(
     }
 
 }
-
-data class QuestionIndexData(
-    val questionIndex: Int,
-    val questionCount: Int,
-    val shouldShowPreviousButton: Boolean,
-    val shouldShowDoneButton: Boolean,
-    val question: Question
-)

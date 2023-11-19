@@ -70,6 +70,20 @@ fun HomeScreen(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
     LaunchedEffect(key1 = true) {
+//        userViewModel.insertTestResult(
+//            "", TestResult(
+//                testType = "Course",
+//                testName = "CompTIA Security+",
+//                totalQs = "60",
+//                answered = "46",
+//                correctAnswered = "38",
+//                wrongAnswered = "22",
+//                status = "Incomplete",
+//                createdAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
+//                updatedAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
+//            )
+//        )
+
         userViewModel.getUserData()
         userViewModel.userData.collect { it ->
             it.data?.let {

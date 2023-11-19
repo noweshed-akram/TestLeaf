@@ -1,8 +1,11 @@
 package com.awsprep.user.data.repo
 
 import android.net.Uri
+import com.awsprep.user.domain.models.Question
+import com.awsprep.user.domain.models.TestResult
 import com.awsprep.user.domain.models.User
 import com.awsprep.user.domain.repositories.UserRepository
+import com.awsprep.user.utils.AppConstant.COLL_TEST_RESULTS
 import com.awsprep.user.utils.AppConstant.DATE_TIME_FORMAT
 import com.awsprep.user.utils.AppConstant.FIELD_ADDRESS
 import com.awsprep.user.utils.AppConstant.FIELD_EMAIL
@@ -131,6 +134,68 @@ class UserRepositoryImpl @Inject constructor(
                 if (snapshot.exists()) {
                     val user: User? = snapshot.toObject(User::class.java)
                     emit(Resource.Success(data = user!!))
+                }
+
+            } catch (e: HttpException) {
+                emit(Resource.Error(message = e.localizedMessage ?: "Unknown Error"))
+            } catch (e: IOException) {
+                emit(
+                    Resource.Error(
+                        message = e.localizedMessage ?: "Check Your Internet Connection"
+                    )
+                )
+            } catch (e: Exception) {
+                emit(Resource.Error(message = e.localizedMessage ?: ""))
+            }
+        }
+    }
+
+    override suspend fun getTestResult(userUid: String): Flow<Resource<List<TestResult>>> = flow {
+        emit(Resource.Loading())
+        if (firebaseAuth.currentUser != null) {
+            try {
+                val results = userRef.document(firebaseAuth.currentUser!!.uid).collection(
+                    COLL_TEST_RESULTS
+                ).get().await()
+
+                var resultList = emptyList<TestResult>()
+
+                for (result in results) {
+
+                    val newResult: TestResult = result.toObject(TestResult::class.java)
+
+                    resultList = resultList + newResult
+                }
+
+                emit(Resource.Success(data = resultList))
+
+            } catch (e: HttpException) {
+                emit(Resource.Error(message = e.localizedMessage ?: "Unknown Error"))
+            } catch (e: IOException) {
+                emit(
+                    Resource.Error(
+                        message = e.localizedMessage ?: "Check Your Internet Connection"
+                    )
+                )
+            } catch (e: Exception) {
+                emit(Resource.Error(message = e.localizedMessage ?: ""))
+            }
+        }
+    }
+
+    override suspend fun insertTestResult(
+        userUid: String,
+        testResult: TestResult
+    ): Flow<Resource<TestResult>> = flow {
+        emit(Resource.Loading())
+        if (firebaseAuth.currentUser != null) {
+            try {
+
+                val result = userRef.document(firebaseAuth.currentUser!!.uid)
+                    .collection(COLL_TEST_RESULTS).document().set(testResult).await()
+
+                result?.let {
+                    emit(Resource.Success(data = testResult))
                 }
 
             } catch (e: HttpException) {
