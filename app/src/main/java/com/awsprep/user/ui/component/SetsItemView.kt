@@ -2,7 +2,6 @@ package com.awsprep.user.ui.component
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.awsprep.user.R
 import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.Typography
@@ -51,11 +51,7 @@ fun SetsItemView(
             .fillMaxWidth()
             .height(80.dp)
             .clip(RoundedCornerShape(8.dp))
-            .border(
-                1.dp,
-                StrokeColor,
-                RoundedCornerShape(8.dp)
-            )
+            .background(color = StrokeColor)
             .clickable {
                 onClick()
             }
@@ -96,6 +92,7 @@ fun SetsItemView(
             }
 
             Column(
+                modifier = Modifier.weight(1.0f),
                 verticalArrangement = Arrangement.SpaceAround
             ) {
                 Text(
@@ -113,6 +110,20 @@ fun SetsItemView(
                     maxLines = 1
                 )
             }
+
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data("")
+                    .crossfade(true)
+                    .build(),
+                contentDescription = "",
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .size(48.dp)
+                    .padding(8.dp),
+                error = painterResource(id = R.drawable.ic_arrow_forward),
+                colorFilter = ColorFilter.tint(color = PrimaryColor)
+            )
 
         }
     }

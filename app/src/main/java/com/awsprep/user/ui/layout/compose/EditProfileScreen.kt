@@ -127,7 +127,7 @@ fun EditProfileScreen(
                 model = if (selectedImageUri != null) selectedImageUri else imageUrl,
                 contentDescription = "Profile picture",
                 modifier = Modifier
-                    .size(150.dp)
+                    .size(136.dp)
                     .clip(CircleShape)
                     .border(2.dp, PrimaryColor, CircleShape),
                 contentScale = ContentScale.Crop,
@@ -135,7 +135,9 @@ fun EditProfileScreen(
             )
 
             IconButton(
-                modifier = Modifier.align(Alignment.BottomEnd),
+                modifier = Modifier
+                    .padding(10.dp)
+                    .align(Alignment.BottomEnd),
                 onClick = {
                     photoPicker.launch(
                         PhotoPicker.Args(
@@ -151,7 +153,7 @@ fun EditProfileScreen(
                         .shadow(2.dp, CircleShape)
                         .background(SecondaryColor)
                         .padding(horizontal = 10.dp, vertical = 4.dp)
-                        .size(30.dp)
+                        .size(24.dp)
                         .align(Alignment.BottomEnd),
                     tint = Color.White
                 )

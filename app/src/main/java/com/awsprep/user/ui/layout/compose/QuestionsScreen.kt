@@ -137,7 +137,7 @@ fun QuestionTopAppBar(
                     Icon(
                         painterResource(id = R.drawable.ic_add_to_review),
                         contentDescription = "add_to_review_qs",
-                        tint = Color.Transparent
+                        tint = SecondaryColor
                     )
                 }
 

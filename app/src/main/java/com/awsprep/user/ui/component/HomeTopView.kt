@@ -31,7 +31,8 @@ import com.awsprep.user.ui.theme.Typography
 @Composable
 fun HomeTopView(
     userName: String = "",
-    onItemClick: () -> Unit
+    onNavigationClick: () -> Unit,
+    onNotificationClick: () -> Unit
 ) {
 
     Box(modifier = Modifier.background(color = PrimaryColor)) {
@@ -43,7 +44,7 @@ fun HomeTopView(
 
             Box(
                 modifier = Modifier
-                    .clickable { }
+                    .clickable { onNavigationClick() }
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_menubar),
@@ -74,7 +75,7 @@ fun HomeTopView(
             Box(
                 modifier = Modifier
                     .clip(CircleShape)
-                    .clickable { onItemClick() }
+                    .clickable { onNotificationClick() }
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_notification),

@@ -38,6 +38,7 @@ import coil.compose.AsyncImage
 import com.awsprep.user.R
 import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.ProgressBar
+import com.awsprep.user.ui.component.SetsItemView
 import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.SecondaryColor
@@ -106,10 +107,10 @@ fun MyProfileScreen(
                 model = imageUrl,
                 contentDescription = "Profile picture",
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(72.dp)
                     .padding(8.dp)
                     .clip(CircleShape)
-                    .border(1.dp, PrimaryColor, CircleShape),
+                    .border(2.dp, PrimaryColor, CircleShape),
                 contentScale = ContentScale.Crop,
                 error = painterResource(id = R.drawable.ic_person)
             )
@@ -136,12 +137,26 @@ fun MyProfileScreen(
                     modifier = Modifier
                         .shadow(2.dp, RoundedCornerShape(16))
                         .background(SecondaryColor)
-                        .padding(10.dp)
-                        .size(30.dp),
+                        .padding(8.dp)
+                        .size(24.dp),
                     tint = Color.White
                 )
             }
 
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(text = "Review Q's", style = Typography.titleLarge)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        SetsItemView(
+            setsIcon = R.drawable.ic_review_ques,
+            title = "Review Questions",
+            subTitle = "Find review questions from your test"
+        ) {
+            navController.navigate(ContentNavScreen.ReviewQues.route)
         }
 
         Spacer(modifier = Modifier.height(16.dp))
