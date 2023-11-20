@@ -26,11 +26,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
-
 /**
  * Created by noweshedakram on 17/7/23.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomInputField(
     inputValue: String,
@@ -91,10 +89,8 @@ fun CustomInputField(
                     }
                 }
             },
-            colors = TextFieldDefaults.textFieldColors(
-                textColor = if (editable) Color.Black else Color.Gray,
+            colors = TextFieldDefaults.colors(
                 disabledTextColor = Color.Gray,
-                containerColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Gray,
                 focusedIndicatorColor = Color.DarkGray,
 

@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.awsprep.user"
-        minSdk 24
+        minSdk 26
         targetSdk 34
         versionCode 1
         versionName "1.0.0"
@@ -137,6 +137,8 @@ dependencies {
 
     // Toasty
     implementation 'com.github.tfaki:ComposableSweetToast:1.0.1'
+
+    implementation 'co.yml:ycharts:2.1.0'
 
     //Image Picker
     implementation 'com.himanshoe:pluck:1.0.0-RC2'

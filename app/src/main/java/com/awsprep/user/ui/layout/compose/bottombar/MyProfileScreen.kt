@@ -17,8 +17,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -39,15 +42,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import co.yml.charts.common.model.PlotType
+import co.yml.charts.ui.piechart.charts.DonutPieChart
+import co.yml.charts.ui.piechart.models.PieChartConfig
+import co.yml.charts.ui.piechart.models.PieChartData
 import coil.compose.AsyncImage
 import com.awsprep.user.R
 import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.component.SetsItemView
 import com.awsprep.user.ui.theme.ColorAccent
+import com.awsprep.user.ui.theme.ErrorColor
+import com.awsprep.user.ui.theme.ErrorColorLight
 import com.awsprep.user.ui.theme.GreyColor
 import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.SecondaryColor
+import com.awsprep.user.ui.theme.SecondaryColorLight
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.Typography
 import com.awsprep.user.viewmodel.UserViewModel
@@ -56,6 +66,7 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 /**
  * Created by Md. Noweshed Akram on 10/11/23.
  */
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MyProfileScreen(
     navController: NavController, userViewModel: UserViewModel
@@ -99,6 +110,7 @@ fun MyProfileScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(10.dp)
+            .verticalScroll(rememberScrollState())
     ) {
 
         Text(text = "My Profile", style = Typography.titleLarge)
@@ -182,7 +194,7 @@ fun MyProfileScreen(
                     RoundedCornerShape(8.dp)
                 )
                 .clickable {
-                    navController.navigate(ContentNavScreen.Chapters.route)
+
                 }
         ) {
             Column(
@@ -192,23 +204,56 @@ fun MyProfileScreen(
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
 
-                Text(
-                    modifier = Modifier.padding(10.dp),
-                    text = "Random",
-                    style = Typography.labelMedium,
-                    color = GreyColor,
-                    maxLines = 1
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
+                        modifier = Modifier.weight(1.0f)
+                    ) {
 
-                Text(
-                    modifier = Modifier.padding(horizontal = 10.dp),
-                    text = "AWS Trusted Advisor",
-                    style = Typography.titleMedium,
-                    color = PrimaryColor,
-                    maxLines = 1
-                )
+                        Text(
+                            modifier = Modifier.padding(10.dp),
+                            text = "Random",
+                            style = Typography.bodySmall,
+                            color = GreyColor,
+                            maxLines = 1
+                        )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            modifier = Modifier.padding(horizontal = 10.dp),
+                            text = "AWS Trusted Advisor",
+                            style = Typography.titleMedium,
+                            color = PrimaryColor,
+                            maxLines = 1
+                        )
+                    }
+
+                    val donutChartData = PieChartData(
+                        slices = listOf(
+                            PieChartData.Slice("Correct", 70f, Color(0xFF20BF55)),
+                            PieChartData.Slice("Wrong", 30f, Color(0xFFF53844))
+                        ),
+                        plotType = PlotType.Donut
+                    )
+
+                    val donutChartConfig = PieChartConfig(
+                        strokeWidth = 16f,
+                        activeSliceAlpha = .9f,
+                        isAnimationEnable = false
+                    )
+
+                    DonutPieChart(
+                        modifier = Modifier
+                            .width(80.dp)
+                            .height(80.dp)
+                            .padding(4.dp),
+                        donutChartData,
+                        donutChartConfig
+                    )
+                }
+
+
+                Spacer(modifier = Modifier.height(8.dp))
 
                 Box(
                     modifier = Modifier
@@ -239,6 +284,137 @@ fun MyProfileScreen(
                             )
                         }
 
+                        Box(
+                            modifier = Modifier
+                                .height(32.dp)
+                                .width(1.dp)
+                                .background(color = PrimaryColor.copy(alpha = .5f))
+                        )
+
+                        Column(
+                            modifier = Modifier.weight(1.0f)
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(horizontal = 10.dp),
+                                text = "Date",
+                                style = Typography.labelMedium,
+                                color = GreyColor,
+                                maxLines = 1
+                            )
+
+                            Text(
+                                modifier = Modifier.padding(horizontal = 10.dp),
+                                text = "20 Nov '23",
+                                style = Typography.bodyLarge,
+                                color = Color.Black,
+                                maxLines = 1
+                            )
+                        }
+
+                        Text(
+                            modifier = Modifier
+                                .background(
+                                    color = SecondaryColorLight,
+                                    shape = RoundedCornerShape(16.dp)
+                                )
+                                .padding(vertical = 8.dp, horizontal = 16.dp),
+                            text = "Completed",
+                            style = Typography.bodyLarge,
+                            color = SecondaryColor,
+                            maxLines = 1
+                        )
+
+                    }
+
+                }
+
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Box(
+            modifier = Modifier
+                .wrapContentHeight()
+                .clip(RoundedCornerShape(8.dp))
+                .border(
+                    1.dp,
+                    StrokeColor,
+                    RoundedCornerShape(8.dp)
+                )
+                .clickable {
+
+                }
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
+                        modifier = Modifier.weight(1.0f)
+                    ) {
+
+                        Text(
+                            modifier = Modifier.padding(10.dp),
+                            text = "Random",
+                            style = Typography.bodySmall,
+                            color = GreyColor,
+                            maxLines = 1
+                        )
+
+                        Text(
+                            modifier = Modifier.padding(horizontal = 10.dp),
+                            text = "AWS Trusted Advisor",
+                            style = Typography.titleMedium,
+                            color = PrimaryColor,
+                            maxLines = 1
+                        )
+                    }
+
+                    val donutChartData = PieChartData(
+                        slices = listOf(
+                            PieChartData.Slice("Correct", 70f, Color(0xFF20BF55)),
+                            PieChartData.Slice("Wrong", 30f, Color(0xFFF53844))
+                        ),
+                        plotType = PlotType.Donut
+                    )
+
+                    val donutChartConfig = PieChartConfig(
+                        strokeWidth = 16f,
+                        activeSliceAlpha = .9f,
+                        isAnimationEnable = false
+                    )
+
+                    DonutPieChart(
+                        modifier = Modifier
+                            .width(80.dp)
+                            .height(80.dp)
+                            .padding(4.dp),
+                        donutChartData,
+                        donutChartConfig
+                    )
+                }
+
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp))
+                        .background(color = ColorAccent)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+
                         Column {
                             Text(
                                 modifier = Modifier.padding(horizontal = 10.dp),
@@ -257,11 +433,43 @@ fun MyProfileScreen(
                             )
                         }
 
+                        Box(
+                            modifier = Modifier
+                                .height(32.dp)
+                                .width(1.dp)
+                                .background(color = PrimaryColor.copy(alpha = .5f))
+                        )
+
+                        Column(
+                            modifier = Modifier.weight(1.0f)
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(horizontal = 10.dp),
+                                text = "Date",
+                                style = Typography.labelMedium,
+                                color = GreyColor,
+                                maxLines = 1
+                            )
+
+                            Text(
+                                modifier = Modifier.padding(horizontal = 10.dp),
+                                text = "20 Nov '23",
+                                style = Typography.bodyLarge,
+                                color = Color.Black,
+                                maxLines = 1
+                            )
+                        }
+
                         Text(
-                            modifier = Modifier.padding(horizontal = 10.dp),
-                            text = "Complete",
+                            modifier = Modifier
+                                .background(
+                                    color = ErrorColorLight,
+                                    shape = RoundedCornerShape(16.dp)
+                                )
+                                .padding(vertical = 8.dp, horizontal = 16.dp),
+                            text = "Incomplete",
                             style = Typography.bodyLarge,
-                            color = PrimaryColor,
+                            color = ErrorColor,
                             maxLines = 1
                         )
 

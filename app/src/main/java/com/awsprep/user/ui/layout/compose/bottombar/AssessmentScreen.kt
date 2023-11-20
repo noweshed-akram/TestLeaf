@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,8 +16,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -24,11 +28,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -48,8 +57,8 @@ import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.Typography
 import com.awsprep.user.ui.theme.WhiteColor
 import com.awsprep.user.viewmodel.AsesmntViewModel
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
+import kotlinx.coroutines.launch
 
 /**
  * Created by Md. Noweshed Akram on 10/11/23.
@@ -63,9 +72,27 @@ fun AssessmentScreen(
     var showProgress by rememberSaveable { mutableStateOf(false) }
     var showError by rememberSaveable { mutableStateOf(false) }
     var errorMsg by rememberSaveable { mutableStateOf("") }
+    val coroutineScope = rememberCoroutineScope()
+    val scrollState = rememberScrollState()
+    val lazyGridState = rememberLazyGridState()
 
     var courseList by rememberSaveable {
         mutableStateOf(emptyList<Course>())
+    }
+
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                val delta = -available.y
+                coroutineScope.launch {
+                    if (scrollState.isScrollInProgress.not()) {
+                        scrollState.scrollBy(delta)
+                    }
+                }
+                return Offset.Zero
+            }
+
+        }
     }
 
     LaunchedEffect(key1 = true) {
@@ -100,8 +127,11 @@ fun AssessmentScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         LazyVerticalGrid(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
             columns = GridCells.Fixed(2),
+            userScrollEnabled = false,
             horizontalArrangement = Arrangement.spacedBy(20.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
