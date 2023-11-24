@@ -6,6 +6,7 @@ import java.io.Serializable
  * Created by Md. Noweshed Akram on 11/11/23.
  */
 data class Course(
+    var docId: String = "",
     val name: String = "",
     val icon: String = "",
     val order: String = "",

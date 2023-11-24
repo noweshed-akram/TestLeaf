@@ -53,7 +53,8 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 @Composable
 fun ChapterScreen(
     navController: NavController,
-    asesmntViewModel: AsesmntViewModel
+    asesmntViewModel: AsesmntViewModel,
+    courseId: String = ""
 ) {
 
     var showProgress by rememberSaveable { mutableStateOf(false) }
@@ -65,7 +66,7 @@ fun ChapterScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        asesmntViewModel.getChapterList("gAIzFo3oMkeA5vtMdtHd")
+        asesmntViewModel.getChapterList(courseId)
 
         asesmntViewModel.chaptersData.collect {
             if (it.isLoading) {
@@ -114,7 +115,11 @@ fun ChapterScreen(
                                 RoundedCornerShape(8.dp)
                             )
                             .clickable {
-                                navController.navigate(ContentNavScreen.Sections.route)
+                                navController.navigate(
+                                    ContentNavScreen.Sections.route
+                                        .plus("/${courseId}")
+                                        .plus("/${chapterList[it].docId}")
+                                )
                             }
                     ) {
                         Column(

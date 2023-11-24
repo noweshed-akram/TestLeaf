@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.awsprep.user.navigation.AuthScreen
-import com.awsprep.user.navigation.CurrentRoute
+import com.awsprep.user.navigation.currentRoute
 import com.awsprep.user.navigation.Graph
 import com.awsprep.user.navigation.RootNavGraph
 import com.awsprep.user.ui.component.AppBarWithArrow
@@ -35,7 +35,7 @@ fun MainScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            if (CurrentRoute(navController = navController) == AuthScreen.ForgotPassword.route) {
+            if (currentRoute(navController = navController) == AuthScreen.ForgotPassword.route) {
                 AppBarWithArrow(title = "Forgot Password") {
                     navController.popBackStack()
                 }

@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -34,7 +35,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -137,7 +137,6 @@ fun MyProfileScreen(
             Column(
                 modifier = Modifier.weight(1.0f)
             ) {
-
                 Text(text = inputName, style = Typography.bodyLarge)
 
                 Text(text = inputEmail, style = Typography.bodySmall)
@@ -146,18 +145,17 @@ fun MyProfileScreen(
             Spacer(modifier = Modifier.width(16.dp))
 
             IconButton(
-                modifier = Modifier.padding(end = 8.dp),
+                modifier = Modifier
+                    .padding(8.dp)
+                    .wrapContentSize()
+                    .background(SecondaryColor, RoundedCornerShape(8.dp)),
                 onClick = {
                     navController.navigate(ContentNavScreen.EditProfile.route)
                 }) {
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_edit),
                     contentDescription = "edit",
-                    modifier = Modifier
-                        .shadow(2.dp, RoundedCornerShape(16))
-                        .background(SecondaryColor)
-                        .padding(8.dp)
-                        .size(24.dp),
+                    modifier = Modifier.size(24.dp),
                     tint = Color.White
                 )
             }

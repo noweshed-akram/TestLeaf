@@ -3,7 +3,9 @@ package com.awsprep.user.navigation
 import androidx.core.os.BuildCompat
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.awsprep.user.ui.layout.compose.AllCourseScreen
 import com.awsprep.user.ui.layout.compose.ChapterScreen
@@ -49,12 +51,86 @@ fun NavGraphBuilder.ContentNavGraph(
             AllCourseScreen(navController = navController, asesmntViewModel = asesmntViewModel)
         }
 
-        composable(ContentNavScreen.Chapters.route) {
-            ChapterScreen(navController = navController, asesmntViewModel = asesmntViewModel)
+        composable(
+            ContentNavScreen.Chapters.route.plus(ContentNavScreen.Chapters.objectPath),
+            arguments = listOf(
+                navArgument(ContentNavScreen.Chapters.objectName) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val response = it.arguments?.getString(ContentNavScreen.Chapters.objectName)
+            response?.let {
+                ChapterScreen(
+                    navController = navController,
+                    asesmntViewModel = asesmntViewModel,
+                    courseId = it
+                )
+            }
         }
 
-        composable(ContentNavScreen.Sections.route) {
-            SectionScreen(navController = navController, asesmntViewModel = asesmntViewModel)
+        composable(
+            ContentNavScreen.Sections.route
+                .plus(ContentNavScreen.Sections.objectPath)
+                .plus(ContentNavScreen.Sections.objectPathTwo),
+            arguments = listOf(
+                navArgument(ContentNavScreen.Sections.objectName) {
+                    type = NavType.StringType
+                },
+                navArgument(ContentNavScreen.Sections.objectNameTwo) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val course = it.arguments?.getString(ContentNavScreen.Sections.objectName)
+            val chapter = it.arguments?.getString(ContentNavScreen.Sections.objectNameTwo)
+
+            course?.let { courseId ->
+                chapter?.let { chapterId ->
+                    SectionScreen(
+                        navController = navController, asesmntViewModel = asesmntViewModel,
+                        courseId = courseId, chapterId = chapterId
+                    )
+                }
+            }
+
+        }
+
+        composable(
+            ContentNavScreen.Timer.route
+                .plus(ContentNavScreen.Timer.objectPath)
+                .plus(ContentNavScreen.Timer.objectPathTwo)
+                .plus(ContentNavScreen.Timer.objectPathThree),
+            arguments = listOf(
+                navArgument(ContentNavScreen.Timer.objectName) {
+                    type = NavType.StringType
+                },
+                navArgument(ContentNavScreen.Timer.objectNameTwo) {
+                    type = NavType.StringType
+                },
+                navArgument(ContentNavScreen.Timer.objectNameThree) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val course = it.arguments?.getString(ContentNavScreen.Timer.objectName)
+            val chapter = it.arguments?.getString(ContentNavScreen.Timer.objectNameTwo)
+            val section = it.arguments?.getString(ContentNavScreen.Timer.objectNameThree)
+
+            course?.let { courseId ->
+                chapter?.let { chapterId ->
+                    section?.let { sectionId ->
+                        TimerScreen(
+                            navController = navController,
+                            quesViewModel = quesViewModel,
+                            courseId = courseId,
+                            chapterId = chapterId,
+                            sectionId = sectionId
+                        )
+                    }
+                }
+            }
+
         }
 
         composable(ContentNavScreen.ReviewQues.route) {
@@ -67,10 +143,6 @@ fun NavGraphBuilder.ContentNavGraph(
 
         composable(ContentNavScreen.PracticeSets.route) {
             PracticeSetsScreen()
-        }
-
-        composable(ContentNavScreen.Timer.route) {
-            TimerScreen(navController = navController, quesViewModel = quesViewModel)
         }
 
         composable(ContentNavScreen.Test.route) {

@@ -32,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -136,8 +135,9 @@ fun EditProfileScreen(
 
             IconButton(
                 modifier = Modifier
-                    .padding(10.dp)
-                    .align(Alignment.BottomEnd),
+                    .padding(8.dp)
+                    .align(Alignment.BottomEnd)
+                    .background(SecondaryColor, CircleShape),
                 onClick = {
                     photoPicker.launch(
                         PhotoPicker.Args(
@@ -149,12 +149,7 @@ fun EditProfileScreen(
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_photo_camera),
                     contentDescription = "edit_profile",
-                    modifier = Modifier
-                        .shadow(2.dp, CircleShape)
-                        .background(SecondaryColor)
-                        .padding(horizontal = 10.dp, vertical = 4.dp)
-                        .size(24.dp)
-                        .align(Alignment.BottomEnd),
+                    modifier = Modifier.size(24.dp),
                     tint = Color.White
                 )
             }

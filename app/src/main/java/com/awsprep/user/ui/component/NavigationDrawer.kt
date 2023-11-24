@@ -48,7 +48,8 @@ fun DrawerBody(
                     .clickable {
                         onItemClick(item)
                     }
-                    .padding(16.dp)
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.Center
             ) {
                 Icon(
                     imageVector = item.icon,

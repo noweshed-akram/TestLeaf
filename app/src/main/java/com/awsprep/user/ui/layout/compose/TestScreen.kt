@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import com.awsprep.user.R
-import com.awsprep.user.ui.component.MultipleChoiceQuestion
-import com.awsprep.user.ui.component.SingleChoiceQuestion
+import com.awsprep.user.ui.component.MultipleChoiceQues
+import com.awsprep.user.ui.component.SingleChoiceQues
 import com.awsprep.user.ui.component.getTransitionDirection
 import com.awsprep.user.viewmodel.QuesViewModel
 
@@ -66,7 +66,7 @@ fun TestScreen(
             Log.d(TAG, "TestScreen: " + targetState.toString())
 
             if (targetState.question.optionE.isNotEmpty()) {
-                MultipleChoiceQuestion(
+                MultipleChoiceQues(
                     questionTitle = targetState.question.ques,
                     directionsResourceId = R.string.select_all,
                     possibleAnswers = listOf(
@@ -81,7 +81,7 @@ fun TestScreen(
                     modifier = modifier,
                 )
             } else {
-                SingleChoiceQuestion(
+                SingleChoiceQues(
                     questionTitle = targetState.question.ques,
                     directionsResourceId = R.string.select_one,
                     possibleAnswers = listOf(

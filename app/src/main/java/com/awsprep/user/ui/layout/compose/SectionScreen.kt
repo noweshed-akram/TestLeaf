@@ -53,7 +53,9 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 @Composable
 fun SectionScreen(
     navController: NavController,
-    asesmntViewModel: AsesmntViewModel
+    asesmntViewModel: AsesmntViewModel,
+    courseId: String = "",
+    chapterId: String = ""
 ) {
 
     var showProgress by rememberSaveable { mutableStateOf(false) }
@@ -65,7 +67,7 @@ fun SectionScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        asesmntViewModel.getSectionList("gAIzFo3oMkeA5vtMdtHd", "SPMy3zbDGh1grrxSE242")
+        asesmntViewModel.getSectionList(courseId, chapterId)
 
         asesmntViewModel.sectionsData.collect {
             if (it.isLoading) {
@@ -114,7 +116,12 @@ fun SectionScreen(
                                 RoundedCornerShape(8.dp)
                             )
                             .clickable {
-                                navController.navigate(ContentNavScreen.Timer.route)
+                                navController.navigate(
+                                    ContentNavScreen.Timer.route
+                                        .plus("/${courseId}")
+                                        .plus("/${chapterId}")
+                                        .plus("/${sectionsList[it].docId}")
+                                )
                             }
                     ) {
                         Column(

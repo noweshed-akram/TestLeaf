@@ -43,7 +43,6 @@ import com.awsprep.user.ui.theme.Typography
 /**
  * Created by Md. Noweshed Akram on 14/11/23.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestionsScreen(
     questionIndexData: QuestionIndexData,

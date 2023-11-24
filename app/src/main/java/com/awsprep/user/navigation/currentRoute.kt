@@ -9,7 +9,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
  * Created by noweshedakram on 5/8/23.
  */
 @Composable
-fun CurrentRoute(navController: NavController): String? {
+fun currentRoute(navController: NavController): String? {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    return navBackStackEntry?.destination?.route?.substringBeforeLast("/")
+    return navBackStackEntry?.destination?.route
+        ?.substringBeforeLast("/")
+        ?.substringBeforeLast("/")
+        ?.substringBeforeLast("/")
 }

@@ -2,55 +2,57 @@ package com.awsprep.user.ui.component
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.awsprep.user.ui.theme.GreyColor
 import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.ui.theme.WhiteColor
 
 /**
- * Created by noweshedakram on 11/14/23.
+ * Created by Md. Noweshed Akram on 14/11/23.
  */
 @Composable
-fun MultipleChoiceQuestion(
+fun SingleChoiceQues(
     questionTitle: String,
     @StringRes directionsResourceId: Int,
     possibleAnswers: List<String>,
-    selectedAnswers: List<String>,
-    onOptionSelected: (selected: Boolean, answer: String) -> Unit,
+    selectedAnswer: String,
+    onOptionSelected: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     QuestionWrapper(
-        modifier = modifier,
         questionTitle = questionTitle,
         directionsResourceId = directionsResourceId,
+        modifier = modifier.selectableGroup(),
     ) {
         possibleAnswers.forEach {
-            val selected = selectedAnswers.contains(it)
-            CheckboxRow(
+            val selected = it == selectedAnswer
+            RadioButtonWithImageRow(
                 modifier = Modifier.padding(vertical = 8.dp),
                 text = it,
                 selected = selected,
-                onOptionSelected = { onOptionSelected(!selected, it) }
+                onOptionSelected = { onOptionSelected(it) }
             )
         }
     }
 }
 
 @Composable
-fun CheckboxRow(
+fun RadioButtonWithImageRow(
     text: String,
     selected: Boolean,
     onOptionSelected: () -> Unit,
@@ -73,7 +75,11 @@ fun CheckboxRow(
         ),
         modifier = modifier
             .clip(MaterialTheme.shapes.small)
-            .clickable(onClick = onOptionSelected)
+            .selectable(
+                selected,
+                onClick = onOptionSelected,
+                role = Role.RadioButton
+            )
     ) {
         Row(
             modifier = Modifier
@@ -81,16 +87,15 @@ fun CheckboxRow(
                 .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Checkbox(
-                selected,
-                onCheckedChange = { },
-                colors = CheckboxDefaults.colors(
-                    checkedColor = WhiteColor,
-                    uncheckedColor = GreyColor,
-                    checkmarkColor = SecondaryColor
+            RadioButton(
+                selected, onClick = { },
+                colors = RadioButtonDefaults.colors(
+                    selectedColor = WhiteColor,
+                    unselectedColor = GreyColor
                 )
             )
-            Text(text, Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
+            Text(text.trim(), Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
+
         }
     }
 }

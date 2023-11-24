@@ -16,10 +16,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.awsprep.user.R
 import com.awsprep.user.domain.models.Question
 import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.component.ProgressBar
+import com.awsprep.user.ui.component.InfoBannerCard
+import com.awsprep.user.ui.theme.ColorAccent
+import com.awsprep.user.ui.theme.PrimaryColor
+import com.awsprep.user.ui.theme.StrokeColor
+import com.awsprep.user.ui.theme.WhiteColor
 import com.awsprep.user.viewmodel.QuesViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
@@ -29,22 +35,26 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 @Composable
 fun TimerScreen(
     navController: NavController,
-    quesViewModel: QuesViewModel
+    quesViewModel: QuesViewModel,
+    courseId: String = "",
+    chapterId: String = "",
+    sectionId: String = ""
 ) {
 
     var showProgress by rememberSaveable { mutableStateOf(false) }
     var showError by rememberSaveable { mutableStateOf(false) }
     var errorMsg by rememberSaveable { mutableStateOf("") }
 
+    var activeTimeBaseCard by rememberSaveable { mutableStateOf(true) }
+
     var questionList by rememberSaveable {
         mutableStateOf(emptyList<Question>())
     }
 
     LaunchedEffect(key1 = true) {
+        Log.d("TimerScreen: ", courseId + " " + chapterId + " " + sectionId)
         quesViewModel.getQuestions(
-            "gAIzFo3oMkeA5vtMdtHd",
-            "SPMy3zbDGh1grrxSE242",
-            "L0HhAjw2STqk8gvCYhbB"
+            courseId, chapterId, sectionId
         )
 
         quesViewModel.questionData.collect {
@@ -66,19 +76,43 @@ fun TimerScreen(
         }
     }
 
-
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(10.dp),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.SpaceAround,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
+        InfoBannerCard(
+            icon = R.drawable.ic_stopwatch,
+            titleText = "Time Base",
+            infoText = "60 Minutes | 60 Questions",
+            strokeColor = if (activeTimeBaseCard) PrimaryColor else StrokeColor,
+            bgColor = if (activeTimeBaseCard) ColorAccent else WhiteColor
+        ) {
+            activeTimeBaseCard = true
+        }
+
+        InfoBannerCard(
+            icon = R.drawable.ic_stopwatch_off,
+            titleText = "No Time Limit",
+            infoText = "60 Questions",
+            strokeColor = if (!activeTimeBaseCard) PrimaryColor else StrokeColor,
+            bgColor = if (!activeTimeBaseCard) ColorAccent else WhiteColor
+        ) {
+            activeTimeBaseCard = false
+        }
+
         PrimaryButton(
             onClick = {
-                navController.navigate(ContentNavScreen.Test.route)
+                if (questionList.size < 10) {
+                    showError = true
+                    errorMsg =
+                        "This section isn't available for Test! Please try later."
+                } else {
+                    navController.navigate(ContentNavScreen.Test.route)
+                }
             },
             buttonText = "Start"
         )

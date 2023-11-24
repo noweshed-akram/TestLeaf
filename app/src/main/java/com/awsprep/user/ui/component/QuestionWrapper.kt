@@ -3,10 +3,12 @@ package com.awsprep.user.ui.component
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -14,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.TextColor
@@ -55,16 +58,17 @@ private fun QuestionTitle(
     modifier: Modifier = Modifier,
 ) {
     Text(
-        text = title,
+        text = title.trim(),
         style = MaterialTheme.typography.titleMedium,
         color = TextColor,
         modifier = modifier
             .fillMaxWidth()
+            .width(IntrinsicSize.Max)
             .background(
                 color = ColorAccent,
                 shape = MaterialTheme.shapes.small
             )
-            .padding(vertical = 24.dp, horizontal = 16.dp)
+            .padding(vertical = 16.dp, horizontal = 16.dp)
     )
 }
 

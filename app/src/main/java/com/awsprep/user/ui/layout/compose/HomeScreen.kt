@@ -36,7 +36,7 @@ import com.awsprep.user.domain.models.NavItem
 import com.awsprep.user.navigation.BottomNavScreen
 import com.awsprep.user.navigation.BottomNavigation
 import com.awsprep.user.navigation.ContentNavScreen
-import com.awsprep.user.navigation.CurrentRoute
+import com.awsprep.user.navigation.currentRoute
 import com.awsprep.user.ui.component.AppBarWithArrow
 import com.awsprep.user.ui.component.BottomMenu
 import com.awsprep.user.ui.component.DrawerBody
@@ -112,7 +112,7 @@ fun HomeScreen(
 
     ModalNavigationDrawer(
         drawerState = drawerState,
-        scrimColor = StrokeColor.copy(.3f),
+        scrimColor = StrokeColor.copy(.5f),
         drawerContent = {
             Column {
                 DrawerHeader()
@@ -170,43 +170,46 @@ fun HomeScreen(
                         }
                     )
                 } else {
-                    if (CurrentRoute(navController = navController) == ContentNavScreen.EditProfile.route) {
+                    if (currentRoute(navController = navController) == ContentNavScreen.EditProfile.route) {
                         AppBarWithArrow(title = "Edit Profile") {
                             navController.popBackStack()
                         }
-                    } else if (CurrentRoute(navController = navController) == ContentNavScreen.Notification.route) {
+                    } else if (currentRoute(navController = navController) == ContentNavScreen.Notification.route) {
                         AppBarWithArrow(title = "Notification") {
                             navController.popBackStack()
                         }
-                    } else if (CurrentRoute(navController = navController) == ContentNavScreen.AllCourse.route) {
+                    } else if (currentRoute(navController = navController) == ContentNavScreen.AllCourse.route) {
                         AppBarWithArrow(title = "All Course") {
                             navController.popBackStack()
                         }
-                    } else if (CurrentRoute(navController = navController) == ContentNavScreen.Chapters.route) {
+                    } else if (currentRoute(navController = navController) == ContentNavScreen.Chapters.route) {
                         AppBarWithArrow(title = "Chapters") {
                             navController.popBackStack()
                         }
-                    } else if (CurrentRoute(navController = navController) == ContentNavScreen.Sections.route) {
+                    } else if (currentRoute(navController = navController) == ContentNavScreen.Sections.route.plus(
+                            ""
+                        ).plus("")
+                    ) {
                         AppBarWithArrow(title = "Sections") {
                             navController.popBackStack()
                         }
-                    } else if (CurrentRoute(navController = navController) == ContentNavScreen.ReviewQues.route) {
+                    } else if (currentRoute(navController = navController) == ContentNavScreen.ReviewQues.route) {
                         AppBarWithArrow(title = "Review Questions") {
                             navController.popBackStack()
                         }
-                    } else if (CurrentRoute(navController = navController) == ContentNavScreen.RandomSets.route) {
+                    } else if (currentRoute(navController = navController) == ContentNavScreen.RandomSets.route) {
                         AppBarWithArrow(title = "Random Sets") {
                             navController.popBackStack()
                         }
-                    } else if (CurrentRoute(navController = navController) == ContentNavScreen.PracticeSets.route) {
+                    } else if (currentRoute(navController = navController) == ContentNavScreen.PracticeSets.route) {
                         AppBarWithArrow(title = "Practice Sets") {
                             navController.popBackStack()
                         }
-                    } else if (CurrentRoute(navController = navController) == ContentNavScreen.Timer.route) {
-                        AppBarWithArrow(title = "Timer") {
+                    } else if (currentRoute(navController = navController) == ContentNavScreen.Timer.route) {
+                        AppBarWithArrow(title = "Time Selection") {
                             navController.popBackStack()
                         }
-                    } else if (CurrentRoute(navController = navController) == ContentNavScreen.Result.route) {
+                    } else if (currentRoute(navController = navController) == ContentNavScreen.Result.route) {
                         AppBarWithArrow(title = "Test Score") {
                             navController.popBackStack()
                         }

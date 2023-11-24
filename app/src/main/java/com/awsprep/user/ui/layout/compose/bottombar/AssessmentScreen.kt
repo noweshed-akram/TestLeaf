@@ -17,12 +17,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -51,6 +50,7 @@ import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.component.SetsItemView
+import com.awsprep.user.ui.component.VerticalGrid
 import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.StrokeColor
@@ -120,33 +120,31 @@ fun AssessmentScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 10.dp, vertical = 10.dp)
+            .verticalScroll(rememberScrollState())
     ) {
 
         Text(text = "Courses", style = Typography.titleLarge)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        LazyVerticalGrid(
+        VerticalGrid(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            columns = GridCells.Fixed(2),
-            userScrollEnabled = false,
-            horizontalArrangement = Arrangement.spacedBy(20.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+            columns = 2
         ) {
-            items(courseList.size) {
+            courseList.forEach { course ->
                 Box(
                     modifier = Modifier
+                        .padding(4.dp)
                         .height(150.dp)
                         .clip(RoundedCornerShape(8.dp))
                         .border(
-                            1.dp,
-                            StrokeColor,
+                            1.dp, StrokeColor,
                             RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            navController.navigate(ContentNavScreen.Chapters.route)
+                            navController.navigate(ContentNavScreen.Chapters.route.plus("/${course.docId}"))
                         }
                 ) {
                     Column(
@@ -163,7 +161,7 @@ fun AssessmentScreen(
                         ) {
                             AsyncImage(
                                 model = ImageRequest.Builder(LocalContext.current)
-                                    .data(courseList[it].icon)
+                                    .data(course.icon)
                                     .crossfade(true)
                                     .build(),
                                 contentDescription = "",
@@ -177,7 +175,7 @@ fun AssessmentScreen(
 
                         Text(
                             modifier = Modifier.padding(10.dp),
-                            text = courseList[it].name,
+                            text = course.name,
                             style = Typography.titleMedium,
                             color = Color.Black,
                             maxLines = 1
@@ -200,6 +198,7 @@ fun AssessmentScreen(
                     }
                 }
             }
+
         }
 
         Spacer(modifier = Modifier.height(24.dp))

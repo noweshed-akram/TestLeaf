@@ -35,6 +35,7 @@ class AsesmntRepositoryImpl @Inject constructor(
             for (course in courses) {
 
                 val newCourse: Course = course.toObject(Course::class.java)
+                newCourse.docId = course.id
 
                 courseList = courseList + newCourse
             }
@@ -65,6 +66,7 @@ class AsesmntRepositoryImpl @Inject constructor(
             for (chapter in chapters) {
 
                 val newChapter: Course = chapter.toObject(Course::class.java)
+                newChapter.docId = chapter.id
 
                 chapterList = chapterList + newChapter
             }
@@ -98,6 +100,7 @@ class AsesmntRepositoryImpl @Inject constructor(
             for (section in sections) {
 
                 val newSection: Course = section.toObject(Course::class.java)
+                newSection.docId = section.id
 
                 sectionList = sectionList + newSection
             }
