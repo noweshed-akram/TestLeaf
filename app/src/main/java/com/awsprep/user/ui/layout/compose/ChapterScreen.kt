@@ -79,7 +79,7 @@ fun ChapterScreen(
                 errorMsg = it.error
                 Log.d("ChapterScreen: ", it.error)
             }
-            it.data?.let {
+            it.dataList?.let {
                 showProgress = false
                 chapterList = it as List<Course>
             }

@@ -33,6 +33,7 @@ import androidx.navigation.compose.rememberNavController
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.BottomMenuContent
 import com.awsprep.user.domain.models.NavItem
+import com.awsprep.user.navigation.AuthScreen
 import com.awsprep.user.navigation.BottomNavScreen
 import com.awsprep.user.navigation.BottomNavigation
 import com.awsprep.user.navigation.ContentNavScreen
@@ -44,6 +45,7 @@ import com.awsprep.user.ui.component.DrawerHeader
 import com.awsprep.user.ui.component.HomeTopView
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.viewmodel.AsesmntViewModel
+import com.awsprep.user.viewmodel.AuthViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
 import com.awsprep.user.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
@@ -55,6 +57,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     navController: NavHostController = rememberNavController(),
+    authViewModel: AuthViewModel,
     userViewModel: UserViewModel,
     asesmntViewModel: AsesmntViewModel,
     quesViewModel: QuesViewModel
@@ -70,21 +73,9 @@ fun HomeScreen(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
 
     LaunchedEffect(key1 = true) {
-//        userViewModel.insertTestResult(
-//            "", TestResult(
-//                testType = "Course",
-//                testName = "CompTIA Security+",
-//                totalQs = "60",
-//                answered = "46",
-//                correctAnswered = "38",
-//                wrongAnswered = "22",
-//                status = "Incomplete",
-//                createdAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
-//                updatedAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
-//            )
-//        )
 
         userViewModel.getUserData()
+
         userViewModel.userData.collect { it ->
             it.data?.let {
                 userName = it.name
@@ -139,6 +130,7 @@ fun HomeScreen(
                             "log_out" -> {
                                 println("Log Out")
                                 userViewModel.logOut()
+                                navController.navigate(AuthScreen.EmailSignIn.route)
                             }
 
                             else -> {}
@@ -261,6 +253,7 @@ fun HomeScreen(
                 BottomNavigation(
                     navController = navController,
                     startDestination = BottomNavScreen.Assessment.route,
+                    authViewModel = authViewModel,
                     userViewModel = userViewModel,
                     asesmntViewModel = asesmntViewModel,
                     quesViewModel = quesViewModel

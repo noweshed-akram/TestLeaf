@@ -1,7 +1,6 @@
 package com.awsprep.user.data.repo
 
 import android.net.Uri
-import com.awsprep.user.domain.models.Question
 import com.awsprep.user.domain.models.TestResult
 import com.awsprep.user.domain.models.User
 import com.awsprep.user.domain.repositories.UserRepository
@@ -191,12 +190,10 @@ class UserRepositoryImpl @Inject constructor(
         if (firebaseAuth.currentUser != null) {
             try {
 
-                val result = userRef.document(firebaseAuth.currentUser!!.uid)
+                userRef.document(firebaseAuth.currentUser!!.uid)
                     .collection(COLL_TEST_RESULTS).document().set(testResult).await()
 
-                result?.let {
-                    emit(Resource.Success(data = testResult))
-                }
+                emit(Resource.Success(data = testResult))
 
             } catch (e: HttpException) {
                 emit(Resource.Error(message = e.localizedMessage ?: "Unknown Error"))

@@ -1,5 +1,6 @@
 package com.awsprep.user.domain.usecase
 
+import com.awsprep.user.domain.models.Feedback
 import com.awsprep.user.domain.models.Question
 import com.awsprep.user.domain.repositories.QuesRepository
 import com.awsprep.user.utils.Resource
@@ -16,8 +17,29 @@ class QuesUseCase @Inject constructor(
     suspend fun getQuestions(
         courseId: String,
         chapterId: String,
-        sectionId: String
+        sectionId: String,
+        limit: Long
     ): Flow<Resource<List<Question>>> {
-        return quesRepository.getQuestions(courseId, chapterId, sectionId)
+        return quesRepository.getQuestions(courseId, chapterId, sectionId, limit)
+    }
+
+    suspend fun addToReviewQues(
+        question: Question
+    ): Flow<Resource<Question>> {
+        return quesRepository.addToReviewQues(question)
+    }
+
+    suspend fun getReviewQues(): Flow<Resource<List<Question>>> {
+        return quesRepository.getReviewQues()
+    }
+
+    suspend fun deleteReviewQues(quesId: String): Flow<Resource<Question>> {
+        return quesRepository.deleteReviewQues(quesId)
+    }
+
+    suspend fun sendQuesFeedback(
+        feedback: Feedback
+    ): Flow<Resource<Feedback>> {
+        return quesRepository.sendQuesFeedback(feedback)
     }
 }

@@ -84,10 +84,12 @@ object FirebaseModule {
     @Singleton
     @Provides
     fun providesQuesRepository(
+        firebaseAuth: FirebaseAuth,
         firebaseFirestore: FirebaseFirestore,
-        firebaseStorage: FirebaseStorage,
+        userRef: CollectionReference,
+        firebaseStorage: FirebaseStorage
     ): QuesRepository = QuesRepositoryImpl(
-        firebaseFirestore, firebaseStorage
+        firebaseAuth, firebaseFirestore, userRef, firebaseStorage
     )
 
 }

@@ -13,6 +13,8 @@ object AppConstant {
     const val COLL_SECTIONS = "sections"
     const val COLL_QUESTIONS = "questions"
     const val COLL_TEST_RESULTS = "test_results"
+    const val COLL_REVIEW_QUES = "review_ques"
+    const val COLL_FEEDBACK = "feedback"
 
     // Storage Reference
     const val STORAGE_PROFILE_PIC = "profile_pic"

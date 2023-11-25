@@ -6,12 +6,14 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.awsprep.user.domain.models.Feedback
 import com.awsprep.user.domain.models.Question
 import com.awsprep.user.domain.models.QuestionIndexData
 import com.awsprep.user.domain.models.ResponseState
 import com.awsprep.user.domain.usecase.QuesUseCase
 import com.awsprep.user.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -59,12 +61,13 @@ class QuesViewModel @Inject constructor(
     fun getQuestions(
         courseId: String,
         chapterId: String,
-        sectionId: String
+        sectionId: String,
+        limit: Long
     ) {
 
         Log.d("questionOrder: ", questionOrder.toString())
         viewModelScope.launch {
-            quesUseCase.getQuestions(courseId, chapterId, sectionId).onEach {
+            quesUseCase.getQuestions(courseId, chapterId, sectionId, limit).onEach {
                 when (it) {
                     is Resource.Loading -> {
                         Log.d("getQuestions: ", it.data.toString())
@@ -78,6 +81,103 @@ class QuesViewModel @Inject constructor(
 
                     is Resource.Success -> {
                         Log.d("getQuestions: ", it.data.toString())
+                        _questionData.value = ResponseState(dataList = it.data)
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
+
+
+    fun addToReviewQues(
+        question: Question
+    ) {
+        viewModelScope.launch {
+            quesUseCase.addToReviewQues(question).onEach {
+                when (it) {
+                    is Resource.Loading -> {
+                        Log.d("addToReviewQues: ", it.data.toString())
+                        _questionData.value = ResponseState(isLoading = true)
+                    }
+
+                    is Resource.Error -> {
+                        Log.d("addToReviewQues: ", it.data.toString())
+                        _questionData.value = ResponseState(error = it.message ?: "")
+                    }
+
+                    is Resource.Success -> {
+                        Log.d("addToReviewQues: ", it.data.toString())
+                        _questionData.value = ResponseState(data = it.data)
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
+
+    fun getReviewQues() {
+        viewModelScope.launch {
+            quesUseCase.getReviewQues().onEach {
+                when (it) {
+                    is Resource.Loading -> {
+                        Log.d("getQuestions: ", it.data.toString())
+                        _questionData.value = ResponseState(isLoading = true)
+                    }
+
+                    is Resource.Error -> {
+                        Log.d("getQuestions: ", it.data.toString())
+                        _questionData.value = ResponseState(error = it.message ?: "")
+                    }
+
+                    is Resource.Success -> {
+                        Log.d("getQuestions: ", it.data.toString())
+                        _questionData.value = ResponseState(dataList = it.data)
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
+
+    fun deleteReviewQues(quesId: String) {
+        viewModelScope.launch {
+            quesUseCase.deleteReviewQues(quesId).onEach {
+                when (it) {
+                    is Resource.Loading -> {
+                        Log.d("getQuestions: ", it.data.toString())
+                        _questionData.value = ResponseState(isLoading = true)
+                    }
+
+                    is Resource.Error -> {
+                        Log.d("getQuestions: ", it.data.toString())
+                        _questionData.value = ResponseState(error = it.message ?: "")
+                    }
+
+                    is Resource.Success -> {
+                        Log.d("getQuestions: ", it.data.toString())
+                        _questionData.value = ResponseState(data = it.data)
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
+
+    fun sendQuesFeedback(
+        feedback: Feedback
+    ) {
+        viewModelScope.launch {
+            quesUseCase.sendQuesFeedback(feedback).onEach {
+                when (it) {
+                    is Resource.Loading -> {
+                        Log.d("sendQuesFeedback: ", it.data.toString())
+                        _questionData.value = ResponseState(isLoading = true)
+                    }
+
+                    is Resource.Error -> {
+                        Log.d("sendQuesFeedback: ", it.data.toString())
+                        _questionData.value = ResponseState(error = it.message ?: "")
+                    }
+
+                    is Resource.Success -> {
+                        Log.d("sendQuesFeedback: ", it.data.toString())
                         _questionData.value = ResponseState(data = it.data)
                     }
                 }

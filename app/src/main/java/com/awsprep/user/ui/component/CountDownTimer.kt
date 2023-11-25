@@ -34,7 +34,7 @@ fun CountDownTimer(
         override fun onTick(millisUntilFinished: Long) {
             Log.d("TAG", "onTick: $millisUntilFinished")
 
-            timeData.value = millisUntilFinished
+            timeData.longValue = millisUntilFinished
         }
 
         override fun onFinish() {
@@ -51,12 +51,12 @@ fun CountDownTimer(
     }
 
     Text(
-        text = if (timeData.value > 1000) String.format(
+        text = if (timeData.longValue > 1000) String.format(
             "%02d:%02d",
-            (timeData.value / (1000 * 60) % 60),
-            (timeData.value / 1000) % 60
+            (timeData.longValue / (1000 * 60) % 60),
+            (timeData.longValue / 1000) % 60
         ) else "Time's Up",
-        color = if (timeData.value > 600000) {
+        color = if (timeData.longValue > 600000) {
             TextColor
         } else {
             ErrorColor

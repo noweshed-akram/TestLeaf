@@ -109,7 +109,7 @@ fun AssessmentScreen(
                 errorMsg = it.error
                 Log.d("AssessmentScreen: ", it.error)
             }
-            it.data?.let {
+            it.dataList?.let {
                 showProgress = false
                 courseList = it as List<Course>
             }

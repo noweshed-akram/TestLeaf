@@ -54,7 +54,7 @@ fun TimerScreen(
     LaunchedEffect(key1 = true) {
         Log.d("TimerScreen: ", courseId + " " + chapterId + " " + sectionId)
         quesViewModel.getQuestions(
-            courseId, chapterId, sectionId
+            courseId, chapterId, sectionId, 30
         )
 
         quesViewModel.questionData.collect {
@@ -68,7 +68,7 @@ fun TimerScreen(
                 errorMsg = it.error
                 Log.d("SectionScreen: ", it.error)
             }
-            it.data?.let {
+            it.dataList?.let {
                 showProgress = false
                 questionList = it as List<Question>
                 quesViewModel.questionOrder = questionList
@@ -87,7 +87,7 @@ fun TimerScreen(
         InfoBannerCard(
             icon = R.drawable.ic_stopwatch,
             titleText = "Time Base",
-            infoText = "60 Minutes | 60 Questions",
+            infoText = "30 Minutes | 30 Questions",
             strokeColor = if (activeTimeBaseCard) PrimaryColor else StrokeColor,
             bgColor = if (activeTimeBaseCard) ColorAccent else WhiteColor
         ) {
@@ -97,7 +97,7 @@ fun TimerScreen(
         InfoBannerCard(
             icon = R.drawable.ic_stopwatch_off,
             titleText = "No Time Limit",
-            infoText = "60 Questions",
+            infoText = "30 Questions",
             strokeColor = if (!activeTimeBaseCard) PrimaryColor else StrokeColor,
             bgColor = if (!activeTimeBaseCard) ColorAccent else WhiteColor
         ) {
@@ -108,10 +108,9 @@ fun TimerScreen(
             onClick = {
                 if (questionList.size < 10) {
                     showError = true
-                    errorMsg =
-                        "This section isn't available for Test! Please try later."
+                    errorMsg = "This section isn't available for Test! Please try later."
                 } else {
-                    navController.navigate(ContentNavScreen.Test.route)
+                    navController.navigate(ContentNavScreen.Test.route.plus("/${activeTimeBaseCard}"))
                 }
             },
             buttonText = "Start"

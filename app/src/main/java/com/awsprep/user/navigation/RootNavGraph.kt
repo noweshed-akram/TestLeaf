@@ -37,6 +37,7 @@ fun RootNavGraph(
 
         composable(Graph.HOME) {
             HomeScreen(
+                authViewModel = authViewModel,
                 userViewModel = userViewModel,
                 asesmntViewModel = asesmntViewModel,
                 quesViewModel = quesViewModel

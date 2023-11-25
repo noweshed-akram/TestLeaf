@@ -11,4 +11,18 @@ fun ResultScreen(
     userViewModel: UserViewModel
 ) {
 
+    //        userViewModel.insertTestResult(
+//            "", TestResult(
+//                testType = "Course",
+//                testName = "CompTIA Security+",
+//                totalQs = "60",
+//                answered = "46",
+//                correctAnswered = "38",
+//                wrongAnswered = "22",
+//                status = "Incomplete",
+//                createdAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
+//                updatedAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
+//            )
+//        )
+
 }

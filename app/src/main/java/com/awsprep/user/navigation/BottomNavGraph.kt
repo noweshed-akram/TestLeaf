@@ -13,6 +13,7 @@ import com.awsprep.user.ui.layout.compose.bottombar.DefinitionScreen
 import com.awsprep.user.ui.layout.compose.bottombar.PractisesScreen
 import com.awsprep.user.ui.layout.compose.bottombar.MyProfileScreen
 import com.awsprep.user.viewmodel.AsesmntViewModel
+import com.awsprep.user.viewmodel.AuthViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
 import com.awsprep.user.viewmodel.UserViewModel
 
@@ -24,6 +25,7 @@ fun BottomNavigation(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startDestination: String = BottomNavScreen.Assessment.route,
+    authViewModel: AuthViewModel,
     userViewModel: UserViewModel,
     asesmntViewModel: AsesmntViewModel,
     quesViewModel: QuesViewModel
@@ -74,6 +76,11 @@ fun BottomNavigation(
             userViewModel = userViewModel,
             asesmntViewModel = asesmntViewModel,
             quesViewModel = quesViewModel
+        )
+
+        AuthNavGraph(
+            navController = navController,
+            authViewModel = authViewModel
         )
     }
 }

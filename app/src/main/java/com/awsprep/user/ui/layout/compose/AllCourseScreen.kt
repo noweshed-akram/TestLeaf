@@ -76,7 +76,7 @@ fun AllCourseScreen(
                 errorMsg = it.error
                 Log.d("AssessmentScreen: ", it.error)
             }
-            it.data?.let {
+            it.dataList?.let {
                 showProgress = false
                 courseList = it as List<Course>
             }
@@ -106,7 +106,7 @@ fun AllCourseScreen(
                             RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            navController.navigate(ContentNavScreen.Chapters.route)
+                            navController.navigate(ContentNavScreen.Chapters.route.plus("/${courseList[it].docId}"))
                         }
                 ) {
                     Column(

@@ -49,7 +49,7 @@ class AsesmntViewModel @Inject constructor(
 
                     is Resource.Success -> {
                         Log.d("getCourseList: ", it.data.toString())
-                        _coursesData.value = ResponseState(data = it.data)
+                        _coursesData.value = ResponseState(dataList = it.data)
                     }
                 }
             }.launchIn(viewModelScope)
@@ -72,7 +72,7 @@ class AsesmntViewModel @Inject constructor(
 
                     is Resource.Success -> {
                         Log.d("getChapterList: ", it.data.toString())
-                        _chaptersData.value = ResponseState(data = it.data)
+                        _chaptersData.value = ResponseState(dataList = it.data)
                     }
                 }
             }.launchIn(viewModelScope)
@@ -95,7 +95,7 @@ class AsesmntViewModel @Inject constructor(
 
                     is Resource.Success -> {
                         Log.d("getSectionList: ", it.data.toString())
-                        _sectionsData.value = ResponseState(data = it.data)
+                        _sectionsData.value = ResponseState(dataList = it.data)
                     }
                 }
             }.launchIn(viewModelScope)

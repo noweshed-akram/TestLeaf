@@ -80,7 +80,7 @@ fun SectionScreen(
                 errorMsg = it.error
                 Log.d("SectionScreen: ", it.error)
             }
-            it.data?.let {
+            it.dataList?.let {
                 showProgress = false
                 sectionsList = it as List<Course>
             }

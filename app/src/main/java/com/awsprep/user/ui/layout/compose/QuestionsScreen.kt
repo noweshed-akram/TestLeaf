@@ -1,6 +1,9 @@
 package com.awsprep.user.ui.layout.compose
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,10 +13,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Feedback
-import androidx.compose.material.icons.outlined.RotateLeft
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -28,52 +35,148 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.QuestionIndexData
 import com.awsprep.user.ui.component.CountDownTimer
+import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.SecondaryColor
+import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.Typography
+import com.awsprep.user.ui.theme.WhiteColor
+import kotlinx.coroutines.launch
 
 /**
  * Created by Md. Noweshed Akram on 14/11/23.
  */
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun QuestionsScreen(
     questionIndexData: QuestionIndexData,
     isNextEnabled: Boolean,
+    activeTimer: Boolean = true,
     onBackPressed: () -> Unit,
+    onClickToAddReviewQs: () -> Unit,
+    onFeedbackSend: (feedback: String) -> Unit,
     onPreviousPressed: () -> Unit,
     onNextPressed: () -> Unit,
     onSubmitPressed: () -> Unit,
     content: @Composable (PaddingValues) -> Unit,
 ) {
 
-    Scaffold(
-        topBar = {
-            QuestionTopAppBar(
-                onBackPressed = onBackPressed,
-                questionIndex = questionIndexData.questionIndex,
-                totalQuestionsCount = questionIndexData.questionCount
-            )
-        },
-        content = content,
-        bottomBar = {
-            QuestionBottomBar(
-                shouldShowPreviousButton = questionIndexData.shouldShowPreviousButton,
-                shouldShowDoneButton = questionIndexData.shouldShowDoneButton,
-                isNextButtonEnabled = isNextEnabled,
-                onPreviousPressed = onPreviousPressed,
-                onNextPressed = onNextPressed,
-                onSubmitPressed = onSubmitPressed
-            )
-        }
+    val coroutineScope = rememberCoroutineScope()
+    var feedbackMsg by rememberSaveable { mutableStateOf("") }
+    val modalSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        confirmValueChange = { it != ModalBottomSheetValue.HalfExpanded },
+        skipHalfExpanded = false
     )
+
+    ModalBottomSheetLayout(
+        sheetState = modalSheetState,
+        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+        sheetContent = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                Text(text = "Please share your feedback", style = Typography.titleMedium)
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                TextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(250.dp)
+                        .background(
+                            color = WhiteColor,
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .border(
+                            border = BorderStroke(1.dp, color = StrokeColor),
+                            shape = RoundedCornerShape(8.dp)
+                        ),
+                    placeholder = {
+                        Text(text = "write us your feedback...")
+                    },
+                    value = feedbackMsg,
+                    onValueChange = { value ->
+                        feedbackMsg = value
+                    },
+                    shape = RoundedCornerShape(8.dp),
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = StrokeColor,
+                        cursorColor = SecondaryColor,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                PrimaryButton(
+                    onClick = {
+                        if (feedbackMsg.isNotEmpty()) {
+                            coroutineScope.launch {
+                                if (modalSheetState.isVisible)
+                                    modalSheetState.hide()
+
+                                onFeedbackSend(feedbackMsg)
+                            }
+                        }
+                    },
+                    buttonText = "Send"
+                )
+
+            }
+        }) {
+        Scaffold(
+            topBar = {
+                QuestionTopAppBar(
+                    onBackPressed = onBackPressed,
+                    onClickToAddReviewQs = onClickToAddReviewQs,
+                    onClickFeedback = {
+                        coroutineScope.launch {
+                            if (modalSheetState.isVisible)
+                                modalSheetState.hide()
+                            else
+                                modalSheetState.show() //(ModalBottomSheetValue.Expanded)
+                        }
+                    },
+                    activeTimer = activeTimer,
+                    questionIndex = questionIndexData.questionIndex,
+                    totalQuestionsCount = questionIndexData.questionCount
+                )
+            },
+            content = content,
+            bottomBar = {
+                QuestionBottomBar(
+                    shouldShowPreviousButton = questionIndexData.shouldShowPreviousButton,
+                    shouldShowDoneButton = questionIndexData.shouldShowDoneButton,
+                    isNextButtonEnabled = isNextEnabled,
+                    onPreviousPressed = onPreviousPressed,
+                    onNextPressed = onNextPressed,
+                    onSubmitPressed = onSubmitPressed
+                )
+            }
+        )
+    }
+
 }
 
 @Composable
@@ -96,10 +199,13 @@ private fun TopAppBarTitle(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class) // CenterAlignedTopAppBar is experimental in m3
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestionTopAppBar(
     onBackPressed: () -> Unit,
+    onClickToAddReviewQs: () -> Unit,
+    onClickFeedback: () -> Unit,
+    activeTimer: Boolean = false,
     questionIndex: Int,
     totalQuestionsCount: Int
 ) {
@@ -129,7 +235,9 @@ fun QuestionTopAppBar(
             actions = {
 
                 IconButton(
-                    onClick = {},
+                    onClick = {
+                        onClickToAddReviewQs()
+                    },
                     modifier = Modifier.padding(2.dp)
                 ) {
                     Icon(
@@ -139,22 +247,27 @@ fun QuestionTopAppBar(
                     )
                 }
 
-                IconButton(
-                    onClick = {}
-                ) {
-                    Icon(
-                        Icons.Outlined.RotateLeft,
-                        contentDescription = "recheck",
-                        tint = SecondaryColor
-                    )
-                }
+                // TODO recheck question later
+//                IconButton(
+//                    onClick = {
+//
+//                    }
+//                ) {
+//                    Icon(
+//                        Icons.Outlined.RotateLeft,
+//                        contentDescription = "recheck",
+//                        tint = SecondaryColor
+//                    )
+//                }
 
                 IconButton(
-                    onClick = {},
+                    onClick = {
+                        onClickFeedback()
+                    },
                     modifier = Modifier.padding(2.dp)
                 ) {
                     Icon(
-                        Icons.Outlined.Feedback,
+                        painterResource(id = R.drawable.ic_feedback),
                         contentDescription = "send_feedback",
                         tint = SecondaryColor
                     )
@@ -176,22 +289,24 @@ fun QuestionTopAppBar(
 
         Spacer(Modifier.height(8.dp))
 
-        Box(
-            modifier = Modifier
-                .align(Alignment.End)
-                .padding(horizontal = 20.dp)
-        )
-        {
-            Row(verticalAlignment = Alignment.Bottom) {
-                Text(
-                    text = "Time Remains: ",
-                    style = Typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface
-                        .copy(alpha = 0.87f),
-                )
-                CountDownTimer(timeInMillisecond = 650000)
-            }
+        if (activeTimer) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(horizontal = 20.dp)
+            )
+            {
+                Row(verticalAlignment = Alignment.Bottom) {
+                    Text(
+                        text = "Time Remains: ",
+                        style = Typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface
+                            .copy(alpha = 0.87f),
+                    )
+                    CountDownTimer(timeInMillisecond = 1800000) // multiply the time value by 60000
+                }
 
+            }
         }
 
     }

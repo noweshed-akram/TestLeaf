@@ -134,7 +134,7 @@ fun NavGraphBuilder.ContentNavGraph(
         }
 
         composable(ContentNavScreen.ReviewQues.route) {
-            ReviewQuesScreen(navController = navController)
+            ReviewQuesScreen(navController = navController, quesViewModel = quesViewModel)
         }
 
         composable(ContentNavScreen.RandomSets.route) {
@@ -145,19 +145,33 @@ fun NavGraphBuilder.ContentNavGraph(
             PracticeSetsScreen()
         }
 
-        composable(ContentNavScreen.Test.route) {
-            TestScreen(
-                onBackPressed = {
-                    navController.navigate(Graph.HOME) {
-                        popUpTo(ContentNavScreen.Test.route)
-                    }
-                },
-                onSubmitAnswers = {
-                    navController.navigate(ContentNavScreen.Result.route) {
-                        popUpTo(ContentNavScreen.Test.route)
-                    }
-                }, quesViewModel = quesViewModel
+        composable(
+            ContentNavScreen.Test.route.plus(ContentNavScreen.Test.objectPath),
+            arguments = listOf(
+                navArgument(ContentNavScreen.Test.objectName) {
+                    type = NavType.BoolType
+                }
             )
+        ) {
+
+            val activeTimer = it.arguments?.getBoolean(ContentNavScreen.Test.objectName, true)
+
+            activeTimer?.let {
+                TestScreen(
+                    onBackPressed = {
+                        navController.navigate(Graph.HOME) {
+                            popUpTo(ContentNavScreen.Test.route)
+                        }
+                    },
+                    onSubmitAnswers = {
+                        navController.navigate(ContentNavScreen.Result.route) {
+                            popUpTo(ContentNavScreen.Test.route)
+                        }
+                    },
+                    activeTimer = it,
+                    quesViewModel = quesViewModel
+                )
+            }
         }
 
         composable(ContentNavScreen.Result.route) {

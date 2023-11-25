@@ -33,10 +33,14 @@ sealed class ContentNavScreen(
         objectNameThree = "sectionId", objectPathThree = "/{sectionId}",
     )
 
+    object Test : ContentNavScreen(
+        route = "test_screen",
+        objectName = "activeTimer",
+        objectPath = "/{activeTimer}",
+    )
+
     object ReviewQues : ContentNavScreen(route = "review_ques_screen")
     object RandomSets : ContentNavScreen(route = "random_sets_screen")
     object PracticeSets : ContentNavScreen(route = "practice_sets_screen")
-
-    object Test : ContentNavScreen(route = "test_screen")
     object Result : ContentNavScreen(route = "result_screen")
 }
