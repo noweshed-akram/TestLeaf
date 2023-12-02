@@ -13,6 +13,7 @@ import com.awsprep.user.ui.layout.compose.EditProfileScreen
 import com.awsprep.user.ui.layout.compose.NotificationScreen
 import com.awsprep.user.ui.layout.compose.PracticeSetsScreen
 import com.awsprep.user.ui.layout.compose.RandomSetsScreen
+import com.awsprep.user.ui.layout.compose.ResultDashboard
 import com.awsprep.user.ui.layout.compose.ResultScreen
 import com.awsprep.user.ui.layout.compose.ReviewQuesScreen
 import com.awsprep.user.ui.layout.compose.TestScreen
@@ -176,6 +177,10 @@ fun NavGraphBuilder.ContentNavGraph(
 
         composable(ContentNavScreen.Result.route) {
             ResultScreen(userViewModel = userViewModel)
+        }
+
+        composable(ContentNavScreen.ResultDashboard.route) {
+            ResultDashboard(navController = navController, userViewModel = userViewModel)
         }
 
     }

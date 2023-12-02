@@ -149,7 +149,7 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getTestResult(userUid: String): Flow<Resource<List<TestResult>>> = flow {
+    override suspend fun getTestResult(): Flow<Resource<List<TestResult>>> = flow {
         emit(Resource.Loading())
         if (firebaseAuth.currentUser != null) {
             try {
@@ -183,7 +183,6 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insertTestResult(
-        userUid: String,
         testResult: TestResult
     ): Flow<Resource<TestResult>> = flow {
         emit(Resource.Loading())

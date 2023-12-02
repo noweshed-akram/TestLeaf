@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -26,11 +26,11 @@ import com.awsprep.user.ui.theme.Typography
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBarWithArrow(
-    scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
+    scrollBehavior: TopAppBarScrollBehavior,
     title: String = "",
     pressOnBack: () -> Unit
 ) {
-    TopAppBar(
+    MediumTopAppBar(
         title = {
             Row(
                 horizontalArrangement = Arrangement.Start,
@@ -49,7 +49,10 @@ fun AppBarWithArrow(
                 )
             }
         },
-        colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = PrimaryColor),
+        colors = topAppBarColors(
+            containerColor = PrimaryColor,
+            scrolledContainerColor = PrimaryColor
+        ),
         scrollBehavior = scrollBehavior
     )
 

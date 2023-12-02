@@ -15,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.Question
@@ -27,6 +28,7 @@ import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.WhiteColor
 import com.awsprep.user.viewmodel.QuesViewModel
+import com.awsprep.user.viewmodel.TestViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 /**
@@ -44,6 +46,8 @@ fun TimerScreen(
     var showProgress by rememberSaveable { mutableStateOf(false) }
     var showError by rememberSaveable { mutableStateOf(false) }
     var errorMsg by rememberSaveable { mutableStateOf("") }
+
+    val testViewModel: TestViewModel = viewModel()
 
     var activeTimeBaseCard by rememberSaveable { mutableStateOf(true) }
 
@@ -71,7 +75,7 @@ fun TimerScreen(
             it.dataList?.let {
                 showProgress = false
                 questionList = it as List<Question>
-                quesViewModel.questionOrder = questionList
+                testViewModel.questionOrder = questionList
             }
         }
     }

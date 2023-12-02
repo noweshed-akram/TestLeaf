@@ -88,7 +88,10 @@ fun RadioButtonWithImageRow(
             verticalAlignment = Alignment.CenterVertically
         ) {
             RadioButton(
-                selected, onClick = { },
+                selected,
+                onClick = {
+                    onOptionSelected()
+                },
                 colors = RadioButtonDefaults.colors(
                     selectedColor = WhiteColor,
                     unselectedColor = GreyColor

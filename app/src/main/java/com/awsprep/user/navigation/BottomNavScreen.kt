@@ -4,9 +4,7 @@ package com.awsprep.user.navigation
  * Created by noweshedakram on 16/8/23.
  */
 sealed class BottomNavScreen(
-    val route: String,
-    val objectName: String = "",
-    val objectPath: String = ""
+    val route: String
 ) {
     object Assessment : BottomNavScreen(route = "assessment_screen")
     object Practices : BottomNavScreen(route = "practices_screen")

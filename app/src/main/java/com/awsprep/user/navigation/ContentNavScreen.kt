@@ -43,4 +43,5 @@ sealed class ContentNavScreen(
     object RandomSets : ContentNavScreen(route = "random_sets_screen")
     object PracticeSets : ContentNavScreen(route = "practice_sets_screen")
     object Result : ContentNavScreen(route = "result_screen")
+    object ResultDashboard : ContentNavScreen(route = "result_dashboard_screen")
 }

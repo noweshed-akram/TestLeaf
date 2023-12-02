@@ -49,6 +49,7 @@ fun ReviewQuesScreen(
     }
 
     LaunchedEffect(key1 = true) {
+
         quesViewModel.getReviewQues()
 
         quesViewModel.questionData.collect {

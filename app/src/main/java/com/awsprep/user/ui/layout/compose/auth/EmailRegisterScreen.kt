@@ -61,7 +61,6 @@ import kotlinx.coroutines.launch
 /**
  * Created by noweshedakram on 17/7/23.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmailRegisterScreen(
     navController: NavController,

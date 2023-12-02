@@ -28,9 +28,9 @@ interface UserRepository {
     /**
      * Test Result
      */
-    suspend fun getTestResult(userUid: String): Flow<Resource<List<TestResult>>>
+    suspend fun getTestResult(): Flow<Resource<List<TestResult>>>
 
-    suspend fun insertTestResult(userUid: String, testResult: TestResult): Flow<Resource<TestResult>>
+    suspend fun insertTestResult(testResult: TestResult): Flow<Resource<TestResult>>
 
     /**
      * Sign Out

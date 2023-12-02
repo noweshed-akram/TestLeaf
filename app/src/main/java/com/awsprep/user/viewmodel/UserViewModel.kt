@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.awsprep.user.domain.models.ResponseState
 import com.awsprep.user.domain.models.TestResult
 import com.awsprep.user.domain.models.User
 import com.awsprep.user.domain.models.UserState
@@ -31,6 +32,9 @@ class UserViewModel @Inject constructor(
 
     private val _userData = MutableStateFlow(UserState())
     val userData: StateFlow<UserState> = _userData
+
+    private val _resultData = MutableStateFlow(ResponseState())
+    val resultData: StateFlow<ResponseState> = _resultData
 
     fun getUserData() {
         userUseCase.getUserData().onEach {
@@ -95,22 +99,23 @@ class UserViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun getTestResult(userUid: String) {
+    fun getTestResult() {
         viewModelScope.launch {
-            userUseCase.getTestResult(userUid).onEach {
+            userUseCase.getTestResult().onEach {
                 when (it) {
                     is Resource.Loading -> {
-                        Log.d("getUserData: ", it.data.toString())
-                        _userData.value = UserState(isLoading = true)
+                        Log.d("getTestResult: ", it.data.toString())
+                        _resultData.value = ResponseState(isLoading = true)
                     }
 
                     is Resource.Error -> {
-                        Log.d("getUserData: ", it.data.toString())
-                        _userData.value = UserState(error = it.message ?: "")
+                        Log.d("getTestResult: ", it.data.toString())
+                        _resultData.value = ResponseState(error = it.message ?: "")
                     }
 
                     is Resource.Success -> {
-                        Log.d("getUserData: ", it.data.toString())
+                        Log.d("getTestResult: ", it.data.toString())
+                        _resultData.value = ResponseState(dataList = it.data)
                     }
                 }
             }.launchIn(viewModelScope)
@@ -118,24 +123,24 @@ class UserViewModel @Inject constructor(
     }
 
     fun insertTestResult(
-        userUid: String,
         testResult: TestResult
     ) {
         viewModelScope.launch {
-            userUseCase.insertTestResult(userUid, testResult).onEach {
+            userUseCase.insertTestResult(testResult).onEach {
                 when (it) {
                     is Resource.Loading -> {
-                        Log.d("getUserData: ", it.data.toString())
-                        _userData.value = UserState(isLoading = true)
+                        Log.d("insertTestResult: ", it.data.toString())
+                        _resultData.value = ResponseState(isLoading = true)
                     }
 
                     is Resource.Error -> {
-                        Log.d("getUserData: ", it.data.toString())
-                        _userData.value = UserState(error = it.message ?: "")
+                        Log.d("insertTestResult: ", it.data.toString())
+                        _resultData.value = ResponseState(error = it.message ?: "")
                     }
 
                     is Resource.Success -> {
-                        Log.d("getUserData: ", it.data.toString())
+                        Log.d("insertTestResult: ", it.data.toString())
+                        _resultData.value = ResponseState(data = it.data)
                     }
                 }
             }.launchIn(viewModelScope)

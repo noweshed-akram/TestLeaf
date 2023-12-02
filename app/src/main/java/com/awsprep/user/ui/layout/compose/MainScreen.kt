@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +26,7 @@ import com.awsprep.user.viewmodel.UserViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
+    scrollBehavior: TopAppBarScrollBehavior,
     navController: NavHostController,
     authViewModel: AuthViewModel,
     userViewModel: UserViewModel,
@@ -36,7 +38,10 @@ fun MainScreen(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             if (currentRoute(navController = navController) == AuthScreen.ForgotPassword.route) {
-                AppBarWithArrow(title = "Forgot Password") {
+                AppBarWithArrow(
+                    scrollBehavior = scrollBehavior,
+                    title = "Forgot Password"
+                ) {
                     navController.popBackStack()
                 }
             }
@@ -56,6 +61,7 @@ fun MainScreen(
             }
 
             RootNavGraph(
+                scrollBehavior = scrollBehavior,
                 navController = navController,
                 startDestination = startDestination,
                 authViewModel = authViewModel,

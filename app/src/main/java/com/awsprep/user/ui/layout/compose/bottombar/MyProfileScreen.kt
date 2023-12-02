@@ -3,9 +3,6 @@ package com.awsprep.user.ui.layout.compose.bottombar
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -16,13 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -40,33 +34,29 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import co.yml.charts.common.model.PlotType
-import co.yml.charts.ui.piechart.charts.DonutPieChart
-import co.yml.charts.ui.piechart.models.PieChartConfig
-import co.yml.charts.ui.piechart.models.PieChartData
 import coil.compose.AsyncImage
 import com.awsprep.user.R
+import com.awsprep.user.domain.models.TestResult
 import com.awsprep.user.navigation.ContentNavScreen
+import com.awsprep.user.ui.component.BarChartView
+import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.component.SetsItemView
 import com.awsprep.user.ui.theme.ColorAccent
-import com.awsprep.user.ui.theme.ErrorColor
-import com.awsprep.user.ui.theme.ErrorColorLight
 import com.awsprep.user.ui.theme.GreyColor
 import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.SecondaryColor
-import com.awsprep.user.ui.theme.SecondaryColorLight
-import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.Typography
+import com.awsprep.user.ui.theme.WhiteColor
 import com.awsprep.user.viewmodel.UserViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 /**
  * Created by Md. Noweshed Akram on 10/11/23.
  */
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MyProfileScreen(
     navController: NavController, userViewModel: UserViewModel
@@ -81,8 +71,11 @@ fun MyProfileScreen(
     var showError by rememberSaveable { mutableStateOf(false) }
     var errorMsg by rememberSaveable { mutableStateOf("") }
 
+    var resultList by rememberSaveable {
+        mutableStateOf(emptyList<TestResult>())
+    }
+
     LaunchedEffect(key1 = true) {
-        userViewModel.getUserData()
 
         userViewModel.userData.collect {
             if (it.isLoading) {
@@ -94,6 +87,7 @@ fun MyProfileScreen(
                 showError = true
                 errorMsg = it.error
                 Log.d("EmailSignScreen: ", it.error)
+                userViewModel.getUserData()
             }
             it.data?.let {
                 showProgress = false
@@ -104,6 +98,29 @@ fun MyProfileScreen(
             }
         }
 
+    }
+
+    LaunchedEffect(key1 = true) {
+
+        userViewModel.getTestResult()
+
+        userViewModel.resultData.collect {
+            if (it.isLoading) {
+                showProgress = true
+                Log.d("getTestResult: ", "Loading")
+            }
+            if (it.error.isNotBlank()) {
+                showProgress = false
+                showError = true
+                errorMsg = it.error
+                Log.d("getTestResult: ", it.error)
+            }
+            it.dataList?.let {
+                showProgress = false
+                resultList = it as List<TestResult>
+                Log.d("getTestResult: ", resultList.toString())
+            }
+        }
     }
 
     Column(
@@ -118,7 +135,10 @@ fun MyProfileScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(
-            modifier = Modifier.background(color = ColorAccent, shape = RoundedCornerShape(8.dp)),
+            modifier = Modifier.background(
+                color = ColorAccent,
+                shape = RoundedCornerShape(8.dp)
+            ),
             verticalAlignment = Alignment.CenterVertically
         ) {
 
@@ -147,8 +167,7 @@ fun MyProfileScreen(
             IconButton(
                 modifier = Modifier
                     .padding(8.dp)
-                    .wrapContentSize()
-                    .background(SecondaryColor, RoundedCornerShape(8.dp)),
+                    .background(SecondaryColor, CircleShape),
                 onClick = {
                     navController.navigate(ContentNavScreen.EditProfile.route)
                 }) {
@@ -171,7 +190,7 @@ fun MyProfileScreen(
         SetsItemView(
             setsIcon = R.drawable.ic_review_ques,
             title = "Review Questions",
-            subTitle = "Find review questions from your test"
+            subTitle = "explore review questions from your test"
         ) {
             navController.navigate(ContentNavScreen.ReviewQues.route)
         }
@@ -182,301 +201,31 @@ fun MyProfileScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Box(
-            modifier = Modifier
-                .wrapContentHeight()
-                .clip(RoundedCornerShape(8.dp))
-                .border(
-                    1.dp,
-                    StrokeColor,
-                    RoundedCornerShape(8.dp)
-                )
-                .clickable {
+        BarChartView(
+            resultList = resultList
+        )
 
-                }
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column(
-                        modifier = Modifier.weight(1.0f)
-                    ) {
-
-                        Text(
-                            modifier = Modifier.padding(10.dp),
-                            text = "Random",
-                            style = Typography.bodySmall,
-                            color = GreyColor,
-                            maxLines = 1
-                        )
-
-                        Text(
-                            modifier = Modifier.padding(horizontal = 10.dp),
-                            text = "AWS Trusted Advisor",
-                            style = Typography.titleMedium,
-                            color = PrimaryColor,
-                            maxLines = 1
-                        )
-                    }
-
-                    val donutChartData = PieChartData(
-                        slices = listOf(
-                            PieChartData.Slice("Correct", 70f, Color(0xFF20BF55)),
-                            PieChartData.Slice("Wrong", 30f, Color(0xFFF53844))
-                        ),
-                        plotType = PlotType.Donut
-                    )
-
-                    val donutChartConfig = PieChartConfig(
-                        strokeWidth = 16f,
-                        activeSliceAlpha = .9f,
-                        isAnimationEnable = false
-                    )
-
-                    DonutPieChart(
-                        modifier = Modifier
-                            .width(80.dp)
-                            .height(80.dp)
-                            .padding(4.dp),
-                        donutChartData,
-                        donutChartConfig
-                    )
-                }
-
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp))
-                        .background(color = ColorAccent)
-                ) {
-                    Row(
-                        modifier = Modifier.padding(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-
-                        Column {
-                            Text(
-                                modifier = Modifier.padding(horizontal = 10.dp),
-                                text = "Correct Answer",
-                                style = Typography.labelMedium,
-                                color = GreyColor,
-                                maxLines = 1
-                            )
-
-                            Text(
-                                modifier = Modifier.padding(horizontal = 10.dp),
-                                text = "51",
-                                style = Typography.bodyLarge,
-                                color = Color.Black,
-                                maxLines = 1
-                            )
-                        }
-
-                        Box(
-                            modifier = Modifier
-                                .height(32.dp)
-                                .width(1.dp)
-                                .background(color = PrimaryColor.copy(alpha = .5f))
-                        )
-
-                        Column(
-                            modifier = Modifier.weight(1.0f)
-                        ) {
-                            Text(
-                                modifier = Modifier.padding(horizontal = 10.dp),
-                                text = "Date",
-                                style = Typography.labelMedium,
-                                color = GreyColor,
-                                maxLines = 1
-                            )
-
-                            Text(
-                                modifier = Modifier.padding(horizontal = 10.dp),
-                                text = "20 Nov '23",
-                                style = Typography.bodyLarge,
-                                color = Color.Black,
-                                maxLines = 1
-                            )
-                        }
-
-                        Text(
-                            modifier = Modifier
-                                .background(
-                                    color = SecondaryColorLight,
-                                    shape = RoundedCornerShape(16.dp)
-                                )
-                                .padding(vertical = 8.dp, horizontal = 16.dp),
-                            text = "Completed",
-                            style = Typography.bodyLarge,
-                            color = SecondaryColor,
-                            maxLines = 1
-                        )
-
-                    }
-
-                }
-
-            }
-        }
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = "Last five test summary",
+            textAlign = TextAlign.Center,
+            style = Typography.bodySmall,
+            color = GreyColor,
+            maxLines = 1
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Box(
-            modifier = Modifier
-                .wrapContentHeight()
-                .clip(RoundedCornerShape(8.dp))
-                .border(
-                    1.dp,
-                    StrokeColor,
-                    RoundedCornerShape(8.dp)
-                )
-                .clickable {
+        PrimaryButton(
+            onClick = {
+                navController.navigate(ContentNavScreen.ResultDashboard.route)
+            },
+            buttonText = "Result Dashboard",
+            backgroundColor = WhiteColor,
+            fontColor = PrimaryColor,
+            borderStrokeColor = PrimaryColor
+        )
 
-                }
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column(
-                        modifier = Modifier.weight(1.0f)
-                    ) {
-
-                        Text(
-                            modifier = Modifier.padding(10.dp),
-                            text = "Random",
-                            style = Typography.bodySmall,
-                            color = GreyColor,
-                            maxLines = 1
-                        )
-
-                        Text(
-                            modifier = Modifier.padding(horizontal = 10.dp),
-                            text = "AWS Trusted Advisor",
-                            style = Typography.titleMedium,
-                            color = PrimaryColor,
-                            maxLines = 1
-                        )
-                    }
-
-                    val donutChartData = PieChartData(
-                        slices = listOf(
-                            PieChartData.Slice("Correct", 70f, Color(0xFF20BF55)),
-                            PieChartData.Slice("Wrong", 30f, Color(0xFFF53844))
-                        ),
-                        plotType = PlotType.Donut
-                    )
-
-                    val donutChartConfig = PieChartConfig(
-                        strokeWidth = 16f,
-                        activeSliceAlpha = .9f,
-                        isAnimationEnable = false
-                    )
-
-                    DonutPieChart(
-                        modifier = Modifier
-                            .width(80.dp)
-                            .height(80.dp)
-                            .padding(4.dp),
-                        donutChartData,
-                        donutChartConfig
-                    )
-                }
-
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp))
-                        .background(color = ColorAccent)
-                ) {
-                    Row(
-                        modifier = Modifier.padding(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-
-                        Column {
-                            Text(
-                                modifier = Modifier.padding(horizontal = 10.dp),
-                                text = "Correct Answer",
-                                style = Typography.labelMedium,
-                                color = GreyColor,
-                                maxLines = 1
-                            )
-
-                            Text(
-                                modifier = Modifier.padding(horizontal = 10.dp),
-                                text = "51",
-                                style = Typography.bodyLarge,
-                                color = Color.Black,
-                                maxLines = 1
-                            )
-                        }
-
-                        Box(
-                            modifier = Modifier
-                                .height(32.dp)
-                                .width(1.dp)
-                                .background(color = PrimaryColor.copy(alpha = .5f))
-                        )
-
-                        Column(
-                            modifier = Modifier.weight(1.0f)
-                        ) {
-                            Text(
-                                modifier = Modifier.padding(horizontal = 10.dp),
-                                text = "Date",
-                                style = Typography.labelMedium,
-                                color = GreyColor,
-                                maxLines = 1
-                            )
-
-                            Text(
-                                modifier = Modifier.padding(horizontal = 10.dp),
-                                text = "20 Nov '23",
-                                style = Typography.bodyLarge,
-                                color = Color.Black,
-                                maxLines = 1
-                            )
-                        }
-
-                        Text(
-                            modifier = Modifier
-                                .background(
-                                    color = ErrorColorLight,
-                                    shape = RoundedCornerShape(16.dp)
-                                )
-                                .padding(vertical = 8.dp, horizontal = 16.dp),
-                            text = "Incomplete",
-                            style = Typography.bodyLarge,
-                            color = ErrorColor,
-                            maxLines = 1
-                        )
-
-                    }
-
-                }
-
-            }
-        }
     }
 
     if (showProgress) {

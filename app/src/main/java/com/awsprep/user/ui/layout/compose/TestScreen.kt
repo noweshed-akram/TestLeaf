@@ -16,8 +16,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.Feedback
+import com.awsprep.user.domain.models.Question
 import com.awsprep.user.ui.component.MultipleChoiceQues
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.component.SingleChoiceQues
@@ -26,6 +28,7 @@ import com.awsprep.user.utils.AppConstant
 import com.awsprep.user.utils.getCurrentDateTime
 import com.awsprep.user.utils.toString
 import com.awsprep.user.viewmodel.QuesViewModel
+import com.awsprep.user.viewmodel.TestViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
@@ -50,7 +53,13 @@ fun TestScreen(
     var errorMsg by rememberSaveable { mutableStateOf("") }
     var successMsg by rememberSaveable { mutableStateOf("") }
 
-    val questionIndexData = quesViewModel.questionIndexData ?: return
+    val testViewModel: TestViewModel = viewModel()
+
+    var questionList by rememberSaveable {
+        mutableStateOf(emptyList<Question>())
+    }
+
+    val questionIndexData = testViewModel.questionIndexData ?: return
 
     LaunchedEffect(key1 = true) {
         quesViewModel.questionData.collect {
@@ -69,12 +78,17 @@ fun TestScreen(
                 showSuccess = true
                 successMsg = "Question added successfully to your review section"
             }
+            it.dataList?.let {
+                showProgress = false
+                questionList = it as List<Question>
+                testViewModel.questionOrder = questionList
+            }
         }
     }
 
     QuestionsScreen(
         questionIndexData = questionIndexData,
-        isNextEnabled = quesViewModel.isNextEnabled,
+        isNextEnabled = testViewModel.isNextEnabled,
         activeTimer = activeTimer,
         onBackPressed = onBackPressed,
         onClickToAddReviewQs = {
@@ -91,9 +105,9 @@ fun TestScreen(
                 )
             )
         },
-        onPreviousPressed = { quesViewModel.onPreviousPressed() },
-        onNextPressed = { quesViewModel.onNextPressed() },
-        onSubmitPressed = { quesViewModel.onDonePressed(onSubmitAnswers) }
+        onPreviousPressed = { testViewModel.onPreviousPressed() },
+        onNextPressed = { testViewModel.onNextPressed() },
+        onSubmitPressed = { testViewModel.onDonePressed(onSubmitAnswers) }
     ) { paddingValues ->
 
         val modifier = Modifier.padding(paddingValues)
@@ -132,8 +146,8 @@ fun TestScreen(
                         targetState.question.optionD,
                         targetState.question.optionE
                     ),
-                    selectedAnswers = quesViewModel.multipleChoiceResponse,
-                    onOptionSelected = quesViewModel::onMultipleChoiceResponse,
+                    selectedAnswers = testViewModel.multipleChoiceResponse,
+                    onOptionSelected = testViewModel::onMultipleChoiceResponse,
                     modifier = modifier,
                 )
             } else {
@@ -146,8 +160,8 @@ fun TestScreen(
                         targetState.question.optionC,
                         targetState.question.optionD
                     ),
-                    selectedAnswer = quesViewModel.singleChoiceResponse,
-                    onOptionSelected = quesViewModel::onSingleChoiceResponse,
+                    selectedAnswer = testViewModel.singleChoiceResponse,
+                    onOptionSelected = testViewModel::onSingleChoiceResponse,
                     modifier = modifier,
                 )
             }

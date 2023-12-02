@@ -4,9 +4,7 @@ package com.awsprep.user.navigation
  * Created by noweshedakram on 23/6/23.
  */
 sealed class AuthScreen(
-    val route: String,
-    val objectName: String = "",
-    val objectPath: String = ""
+    val route: String
 ) {
 
     object Intro : AuthScreen(route = "intro_screen")

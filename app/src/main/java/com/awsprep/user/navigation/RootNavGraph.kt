@@ -1,5 +1,7 @@
 package com.awsprep.user.navigation
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -14,8 +16,10 @@ import com.awsprep.user.viewmodel.QuesViewModel
 /**
  * Created by noweshedakram on 5/8/23.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RootNavGraph(
+    scrollBehavior: TopAppBarScrollBehavior,
     navController: NavHostController = rememberNavController(),
     route: String = Graph.ROOT,
     startDestination: String = Graph.AUTHENTICATION,
@@ -37,6 +41,7 @@ fun RootNavGraph(
 
         composable(Graph.HOME) {
             HomeScreen(
+                scrollBehavior = scrollBehavior,
                 authViewModel = authViewModel,
                 userViewModel = userViewModel,
                 asesmntViewModel = asesmntViewModel,

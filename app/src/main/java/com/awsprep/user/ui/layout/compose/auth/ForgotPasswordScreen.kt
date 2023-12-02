@@ -46,7 +46,6 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetInfo
 /**
  * Created by noweshedakram on 21/7/23.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ForgotPasswordScreen(
     navController: NavController,

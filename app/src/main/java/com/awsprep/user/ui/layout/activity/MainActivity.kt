@@ -5,8 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.awsprep.user.ui.layout.compose.MainScreen
@@ -20,6 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -30,6 +33,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
+                    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
                     val navController = rememberNavController()
                     val authViewModel: AuthViewModel by viewModels()
                     val userViewModel: UserViewModel by viewModels()
@@ -37,6 +41,7 @@ class MainActivity : ComponentActivity() {
                     val quesViewModel: QuesViewModel by viewModels()
 
                     MainScreen(
+                        scrollBehavior = scrollBehavior,
                         navController = navController,
                         authViewModel = authViewModel,
                         userViewModel = userViewModel,

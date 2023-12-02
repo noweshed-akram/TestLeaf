@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -57,7 +56,6 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
  * Created by Md. Noweshed Akram on 10/11/23.
  */
 @androidx.core.os.BuildCompat.PrereleaseSdkCheck
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditProfileScreen(
     navController: NavController,
@@ -88,7 +86,6 @@ fun EditProfileScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        userViewModel.getUserData()
 
         userViewModel.userData.collect {
             if (it.isLoading) {
@@ -100,6 +97,7 @@ fun EditProfileScreen(
                 showError = true
                 errorMsg = it.error
                 Log.d("EmailSignScreen: ", it.error)
+                userViewModel.getUserData()
             }
             it.data?.let {
                 showProgress = false
@@ -174,7 +172,7 @@ fun EditProfileScreen(
             },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email,
+                keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next
             ),
             shape = RoundedCornerShape(8.dp)
@@ -184,6 +182,8 @@ fun EditProfileScreen(
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
+            readOnly = true,
+            enabled = false,
             value = inputEmail,
             label = {
                 Text(text = "Email")
@@ -224,7 +224,7 @@ fun EditProfileScreen(
             },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email,
+                keyboardType = KeyboardType.Phone,
                 imeAction = ImeAction.Next
             ),
             shape = RoundedCornerShape(8.dp)
@@ -249,8 +249,8 @@ fun EditProfileScreen(
             },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email,
-                imeAction = ImeAction.Next
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done
             ),
             shape = RoundedCornerShape(8.dp)
         )

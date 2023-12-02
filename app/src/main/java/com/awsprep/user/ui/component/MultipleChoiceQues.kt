@@ -83,7 +83,9 @@ fun CheckboxRow(
         ) {
             Checkbox(
                 selected,
-                onCheckedChange = { },
+                onCheckedChange = {
+                    onOptionSelected()
+                },
                 colors = CheckboxDefaults.colors(
                     checkedColor = WhiteColor,
                     uncheckedColor = GreyColor,

@@ -29,15 +29,14 @@ class UserUseCase @Inject constructor(
         return userRepository.updateProfilePic(imageUri)
     }
 
-    suspend fun getTestResult(userUid: String): Flow<Resource<List<TestResult>>> {
-        return userRepository.getTestResult(userUid)
+    suspend fun getTestResult(): Flow<Resource<List<TestResult>>> {
+        return userRepository.getTestResult()
     }
 
     suspend fun insertTestResult(
-        userUid: String,
         testResult: TestResult
     ): Flow<Resource<TestResult>> {
-        return userRepository.insertTestResult(userUid, testResult)
+        return userRepository.insertTestResult(testResult)
     }
 
     suspend fun logOut() {
