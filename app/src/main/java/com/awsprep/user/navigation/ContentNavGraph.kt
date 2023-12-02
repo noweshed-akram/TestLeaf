@@ -176,7 +176,7 @@ fun NavGraphBuilder.ContentNavGraph(
         }
 
         composable(ContentNavScreen.Result.route) {
-            ResultScreen(userViewModel = userViewModel)
+            ResultScreen(navController = navController, userViewModel = userViewModel)
         }
 
         composable(ContentNavScreen.ResultDashboard.route) {

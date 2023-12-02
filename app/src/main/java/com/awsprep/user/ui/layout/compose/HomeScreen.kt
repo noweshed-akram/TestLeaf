@@ -238,9 +238,9 @@ fun HomeScreen(
                         }
                     } else if (currentRoute(navController = navController) == ContentNavScreen.Result.route) {
                         AppBarWithArrow(
-                            scrollBehavior = scrollBehavior, title = "Test Score"
+                            scrollBehavior = scrollBehavior, title = "Test Result"
                         ) {
-                            navController.popBackStack()
+                            navController.navigate(BottomNavScreen.Assessment.route)
                         }
                     } else if (currentRoute(navController = navController) == ContentNavScreen.ResultDashboard.route) {
                         AppBarWithArrow(
