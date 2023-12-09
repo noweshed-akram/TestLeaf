@@ -58,7 +58,7 @@ fun NavGraphBuilder.ContentNavGraph(
                 navArgument(ContentNavScreen.Chapters.objectName) {
                     type = NavType.StringType
                 }
-            )
+            ),
         ) {
             val response = it.arguments?.getString(ContentNavScreen.Chapters.objectName)
             response?.let {
@@ -170,6 +170,7 @@ fun NavGraphBuilder.ContentNavGraph(
                         }
                     },
                     activeTimer = it,
+                    userViewModel = userViewModel,
                     quesViewModel = quesViewModel
                 )
             }

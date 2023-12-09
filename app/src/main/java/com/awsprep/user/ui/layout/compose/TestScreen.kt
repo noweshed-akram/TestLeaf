@@ -20,15 +20,18 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.Feedback
 import com.awsprep.user.domain.models.Question
+import com.awsprep.user.domain.models.TestResult
 import com.awsprep.user.ui.component.MultipleChoiceQues
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.component.SingleChoiceQues
 import com.awsprep.user.ui.component.getTransitionDirection
-import com.awsprep.user.utils.AppConstant
+import com.awsprep.user.utils.AppConstant.DATE_TIME_FORMAT
+import com.awsprep.user.utils.AppConstant.STATUS_PASS
 import com.awsprep.user.utils.getCurrentDateTime
 import com.awsprep.user.utils.toString
 import com.awsprep.user.viewmodel.QuesViewModel
 import com.awsprep.user.viewmodel.TestViewModel
+import com.awsprep.user.viewmodel.UserViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
@@ -42,6 +45,7 @@ fun TestScreen(
     onBackPressed: () -> Unit,
     onSubmitAnswers: () -> Unit,
     activeTimer: Boolean = true,
+    userViewModel: UserViewModel,
     quesViewModel: QuesViewModel
 ) {
 
@@ -100,14 +104,29 @@ fun TestScreen(
                     userId = FirebaseAuth.getInstance().uid,
                     questionId = questionIndexData.question.quesId,
                     feedback = msg,
-                    createdAt = getCurrentDateTime().toString(AppConstant.DATE_TIME_FORMAT),
-                    updatedAt = getCurrentDateTime().toString(AppConstant.DATE_TIME_FORMAT)
+                    createdAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
+                    updatedAt = getCurrentDateTime().toString(DATE_TIME_FORMAT)
                 )
             )
         },
         onPreviousPressed = { testViewModel.onPreviousPressed() },
         onNextPressed = { testViewModel.onNextPressed() },
-        onSubmitPressed = { testViewModel.onDonePressed(onSubmitAnswers) }
+        onSubmitPressed = {
+            userViewModel.insertTestResult(
+                TestResult(
+                    testType = "Course",
+                    testName = "CompTIA Security+",
+                    totalQs = "30",
+                    answered = "27",
+                    correctAnswered = "20",
+                    wrongAnswered = "7",
+                    status = STATUS_PASS,
+                    createdAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
+                    updatedAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
+                )
+            )
+            testViewModel.onDonePressed(onSubmitAnswers)
+        }
     ) { paddingValues ->
 
         val modifier = Modifier.padding(paddingValues)

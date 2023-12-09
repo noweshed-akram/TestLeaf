@@ -36,6 +36,7 @@ import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.ui.theme.SecondaryColorLight
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.Typography
+import com.awsprep.user.utils.AppConstant.STATUS_PASS
 
 /**
  * Created by Md. Noweshed Akram on 29/11/23.
@@ -197,13 +198,13 @@ fun ResultListItem(
                     Text(
                         modifier = Modifier
                             .background(
-                                color = if (status == "Pass") SecondaryColorLight else ErrorColorLight,
+                                color = if (status == STATUS_PASS) SecondaryColorLight else ErrorColorLight,
                                 shape = RoundedCornerShape(16.dp)
                             )
                             .padding(vertical = 8.dp, horizontal = 16.dp),
                         text = status,
                         style = Typography.bodyLarge,
-                        color = if (status == "Pass") SecondaryColor else ErrorColor,
+                        color = if (status == STATUS_PASS) SecondaryColor else ErrorColor,
                         maxLines = 1
                     )
 

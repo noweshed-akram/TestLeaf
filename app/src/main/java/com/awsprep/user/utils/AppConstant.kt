@@ -28,8 +28,10 @@ object AppConstant {
     const val FIELD_CREATED_AT = "createdAt"
     const val FIELD_UPDATED_AT = "updatedAt"
 
-
     const val FIELD_ORDER = "order"
+
+    const val STATUS_PASS = "Pass"
+    const val STATUS_FAILED = "Failed"
 
     // Others
     const val DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss"
