@@ -134,8 +134,7 @@ fun EditProfileScreen(
             IconButton(
                 modifier = Modifier
                     .padding(8.dp)
-                    .align(Alignment.BottomEnd)
-                    .background(SecondaryColor, CircleShape),
+                    .align(Alignment.BottomEnd),
                 onClick = {
                     photoPicker.launch(
                         PhotoPicker.Args(
@@ -147,7 +146,10 @@ fun EditProfileScreen(
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_photo_camera),
                     contentDescription = "edit_profile",
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier
+                        .size(48.dp)
+                        .background(SecondaryColor, CircleShape)
+                        .padding(8.dp),
                     tint = Color.White
                 )
             }

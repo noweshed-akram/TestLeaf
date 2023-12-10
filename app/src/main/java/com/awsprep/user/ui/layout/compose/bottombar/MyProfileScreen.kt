@@ -162,19 +162,18 @@ fun MyProfileScreen(
                 Text(text = inputEmail, style = Typography.bodySmall)
             }
 
-            Spacer(modifier = Modifier.width(16.dp))
-
             IconButton(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .background(SecondaryColor, CircleShape),
+                modifier = Modifier.padding(8.dp),
                 onClick = {
                     navController.navigate(ContentNavScreen.EditProfile.route)
                 }) {
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_edit),
                     contentDescription = "edit",
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier
+                        .size(48.dp)
+                        .background(SecondaryColor, CircleShape)
+                        .padding(8.dp),
                     tint = Color.White
                 )
             }

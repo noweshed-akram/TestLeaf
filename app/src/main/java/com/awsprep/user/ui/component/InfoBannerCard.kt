@@ -76,7 +76,7 @@ fun InfoBannerCard(
             style = TextStyle(
                 fontSize = 32.sp,
                 fontWeight = FontWeight(600),
-                color = Color(0xFF1D1E23),
+                color = Color.Black,
             )
         )
 
