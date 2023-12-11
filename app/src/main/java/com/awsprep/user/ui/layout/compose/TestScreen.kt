@@ -45,6 +45,7 @@ fun TestScreen(
     onBackPressed: () -> Unit,
     onSubmitAnswers: () -> Unit,
     activeTimer: Boolean = true,
+    questionList: List<Question>,
     userViewModel: UserViewModel,
     quesViewModel: QuesViewModel
 ) {
@@ -59,36 +60,38 @@ fun TestScreen(
 
     val testViewModel: TestViewModel = viewModel()
 
+    testViewModel.questionOrder = questionList
+
     var questionList by rememberSaveable {
         mutableStateOf(emptyList<Question>())
     }
 
     val questionIndexData = testViewModel.questionIndexData ?: return
 
-    LaunchedEffect(key1 = true) {
-        quesViewModel.questionData.collect {
-            if (it.isLoading) {
-                showProgress = true
-                Log.d("SectionScreen: ", "Loading")
-            }
-            if (it.error.isNotBlank()) {
-                showProgress = false
-                showError = true
-                errorMsg = it.error
-                Log.d("SectionScreen: ", it.error)
-            }
-            it.data?.let {
-                showProgress = false
-                showSuccess = true
-                successMsg = "Question added successfully to your review section"
-            }
-            it.dataList?.let {
-                showProgress = false
-                questionList = it as List<Question>
-                testViewModel.questionOrder = questionList
-            }
-        }
-    }
+//    LaunchedEffect(key1 = true) {
+//        quesViewModel.questionData.collect {
+//            if (it.isLoading) {
+//                showProgress = true
+//                Log.d("SectionScreen: ", "Loading")
+//            }
+//            if (it.error.isNotBlank()) {
+//                showProgress = false
+//                showError = true
+//                errorMsg = it.error
+//                Log.d("SectionScreen: ", it.error)
+//            }
+//            it.data?.let {
+//                showProgress = false
+//                showSuccess = true
+//                successMsg = "Question added successfully to your review section"
+//            }
+//            it.dataList?.let {
+//                showProgress = false
+//                questionList = it as List<Question>
+//                testViewModel.questionOrder = questionList
+//            }
+//        }
+//    }
 
     QuestionsScreen(
         questionIndexData = questionIndexData,

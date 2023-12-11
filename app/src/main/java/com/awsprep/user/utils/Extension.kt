@@ -2,6 +2,7 @@ package com.awsprep.user.utils
 
 import android.content.Context
 import android.widget.Toast
+import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -22,6 +23,10 @@ fun Date.toString(format: String, locale: Locale = Locale.getDefault()): String 
 fun getCurrentDateTime(): Date {
     return Calendar.getInstance().time
 }
+
+inline fun <reified T : Any> T.toPrettyJson(): String = Gson().toJson(this, T::class.java)
+
+inline fun <reified T : Any> String.fromPrettyJson(): T = Gson().fromJson(this, T::class.java)
 
 fun checkStringIsNull(value: String): String {
     return if (value != "null") {

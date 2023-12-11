@@ -27,6 +27,7 @@ import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.WhiteColor
+import com.awsprep.user.utils.toPrettyJson
 import com.awsprep.user.viewmodel.QuesViewModel
 import com.awsprep.user.viewmodel.TestViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
@@ -47,8 +48,6 @@ fun TimerScreen(
     var showError by rememberSaveable { mutableStateOf(false) }
     var errorMsg by rememberSaveable { mutableStateOf("") }
 
-    val testViewModel: TestViewModel = viewModel()
-
     var activeTimeBaseCard by rememberSaveable { mutableStateOf(true) }
 
     var questionList by rememberSaveable {
@@ -56,7 +55,9 @@ fun TimerScreen(
     }
 
     LaunchedEffect(key1 = true) {
+
         Log.d("TimerScreen: ", courseId + " " + chapterId + " " + sectionId)
+
         quesViewModel.getQuestions(
             courseId, chapterId, sectionId, 30
         )
@@ -64,18 +65,17 @@ fun TimerScreen(
         quesViewModel.questionData.collect {
             if (it.isLoading) {
                 showProgress = true
-                Log.d("SectionScreen: ", "Loading")
+                Log.d("TimerScreen: ", "Loading")
             }
             if (it.error.isNotBlank()) {
                 showProgress = false
                 showError = true
                 errorMsg = it.error
-                Log.d("SectionScreen: ", it.error)
+                Log.d("TimerScreen: ", it.error)
             }
             it.dataList?.let {
                 showProgress = false
                 questionList = it as List<Question>
-                testViewModel.questionOrder = questionList
             }
         }
     }
@@ -114,7 +114,11 @@ fun TimerScreen(
                     showError = true
                     errorMsg = "This section isn't available for Test! Please try later."
                 } else {
-                    navController.navigate(ContentNavScreen.Test.route.plus("/${activeTimeBaseCard}"))
+                    navController.navigate(
+                        ContentNavScreen.Test.route
+                            .plus("/${activeTimeBaseCard}")
+                            .plus("/${questionList.toPrettyJson()}")
+                    )
                 }
             },
             buttonText = "Start"
