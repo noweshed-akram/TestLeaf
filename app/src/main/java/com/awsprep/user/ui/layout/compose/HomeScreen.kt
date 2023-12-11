@@ -90,6 +90,8 @@ fun HomeScreen(
 
         userViewModel.getUserData()
 
+        userViewModel.getTestResult()
+
         userViewModel.userData.collect { it ->
             if (it.error.isNotBlank()) {
                 Log.d("EmailSignScreen: ", it.error)

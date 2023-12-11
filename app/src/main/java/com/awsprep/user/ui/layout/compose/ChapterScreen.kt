@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
@@ -107,7 +108,7 @@ fun ChapterScreen(
                 items(chapterList.size) {
                     Box(
                         modifier = Modifier
-                            .height(150.dp)
+                            .wrapContentHeight()
                             .clip(RoundedCornerShape(8.dp))
                             .border(
                                 1.dp,
@@ -151,9 +152,9 @@ fun ChapterScreen(
                             Text(
                                 modifier = Modifier.padding(10.dp),
                                 text = chapterList[it].name,
-                                style = Typography.bodyLarge,
+                                style = Typography.bodyMedium,
                                 color = Color.Black,
-                                maxLines = 1
+                                maxLines = 2
                             )
 
                             Box(
