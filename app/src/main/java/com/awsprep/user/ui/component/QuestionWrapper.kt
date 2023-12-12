@@ -16,7 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.TextColor
@@ -58,9 +58,6 @@ private fun QuestionTitle(
     modifier: Modifier = Modifier,
 ) {
     Text(
-        text = title.trim(),
-        style = MaterialTheme.typography.titleMedium,
-        color = TextColor,
         modifier = modifier
             .fillMaxWidth()
             .width(IntrinsicSize.Max)
@@ -68,7 +65,11 @@ private fun QuestionTitle(
                 color = ColorAccent,
                 shape = MaterialTheme.shapes.small
             )
-            .padding(vertical = 16.dp, horizontal = 16.dp)
+            .padding(vertical = 16.dp, horizontal = 16.dp),
+        text = title.trim(),
+        style = MaterialTheme.typography.titleMedium,
+        color = TextColor,
+        textAlign = TextAlign.Justify
     )
 }
 
@@ -78,12 +79,13 @@ private fun QuestionDirections(
     modifier: Modifier = Modifier,
 ) {
     Text(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp),
         text = stringResource(id = directionsResourceId),
         color = MaterialTheme.colorScheme.onSurface
             .copy(alpha = 0.87f),
         style = MaterialTheme.typography.bodySmall,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
+        textAlign = TextAlign.Justify
     )
 }

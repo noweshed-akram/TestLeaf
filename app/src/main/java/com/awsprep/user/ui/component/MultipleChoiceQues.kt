@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.awsprep.user.ui.theme.GreyColor
 import com.awsprep.user.ui.theme.SecondaryColor
@@ -39,12 +40,10 @@ fun MultipleChoiceQues(
     ) {
         possibleAnswers.forEach {
             val selected = selectedAnswers.contains(it)
-            CheckboxRow(
-                modifier = Modifier.padding(vertical = 8.dp),
+            CheckboxRow(modifier = Modifier.padding(vertical = 8.dp),
                 text = it,
                 selected = selected,
-                onOptionSelected = { onOptionSelected(!selected, it) }
-            )
+                onOptionSelected = { onOptionSelected(!selected, it) })
         }
     }
 }
@@ -64,8 +63,7 @@ fun CheckboxRow(
             MaterialTheme.colorScheme.surface
         },
         border = BorderStroke(
-            width = 1.dp,
-            color = if (selected) {
+            width = 1.dp, color = if (selected) {
                 SecondaryColor
             } else {
                 MaterialTheme.colorScheme.outline
@@ -78,7 +76,7 @@ fun CheckboxRow(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 4.dp, vertical = 8.dp),
+                .padding(start = 4.dp, top = 8.dp, bottom = 8.dp, end = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Checkbox(
@@ -92,7 +90,12 @@ fun CheckboxRow(
                     checkmarkColor = SecondaryColor
                 )
             )
-            Text(text.trim(), Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
+            Text(
+                modifier = Modifier.weight(1f),
+                text = text.trim(),
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Justify
+            )
         }
     }
 }

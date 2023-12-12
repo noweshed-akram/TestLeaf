@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.awsprep.user.ui.theme.GreyColor
 import com.awsprep.user.ui.theme.SecondaryColor
@@ -84,7 +85,7 @@ fun RadioButtonWithImageRow(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 4.dp, vertical = 8.dp),
+                .padding(start = 4.dp, top = 8.dp, bottom = 8.dp, end = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             RadioButton(
@@ -97,7 +98,12 @@ fun RadioButtonWithImageRow(
                     unselectedColor = GreyColor
                 )
             )
-            Text(text.trim(), Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
+            Text(
+                modifier = Modifier.weight(1f),
+                text = text.trim(),
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Justify
+            )
 
         }
     }

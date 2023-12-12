@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.Question
@@ -86,7 +87,10 @@ fun ReviewQuesItem(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = question.ques.trim(), color = Color.Black, style = Typography.bodyMedium
+                    text = question.ques.trim(),
+                    color = Color.Black,
+                    style = Typography.bodyMedium,
+                    textAlign = TextAlign.Justify
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -135,16 +139,11 @@ fun ReviewQuesItem(
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(5.dp))
-
                     Text(
-                        modifier = Modifier.padding(
-                            start = 8.dp,
-                            end = 8.dp,
-                            bottom = 8.dp
-                        ),
+                        modifier = Modifier.padding(8.dp),
                         text = question.explain.trim(),
-                        color = Color.Black
+                        color = Color.Black,
+                        textAlign = TextAlign.Justify
                     )
                 }
 
