@@ -35,8 +35,7 @@ sealed class ContentNavScreen(
 
     object Test : ContentNavScreen(
         route = "test_screen",
-        objectName = "activeTimer", objectPath = "/{activeTimer}",
-        objectNameTwo = "quesList", objectPathTwo = "/{quesList}",
+        objectName = "activeTimer", objectPath = "/{activeTimer}"
     )
 
     object ReviewQues : ContentNavScreen(route = "review_ques_screen")

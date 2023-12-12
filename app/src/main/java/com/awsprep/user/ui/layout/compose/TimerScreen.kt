@@ -15,21 +15,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.Question
 import com.awsprep.user.navigation.ContentNavScreen
+import com.awsprep.user.ui.component.InfoBannerCard
 import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.component.ProgressBar
-import com.awsprep.user.ui.component.InfoBannerCard
 import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.WhiteColor
-import com.awsprep.user.utils.toPrettyJson
 import com.awsprep.user.viewmodel.QuesViewModel
-import com.awsprep.user.viewmodel.TestViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 /**
@@ -117,7 +114,6 @@ fun TimerScreen(
                     navController.navigate(
                         ContentNavScreen.Test.route
                             .plus("/${activeTimeBaseCard}")
-                            .plus("/${questionList.toPrettyJson()}")
                     )
                 }
             },

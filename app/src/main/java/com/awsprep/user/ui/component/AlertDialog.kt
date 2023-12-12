@@ -110,10 +110,12 @@ fun AlertDialog(
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
 
-                    TextButton(onClick = {
-                        onNegativeBtnPressed()
-                        openDialogCustom.value = false
-                    }) {
+                    TextButton(
+                        modifier = Modifier.weight(1.0f),
+                        onClick = {
+                            onNegativeBtnPressed()
+                            openDialogCustom.value = false
+                        }) {
 
                         Text(
                             "Not Now",
@@ -123,10 +125,12 @@ fun AlertDialog(
                         )
                     }
 
-                    TextButton(onClick = {
-                        onPositiveBtnPressed()
-                        openDialogCustom.value = false
-                    }) {
+                    TextButton(
+                        modifier = Modifier.weight(1.0f),
+                        onClick = {
+                            onPositiveBtnPressed()
+                            openDialogCustom.value = false
+                        }) {
                         Text(
                             "Yes",
                             fontWeight = FontWeight.ExtraBold,

@@ -44,7 +44,7 @@ import com.awsprep.user.ui.theme.Typography
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun ReviewQuesItem(
-    question: Question, onQuestionDelete: (quesId: String) -> Unit
+    quesNo: Int, question: Question, onQuestionDelete: (quesId: String) -> Unit
 ) {
 
     var showAlert by rememberSaveable { mutableStateOf(false) }
@@ -66,7 +66,7 @@ fun ReviewQuesItem(
                     verticalAlignment = CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    ChipItemView("Review Q1")
+                    ChipItemView("Review Q$quesNo")
 
                     IconButton(
                         modifier = Modifier.wrapContentSize(),

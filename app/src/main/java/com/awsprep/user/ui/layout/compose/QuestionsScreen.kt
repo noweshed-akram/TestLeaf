@@ -1,5 +1,6 @@
 package com.awsprep.user.ui.layout.compose
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -47,8 +48,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.QuestionIndexData
+import com.awsprep.user.ui.component.AlertDialog
 import com.awsprep.user.ui.component.CountDownTimer
 import com.awsprep.user.ui.component.PrimaryButton
+import com.awsprep.user.ui.theme.ErrorColor
 import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.ui.theme.StrokeColor
@@ -199,6 +202,7 @@ private fun TopAppBarTitle(
     }
 }
 
+@SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestionTopAppBar(
@@ -209,13 +213,16 @@ fun QuestionTopAppBar(
     questionIndex: Int,
     totalQuestionsCount: Int
 ) {
+
+    var showAlert by rememberSaveable { mutableStateOf(false) }
+
     Column(modifier = Modifier.fillMaxWidth()) {
 
         TopAppBar(
             navigationIcon = {
                 IconButton(
                     onClick = {
-                        onBackPressed()
+                        showAlert = true
                     },
                     enabled = true,
                 ) {
@@ -309,6 +316,23 @@ fun QuestionTopAppBar(
             }
         }
 
+    }
+
+    if (showAlert) {
+        AlertDialog(
+            openDialogCustom = mutableStateOf(showAlert),
+            dialogIcon = R.drawable.ic_warning,
+            drawableTint = ErrorColor,
+            title = "Warning!",
+            message = "Are you sure to quit the Test?",
+            onPositiveBtnPressed = {
+                showAlert = false
+                onBackPressed()
+            },
+            onNegativeBtnPressed = {
+                showAlert = false
+            },
+        )
     }
 }
 

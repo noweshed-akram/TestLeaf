@@ -89,8 +89,8 @@ fun HomeScreen(
     LaunchedEffect(key1 = true) {
 
         userViewModel.getUserData()
-
         userViewModel.getTestResult()
+        quesViewModel.getReviewQues()
 
         userViewModel.userData.collect { it ->
             if (it.error.isNotBlank()) {

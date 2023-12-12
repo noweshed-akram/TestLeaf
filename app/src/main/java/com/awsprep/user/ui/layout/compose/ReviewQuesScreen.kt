@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,8 +49,6 @@ fun ReviewQuesScreen(
 
     LaunchedEffect(key1 = true) {
 
-        quesViewModel.getReviewQues()
-
         quesViewModel.questionData.collect {
             if (it.isLoading) {
                 showProgress = true
@@ -89,10 +87,10 @@ fun ReviewQuesScreen(
                     modifier = Modifier.wrapContentSize(),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    items(
+                    itemsIndexed(
                         items = questionList
-                    ) { question ->
-                        ReviewQuesItem(question = question) { quesId ->
+                    ) { index, question ->
+                        ReviewQuesItem(quesNo = index + 1, question = question) { quesId ->
                             quesViewModel.deleteReviewQues(quesId)
                         }
                     }

@@ -30,11 +30,13 @@ fun BarChartView(
     resultList.forEachIndexed { i, result ->
         barData += BarData(
             point = Point(
-                (i + 1).toFloat(),
-                result.correctAnswered.toFloat()
+                x = (i + 1).toFloat(),
+                y = result.correctAnswered.toFloat(),
+                description = result.testName
             ),
             color = PrimaryColor,
-            label = result.testName,
+            label = (i + 1).toString(),
+            description = result.testName
         )
     }
 
@@ -46,7 +48,7 @@ fun BarChartView(
             .axisStepSize(56.dp)
             .steps(barData.size)
             .bottomPadding(12.dp)
-            .axisLabelAngle(12f)
+            .axisLabelAngle(0f)
             .startDrawPadding(32.dp)
             .shouldDrawAxisLineTillEnd(true)
             .labelData { index -> barData[index].label }

@@ -1,6 +1,5 @@
 package com.awsprep.user.navigation
 
-import android.util.Log
 import androidx.core.os.BuildCompat
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -8,7 +7,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.awsprep.user.domain.models.Question
 import com.awsprep.user.ui.layout.compose.AllCourseScreen
 import com.awsprep.user.ui.layout.compose.ChapterScreen
 import com.awsprep.user.ui.layout.compose.EditProfileScreen
@@ -18,15 +16,12 @@ import com.awsprep.user.ui.layout.compose.RandomSetsScreen
 import com.awsprep.user.ui.layout.compose.ResultDashboard
 import com.awsprep.user.ui.layout.compose.ResultScreen
 import com.awsprep.user.ui.layout.compose.ReviewQuesScreen
-import com.awsprep.user.ui.layout.compose.TestScreen
 import com.awsprep.user.ui.layout.compose.SectionScreen
+import com.awsprep.user.ui.layout.compose.TestScreen
 import com.awsprep.user.ui.layout.compose.TimerScreen
-import com.awsprep.user.utils.fromPrettyJson
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
 import com.awsprep.user.viewmodel.UserViewModel
-import com.google.gson.Gson
-import kotlin.math.log
 
 /**
  * Created by noweshedakram on 16/8/23.
@@ -153,24 +148,16 @@ fun NavGraphBuilder.ContentNavGraph(
 
         composable(
             ContentNavScreen.Test.route
-                .plus(ContentNavScreen.Test.objectPath)
-                .plus(ContentNavScreen.Test.objectPathTwo),
+                .plus(ContentNavScreen.Test.objectPath),
             arguments = listOf(
                 navArgument(ContentNavScreen.Test.objectName) {
                     type = NavType.BoolType
-                },
-                navArgument(ContentNavScreen.Test.objectNameTwo) {
-                    type = NavType.StringType
                 }
             )
         ) {
 
             val activeTimer = it.arguments?.getBoolean(ContentNavScreen.Test.objectName, true)
-            val quesList = it.arguments?.getString(ContentNavScreen.Test.objectNameTwo)
 
-            val question = quesList?.fromPrettyJson<List<Question>>()
-
-            Log.d("ContentNavGraph: ", quesList.toString())
             activeTimer?.let {
                 TestScreen(
                     onBackPressed = {
@@ -184,7 +171,6 @@ fun NavGraphBuilder.ContentNavGraph(
                         }
                     },
                     activeTimer = it,
-                    questionList = question!!,
                     userViewModel = userViewModel,
                     quesViewModel = quesViewModel
                 )
