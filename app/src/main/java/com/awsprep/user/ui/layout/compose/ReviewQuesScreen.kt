@@ -49,7 +49,7 @@ fun ReviewQuesScreen(
 
     LaunchedEffect(key1 = true) {
 
-        quesViewModel.questionData.collect {
+        quesViewModel.reviewQuesData.collect {
             if (it.isLoading) {
                 showProgress = true
                 Log.d("ReviewQuesScreen: ", "Loading")

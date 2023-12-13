@@ -29,6 +29,10 @@ class QuesViewModel @Inject constructor(
     private val _questionData = MutableStateFlow(ResponseState())
     val questionData: StateFlow<ResponseState> = _questionData
 
+
+    private val _reviewQuesData = MutableStateFlow(ResponseState())
+    val reviewQuesData: StateFlow<ResponseState> = _reviewQuesData
+
     fun getQuestions(
         courseId: String,
         chapterId: String,
@@ -88,17 +92,17 @@ class QuesViewModel @Inject constructor(
                 when (it) {
                     is Resource.Loading -> {
                         Log.d("getQuestions: ", it.data.toString())
-                        _questionData.value = ResponseState(isLoading = true)
+                        _reviewQuesData.value = ResponseState(isLoading = true)
                     }
 
                     is Resource.Error -> {
                         Log.d("getQuestions: ", it.data.toString())
-                        _questionData.value = ResponseState(error = it.message ?: "")
+                        _reviewQuesData.value = ResponseState(error = it.message ?: "")
                     }
 
                     is Resource.Success -> {
                         Log.d("getQuestions: ", it.data.toString())
-                        _questionData.value = ResponseState(dataList = it.data)
+                        _reviewQuesData.value = ResponseState(dataList = it.data)
                     }
                 }
             }.launchIn(viewModelScope)
@@ -111,17 +115,17 @@ class QuesViewModel @Inject constructor(
                 when (it) {
                     is Resource.Loading -> {
                         Log.d("getQuestions: ", it.data.toString())
-                        _questionData.value = ResponseState(isLoading = true)
+                        _reviewQuesData.value = ResponseState(isLoading = true)
                     }
 
                     is Resource.Error -> {
                         Log.d("getQuestions: ", it.data.toString())
-                        _questionData.value = ResponseState(error = it.message ?: "")
+                        _reviewQuesData.value = ResponseState(error = it.message ?: "")
                     }
 
                     is Resource.Success -> {
                         Log.d("getQuestions: ", it.data.toString())
-                        _questionData.value = ResponseState(data = it.data)
+                        _reviewQuesData.value = ResponseState(data = it.data)
                     }
                 }
             }.launchIn(viewModelScope)
