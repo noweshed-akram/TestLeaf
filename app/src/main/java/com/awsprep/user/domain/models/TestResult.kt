@@ -8,6 +8,7 @@ data class TestResult(
     val testName: String = "",
     val totalQs: String = "",
     val answered: String = "",
+    val skipped: String = "",
     val correctAnswered: String = "",
     val wrongAnswered: String = "",
     val status: String = "",

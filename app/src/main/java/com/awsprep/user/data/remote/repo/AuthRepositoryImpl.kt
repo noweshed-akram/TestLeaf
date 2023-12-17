@@ -1,4 +1,4 @@
-package com.awsprep.user.data.repo
+package com.awsprep.user.data.remote.repo
 
 import android.util.Log
 import com.awsprep.user.domain.models.User

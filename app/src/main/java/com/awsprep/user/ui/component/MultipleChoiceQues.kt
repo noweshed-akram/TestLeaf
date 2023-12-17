@@ -1,5 +1,6 @@
 package com.awsprep.user.ui.component
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -17,32 +18,44 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.awsprep.user.data.local.entity.TestEntity
 import com.awsprep.user.ui.theme.GreyColor
 import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.ui.theme.WhiteColor
+import com.awsprep.user.viewmodel.EntityViewModel
 
 /**
  * Created by noweshedakram on 11/14/23.
  */
 @Composable
 fun MultipleChoiceQues(
+    modifier: Modifier = Modifier,
+    entityViewModel: EntityViewModel,
+    quesId: String,
     questionTitle: String,
     @StringRes directionsResourceId: Int,
     possibleAnswers: List<String>,
     selectedAnswers: List<String>,
-    onOptionSelected: (selected: Boolean, answer: String) -> Unit,
-    modifier: Modifier = Modifier,
+    correctAns: List<String>,
+    onOptionSelected: (selected: Boolean, answer: String) -> Unit
 ) {
     QuestionWrapper(
         modifier = modifier,
         questionTitle = questionTitle,
         directionsResourceId = directionsResourceId,
     ) {
-        possibleAnswers.forEach {
+        possibleAnswers.forEachIndexed { index, it ->
+
             val selected = selectedAnswers.contains(it)
-            CheckboxRow(modifier = Modifier.padding(vertical = 8.dp),
+
+            CheckboxRow(
+                modifier = Modifier.padding(vertical = 8.dp),
+                entityViewModel = entityViewModel,
+                rowIndex = index,
+                quesId = quesId,
                 text = it,
                 selected = selected,
+                correctAns = correctAns,
                 onOptionSelected = { onOptionSelected(!selected, it) })
         }
     }
@@ -50,11 +63,113 @@ fun MultipleChoiceQues(
 
 @Composable
 fun CheckboxRow(
+    modifier: Modifier = Modifier,
+    entityViewModel: EntityViewModel,
+    rowIndex: Int,
+    quesId: String = "",
     text: String,
     selected: Boolean,
-    onOptionSelected: () -> Unit,
-    modifier: Modifier = Modifier,
+    correctAns: List<String> = emptyList(),
+    onOptionSelected: () -> Unit
 ) {
+
+    if (selected) {
+
+        when (rowIndex) {
+            0 -> {
+                if (!entityViewModel.multiChoiceAns.contains("a"))
+                    entityViewModel.multiChoiceAns += "a"
+            }
+
+            1 -> {
+                if (!entityViewModel.multiChoiceAns.contains("b"))
+                    entityViewModel.multiChoiceAns += "b"
+            }
+
+            2 -> {
+                if (!entityViewModel.multiChoiceAns.contains("c"))
+                    entityViewModel.multiChoiceAns += "c"
+            }
+
+            3 -> {
+                if (!entityViewModel.multiChoiceAns.contains("d"))
+                    entityViewModel.multiChoiceAns += "d"
+            }
+
+            4 -> {
+                if (!entityViewModel.multiChoiceAns.contains("e"))
+                    entityViewModel.multiChoiceAns += "e"
+            }
+        }
+
+        var isCorrect = false
+
+        for (ans in correctAns) {
+            for (selectAns in entityViewModel.multiChoiceAns) {
+                isCorrect = ans.lowercase() == selectAns.lowercase()
+            }
+        }
+
+        entityViewModel.insertTestData(
+            TestEntity(
+                quesId = quesId,
+                correctAnswers = correctAns.toString().lowercase(),
+                selectedAnswers = entityViewModel.multiChoiceAns.toString().lowercase(),
+                marks = if (isCorrect) 1 else 0
+            )
+        )
+
+        Log.d("SelectAnswers", "CheckboxRow: $quesId ${entityViewModel.multiChoiceAns} ")
+
+    } else if (!selected) {
+
+        when (rowIndex) {
+            0 -> {
+                if (entityViewModel.multiChoiceAns.contains("a"))
+                    entityViewModel.multiChoiceAns -= "a"
+            }
+
+            1 -> {
+                if (entityViewModel.multiChoiceAns.contains("b"))
+                    entityViewModel.multiChoiceAns -= "b"
+            }
+
+            2 -> {
+                if (entityViewModel.multiChoiceAns.contains("c"))
+                    entityViewModel.multiChoiceAns -= "c"
+            }
+
+            3 -> {
+                if (entityViewModel.multiChoiceAns.contains("d"))
+                    entityViewModel.multiChoiceAns -= "d"
+            }
+
+            4 -> {
+                if (entityViewModel.multiChoiceAns.contains("e"))
+                    entityViewModel.multiChoiceAns -= "e"
+            }
+        }
+
+        var isCorrect = false
+
+        for (ans in correctAns) {
+            for (selectAns in entityViewModel.multiChoiceAns) {
+                isCorrect = ans.lowercase() == selectAns.lowercase()
+            }
+        }
+
+        entityViewModel.insertTestData(
+            TestEntity(
+                quesId = quesId,
+                correctAnswers = correctAns.toString().lowercase(),
+                selectedAnswers = entityViewModel.multiChoiceAns.toString().lowercase(),
+                marks = if (isCorrect) 1 else 0
+            )
+        )
+
+        Log.d("SelectAnswers", "CheckboxRow: $quesId ${entityViewModel.multiChoiceAns} ")
+    }
+
     Surface(
         shape = MaterialTheme.shapes.small,
         color = if (selected) {
@@ -98,4 +213,5 @@ fun CheckboxRow(
             )
         }
     }
+
 }

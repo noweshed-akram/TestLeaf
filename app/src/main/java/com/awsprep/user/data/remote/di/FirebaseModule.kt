@@ -1,7 +1,7 @@
-package com.awsprep.user.data.di
+package com.awsprep.user.data.remote.di
 
-import com.awsprep.user.data.repo.AsesmntRepositoryImpl
-import com.awsprep.user.data.repo.UserRepositoryImpl
+import com.awsprep.user.data.remote.repo.AsesmntRepositoryImpl
+import com.awsprep.user.data.remote.repo.UserRepositoryImpl
 import com.awsprep.user.domain.repositories.AuthRepository
 import com.awsprep.user.domain.repositories.UserRepository
 import com.awsprep.user.utils.AppConstant.COLL_USER
@@ -11,8 +11,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.awsprep.user.data.repo.AuthRepositoryImpl
-import com.awsprep.user.data.repo.QuesRepositoryImpl
+import com.awsprep.user.data.remote.repo.AuthRepositoryImpl
+import com.awsprep.user.data.remote.repo.QuesRepositoryImpl
 import com.awsprep.user.domain.repositories.AsesmntRepository
 import com.awsprep.user.domain.repositories.QuesRepository
 import dagger.Module

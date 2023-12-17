@@ -1,5 +1,6 @@
 package com.awsprep.user.ui.component
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Row
@@ -19,33 +20,42 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.awsprep.user.data.local.entity.TestEntity
 import com.awsprep.user.ui.theme.GreyColor
 import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.ui.theme.WhiteColor
+import com.awsprep.user.viewmodel.EntityViewModel
 
 /**
  * Created by Md. Noweshed Akram on 14/11/23.
  */
 @Composable
 fun SingleChoiceQues(
+    modifier: Modifier = Modifier,
+    entityViewModel: EntityViewModel,
+    quesId: String,
     questionTitle: String,
     @StringRes directionsResourceId: Int,
     possibleAnswers: List<String>,
     selectedAnswer: String,
-    onOptionSelected: (String) -> Unit,
-    modifier: Modifier = Modifier,
+    correctAns: List<String>,
+    onOptionSelected: (String) -> Unit
 ) {
     QuestionWrapper(
         questionTitle = questionTitle,
         directionsResourceId = directionsResourceId,
         modifier = modifier.selectableGroup(),
     ) {
-        possibleAnswers.forEach {
+        possibleAnswers.forEachIndexed { index, it ->
             val selected = it == selectedAnswer
-            RadioButtonWithImageRow(
+            RadioButtonWithRow(
                 modifier = Modifier.padding(vertical = 8.dp),
+                entityViewModel = entityViewModel,
+                rowIndex = index,
+                quesId = quesId,
                 text = it,
                 selected = selected,
+                correctAns = correctAns,
                 onOptionSelected = { onOptionSelected(it) }
             )
         }
@@ -53,12 +63,51 @@ fun SingleChoiceQues(
 }
 
 @Composable
-fun RadioButtonWithImageRow(
+fun RadioButtonWithRow(
+    modifier: Modifier = Modifier,
+    entityViewModel: EntityViewModel,
+    rowIndex: Int,
+    quesId: String = "",
     text: String,
     selected: Boolean,
-    onOptionSelected: () -> Unit,
-    modifier: Modifier = Modifier,
+    correctAns: List<String> = emptyList(),
+    onOptionSelected: () -> Unit
 ) {
+
+    if (selected) {
+        when (rowIndex) {
+            0 -> {
+                entityViewModel.singleChoiceAns.value = "a"
+            }
+
+            1 -> {
+                entityViewModel.singleChoiceAns.value = "b"
+            }
+
+            2 -> {
+                entityViewModel.singleChoiceAns.value = "c"
+            }
+
+            3 -> {
+                entityViewModel.singleChoiceAns.value = "d"
+            }
+        }
+
+        entityViewModel.insertTestData(
+            TestEntity(
+                quesId = quesId,
+                correctAnswers = correctAns[0].lowercase(),
+                selectedAnswers = entityViewModel.singleChoiceAns.value.lowercase(),
+                marks = if (entityViewModel.singleChoiceAns.value == correctAns[0].lowercase()) 1 else 0
+            )
+        )
+
+        Log.d(
+            "SelectAnswers",
+            "RadioButtonWithRow: $quesId ${entityViewModel.singleChoiceAns.value}"
+        )
+    }
+
     Surface(
         shape = MaterialTheme.shapes.small,
         color = if (selected) {
@@ -107,4 +156,5 @@ fun RadioButtonWithImageRow(
 
         }
     }
+
 }

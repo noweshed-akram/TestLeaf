@@ -2,7 +2,9 @@ package com.awsprep.user.ui.component
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,11 +15,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,8 +35,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -37,7 +48,9 @@ import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.ErrorColor
 import com.awsprep.user.ui.theme.GreyColor
 import com.awsprep.user.ui.theme.PrimaryColor
+import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.ui.theme.Typography
+import com.awsprep.user.ui.theme.WhiteColor
 
 /**
  * Created by Md. Noweshed Akram on 25/11/23.
@@ -45,7 +58,9 @@ import com.awsprep.user.ui.theme.Typography
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun ReviewQuesItem(
-    quesNo: Int, question: Question, onQuestionDelete: (quesId: String) -> Unit
+    quesNo: Int,
+    question: Question,
+    onQuestionDelete: (quesId: String) -> Unit,
 ) {
 
     var showAlert by rememberSaveable { mutableStateOf(false) }
@@ -209,15 +224,71 @@ fun QuesCheckboxOptions(
         Log.d("QuesCheckboxOptions: ", selectedAnswers.toString())
     }
 
-    checkBoxOptions.forEach { text ->
+    checkBoxOptions.forEachIndexed { index, text ->
 
         val selected = selectedAnswers.contains(text)
 
-        CheckboxRow(modifier = Modifier.padding(vertical = 8.dp),
+        ReviewCheckboxRow(
+            modifier = Modifier.padding(vertical = 8.dp),
             text = text,
             selected = selected,
-            onOptionSelected = { })
+            onOptionSelected = { }
+        )
     }
+}
+
+@Composable
+fun ReviewCheckboxRow(
+    modifier: Modifier = Modifier,
+    text: String,
+    selected: Boolean,
+    onOptionSelected: () -> Unit
+) {
+
+    Surface(
+        shape = MaterialTheme.shapes.small,
+        color = if (selected) {
+            SecondaryColor
+        } else {
+            MaterialTheme.colorScheme.surface
+        },
+        border = BorderStroke(
+            width = 1.dp, color = if (selected) {
+                SecondaryColor
+            } else {
+                MaterialTheme.colorScheme.outline
+            }
+        ),
+        modifier = modifier
+            .clip(MaterialTheme.shapes.small)
+            .clickable(onClick = onOptionSelected)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 4.dp, top = 8.dp, bottom = 8.dp, end = 16.dp),
+            verticalAlignment = CenterVertically
+        ) {
+            Checkbox(
+                selected,
+                onCheckedChange = {
+                    onOptionSelected()
+                },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = WhiteColor,
+                    uncheckedColor = GreyColor,
+                    checkmarkColor = SecondaryColor
+                )
+            )
+            androidx.compose.material3.Text(
+                modifier = Modifier.weight(1f),
+                text = text.trim(),
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Justify
+            )
+        }
+    }
+
 }
 
 @Composable
@@ -230,26 +301,89 @@ fun QuesRadioOptions(
 
     var correctAns = ""
 
-    if (question.ans[0].lowercase() == "a") {
-        correctAns = question.optionA
-    } else if (question.ans[0].lowercase() == "b") {
-        correctAns = question.optionB
-    } else if (question.ans[0].lowercase() == "c") {
-        correctAns = question.optionC
-    } else if (question.ans[0].lowercase() == "d") {
-        correctAns = question.optionD
+    for (ans in question.ans) {
+        if (ans.lowercase() == "a") {
+            correctAns = question.optionA
+        } else if (ans.lowercase() == "b") {
+            correctAns = question.optionB
+        } else if (ans.lowercase() == "c") {
+            correctAns = question.optionC
+        } else if (ans.lowercase() == "d") {
+            correctAns = question.optionD
+        }
     }
 
     val (selectedOption, onOptionSelected) = rememberSaveable { mutableStateOf(correctAns) }
 
-    radioOptions.forEach { text ->
+    radioOptions.forEachIndexed { index, text ->
 
         val selected = text == selectedOption
 
-        RadioButtonWithImageRow(modifier = Modifier.padding(vertical = 8.dp),
+        ReviewRadioButtonWithRow(
+            modifier = Modifier.padding(vertical = 8.dp),
             text = text,
             selected = selected,
-            onOptionSelected = { })
+            onOptionSelected = { }
+        )
 
     }
+}
+
+@Composable
+fun ReviewRadioButtonWithRow(
+    modifier: Modifier = Modifier,
+    text: String,
+    selected: Boolean,
+    onOptionSelected: () -> Unit
+) {
+
+    Surface(
+        shape = MaterialTheme.shapes.small,
+        color = if (selected) {
+            SecondaryColor
+        } else {
+            MaterialTheme.colorScheme.surface
+        },
+        border = BorderStroke(
+            width = 1.dp,
+            color = if (selected) {
+                SecondaryColor
+            } else {
+                MaterialTheme.colorScheme.outline
+            }
+        ),
+        modifier = modifier
+            .clip(MaterialTheme.shapes.small)
+            .selectable(
+                selected,
+                onClick = onOptionSelected,
+                role = Role.RadioButton
+            )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 4.dp, top = 8.dp, bottom = 8.dp, end = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            RadioButton(
+                selected,
+                onClick = {
+                    onOptionSelected()
+                },
+                colors = RadioButtonDefaults.colors(
+                    selectedColor = WhiteColor,
+                    unselectedColor = GreyColor
+                )
+            )
+            androidx.compose.material3.Text(
+                modifier = Modifier.weight(1f),
+                text = text.trim(),
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Justify
+            )
+
+        }
+    }
+
 }

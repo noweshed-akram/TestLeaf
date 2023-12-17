@@ -20,6 +20,7 @@ import com.awsprep.user.ui.layout.compose.SectionScreen
 import com.awsprep.user.ui.layout.compose.TestScreen
 import com.awsprep.user.ui.layout.compose.TimerScreen
 import com.awsprep.user.viewmodel.AsesmntViewModel
+import com.awsprep.user.viewmodel.EntityViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
 import com.awsprep.user.viewmodel.UserViewModel
 
@@ -33,7 +34,8 @@ fun NavGraphBuilder.ContentNavGraph(
     startDestination: String = ContentNavScreen.EditProfile.route,
     userViewModel: UserViewModel,
     asesmntViewModel: AsesmntViewModel,
-    quesViewModel: QuesViewModel
+    quesViewModel: QuesViewModel,
+    entityViewModel: EntityViewModel
 ) {
 
     navigation(
@@ -124,6 +126,7 @@ fun NavGraphBuilder.ContentNavGraph(
                         TimerScreen(
                             navController = navController,
                             quesViewModel = quesViewModel,
+                            entityViewModel = entityViewModel,
                             courseId = courseId,
                             chapterId = chapterId,
                             sectionId = sectionId
@@ -135,7 +138,11 @@ fun NavGraphBuilder.ContentNavGraph(
         }
 
         composable(ContentNavScreen.ReviewQues.route) {
-            ReviewQuesScreen(navController = navController, quesViewModel = quesViewModel)
+            ReviewQuesScreen(
+                navController = navController,
+                quesViewModel = quesViewModel,
+                entityViewModel = entityViewModel
+            )
         }
 
         composable(ContentNavScreen.RandomSets.route) {
@@ -172,7 +179,8 @@ fun NavGraphBuilder.ContentNavGraph(
                     },
                     activeTimer = it,
                     userViewModel = userViewModel,
-                    quesViewModel = quesViewModel
+                    quesViewModel = quesViewModel,
+                    entityViewModel = entityViewModel
                 )
             }
         }

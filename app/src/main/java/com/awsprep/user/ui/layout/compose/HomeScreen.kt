@@ -50,6 +50,7 @@ import com.awsprep.user.ui.component.HomeTopView
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.AuthViewModel
+import com.awsprep.user.viewmodel.EntityViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
 import com.awsprep.user.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
@@ -66,7 +67,8 @@ fun HomeScreen(
     authViewModel: AuthViewModel,
     userViewModel: UserViewModel,
     asesmntViewModel: AsesmntViewModel,
-    quesViewModel: QuesViewModel
+    quesViewModel: QuesViewModel,
+    entityViewModel: EntityViewModel
 ) {
 
     val context = LocalContext.current
@@ -301,7 +303,8 @@ fun HomeScreen(
                     authViewModel = authViewModel,
                     userViewModel = userViewModel,
                     asesmntViewModel = asesmntViewModel,
-                    quesViewModel = quesViewModel
+                    quesViewModel = quesViewModel,
+                    entityViewModel = entityViewModel
                 )
             }
         }

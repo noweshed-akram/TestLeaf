@@ -1,4 +1,4 @@
-package com.awsprep.user.data.repo
+package com.awsprep.user.data.remote.repo
 
 import android.net.Uri
 import com.awsprep.user.domain.models.TestResult

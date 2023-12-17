@@ -15,6 +15,7 @@ import com.awsprep.user.ui.layout.compose.MainScreen
 import com.awsprep.user.ui.theme.AwsPrepTheme
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.AuthViewModel
+import com.awsprep.user.viewmodel.EntityViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
 import com.awsprep.user.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,6 +40,7 @@ class MainActivity : ComponentActivity() {
                     val userViewModel: UserViewModel by viewModels()
                     val asesmntViewModel: AsesmntViewModel by viewModels()
                     val quesViewModel: QuesViewModel by viewModels()
+                    val entityViewModel: EntityViewModel by viewModels()
 
                     MainScreen(
                         scrollBehavior = scrollBehavior,
@@ -46,7 +48,8 @@ class MainActivity : ComponentActivity() {
                         authViewModel = authViewModel,
                         userViewModel = userViewModel,
                         asesmntViewModel = asesmntViewModel,
-                        quesViewModel = quesViewModel
+                        quesViewModel = quesViewModel,
+                        entityViewModel = entityViewModel
                     )
                 }
             }

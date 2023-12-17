@@ -25,6 +25,7 @@ import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.component.ReviewQuesItem
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.WhiteColor
+import com.awsprep.user.viewmodel.EntityViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -36,7 +37,8 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 @Composable
 fun ReviewQuesScreen(
     navController: NavController,
-    quesViewModel: QuesViewModel
+    quesViewModel: QuesViewModel,
+    entityViewModel: EntityViewModel
 ) {
 
     var showProgress by rememberSaveable { mutableStateOf(false) }
@@ -90,7 +92,10 @@ fun ReviewQuesScreen(
                     itemsIndexed(
                         items = questionList
                     ) { index, question ->
-                        ReviewQuesItem(quesNo = index + 1, question = question) { quesId ->
+                        ReviewQuesItem(
+                            quesNo = index + 1,
+                            question = question
+                        ) { quesId ->
                             quesViewModel.deleteReviewQues(quesId)
                         }
                     }

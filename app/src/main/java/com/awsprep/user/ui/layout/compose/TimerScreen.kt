@@ -26,6 +26,7 @@ import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.WhiteColor
+import com.awsprep.user.viewmodel.EntityViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
@@ -36,6 +37,7 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 fun TimerScreen(
     navController: NavController,
     quesViewModel: QuesViewModel,
+    entityViewModel: EntityViewModel,
     courseId: String = "",
     chapterId: String = "",
     sectionId: String = ""
@@ -49,6 +51,10 @@ fun TimerScreen(
 
     var questionList by rememberSaveable {
         mutableStateOf(emptyList<Question>())
+    }
+
+    LaunchedEffect(key1 = true){
+        entityViewModel.clearLocalDb()
     }
 
     LaunchedEffect(key1 = true) {
@@ -107,7 +113,7 @@ fun TimerScreen(
 
         PrimaryButton(
             onClick = {
-                if (questionList.size < 10) {
+                if (questionList.size < 5) {
                     showError = true
                     errorMsg = "This section isn't available for Test! Please try later."
                 } else {

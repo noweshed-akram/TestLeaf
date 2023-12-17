@@ -14,6 +14,7 @@ import com.awsprep.user.ui.layout.compose.bottombar.PractisesScreen
 import com.awsprep.user.ui.layout.compose.bottombar.MyProfileScreen
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.AuthViewModel
+import com.awsprep.user.viewmodel.EntityViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
 import com.awsprep.user.viewmodel.UserViewModel
 
@@ -28,7 +29,8 @@ fun BottomNavigation(
     authViewModel: AuthViewModel,
     userViewModel: UserViewModel,
     asesmntViewModel: AsesmntViewModel,
-    quesViewModel: QuesViewModel
+    quesViewModel: QuesViewModel,
+    entityViewModel: EntityViewModel
 ) {
     NavHost(
         navController = navController,
@@ -75,7 +77,8 @@ fun BottomNavigation(
             navController = navController,
             userViewModel = userViewModel,
             asesmntViewModel = asesmntViewModel,
-            quesViewModel = quesViewModel
+            quesViewModel = quesViewModel,
+            entityViewModel = entityViewModel
         )
 
         AuthNavGraph(

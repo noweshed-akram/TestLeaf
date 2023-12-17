@@ -1,5 +1,6 @@
 package com.awsprep.user.ui.layout.compose
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.TweenSpec
@@ -10,10 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -21,14 +24,18 @@ import com.awsprep.user.R
 import com.awsprep.user.domain.models.Feedback
 import com.awsprep.user.domain.models.Question
 import com.awsprep.user.domain.models.TestResult
+import com.awsprep.user.ui.component.AlertDialog
 import com.awsprep.user.ui.component.MultipleChoiceQues
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.component.SingleChoiceQues
 import com.awsprep.user.ui.component.getTransitionDirection
+import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.utils.AppConstant.DATE_TIME_FORMAT
+import com.awsprep.user.utils.AppConstant.STATUS_FAILED
 import com.awsprep.user.utils.AppConstant.STATUS_PASS
 import com.awsprep.user.utils.getCurrentDateTime
 import com.awsprep.user.utils.toString
+import com.awsprep.user.viewmodel.EntityViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
 import com.awsprep.user.viewmodel.TestViewModel
 import com.awsprep.user.viewmodel.UserViewModel
@@ -40,22 +47,34 @@ private const val CONTENT_ANIMATION_DURATION = 300
 /**
  * Created by Md. Noweshed Akram on 11/11/23.
  */
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun TestScreen(
     onBackPressed: () -> Unit,
     onSubmitAnswers: () -> Unit,
     activeTimer: Boolean = true,
     userViewModel: UserViewModel,
-    quesViewModel: QuesViewModel
+    quesViewModel: QuesViewModel,
+    entityViewModel: EntityViewModel,
+    testType: String = "Course",
+    testName: String = "Course001"
 ) {
 
     val TAG = "TestScreen"
 
+    val context = LocalContext.current
+
     var showProgress by rememberSaveable { mutableStateOf(false) }
     var showError by rememberSaveable { mutableStateOf(false) }
     var showSuccess by rememberSaveable { mutableStateOf(false) }
+    var showAlert by rememberSaveable { mutableStateOf(false) }
+
     var errorMsg by rememberSaveable { mutableStateOf("") }
     var successMsg by rememberSaveable { mutableStateOf("") }
+
+    val totalQs by rememberSaveable { mutableIntStateOf(30) }
+    var correctAns by rememberSaveable { mutableIntStateOf(0) }
+    var wrongAns by rememberSaveable { mutableIntStateOf(0) }
 
     val testViewModel: TestViewModel = viewModel()
 
@@ -90,7 +109,7 @@ fun TestScreen(
 
     val questionIndexData = testViewModel.questionIndexData ?: return
 
-    LaunchedEffect(key1 = true){
+    LaunchedEffect(key1 = true) {
         testViewModel.onNextPressed()
         testViewModel.onPreviousPressed()
     }
@@ -115,22 +134,25 @@ fun TestScreen(
             )
         },
         onPreviousPressed = { testViewModel.onPreviousPressed() },
-        onNextPressed = { testViewModel.onNextPressed() },
+        onNextPressed = {
+            entityViewModel.singleChoiceAns.value = ""
+            entityViewModel.multiChoiceAns.clear()
+            testViewModel.onNextPressed()
+        },
         onSubmitPressed = {
-            userViewModel.insertTestResult(
-                TestResult(
-                    testType = "Course",
-                    testName = "CompTIA Security+",
-                    totalQs = "30",
-                    answered = "27",
-                    correctAnswered = "20",
-                    wrongAnswered = "7",
-                    status = STATUS_PASS,
-                    createdAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
-                    updatedAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
-                )
-            )
-            testViewModel.onDonePressed(onSubmitAnswers)
+
+            entityViewModel.getCorrectMarks().let {
+                correctAns = entityViewModel.correctScore.value!!
+            }
+
+            entityViewModel.getWrongMarks().let {
+                wrongAns = entityViewModel.wrongScore.value!!
+            }
+
+            Log.d(TAG, "onSubmitPressed: correct- $correctAns , wrong- $wrongAns")
+
+            showAlert = true
+
         }
     ) { paddingValues ->
 
@@ -161,6 +183,9 @@ fun TestScreen(
 
             if (targetState.question.optionE.isNotEmpty()) {
                 MultipleChoiceQues(
+                    modifier = modifier,
+                    entityViewModel = entityViewModel,
+                    quesId = targetState.question.quesId,
                     questionTitle = targetState.question.ques,
                     directionsResourceId = R.string.select_all,
                     possibleAnswers = listOf(
@@ -171,11 +196,14 @@ fun TestScreen(
                         targetState.question.optionE
                     ),
                     selectedAnswers = testViewModel.multipleChoiceResponse,
-                    onOptionSelected = testViewModel::onMultipleChoiceResponse,
-                    modifier = modifier,
+                    correctAns = targetState.question.ans,
+                    onOptionSelected = testViewModel::onMultipleChoiceResponse
                 )
             } else {
                 SingleChoiceQues(
+                    modifier = modifier,
+                    entityViewModel = entityViewModel,
+                    quesId = targetState.question.quesId,
                     questionTitle = targetState.question.ques,
                     directionsResourceId = R.string.select_one,
                     possibleAnswers = listOf(
@@ -185,8 +213,8 @@ fun TestScreen(
                         targetState.question.optionD
                     ),
                     selectedAnswer = testViewModel.singleChoiceResponse,
-                    onOptionSelected = testViewModel::onSingleChoiceResponse,
-                    modifier = modifier,
+                    correctAns = targetState.question.ans,
+                    onOptionSelected = testViewModel::onSingleChoiceResponse
                 )
             }
 
@@ -205,6 +233,49 @@ fun TestScreen(
     if (showSuccess) {
         showSuccess = false
         SweetToastUtil.SweetSuccess(message = successMsg, padding = PaddingValues(10.dp))
+    }
+
+    if (showAlert) {
+        AlertDialog(
+            openDialogCustom = mutableStateOf(showAlert),
+            dialogIcon = R.drawable.ic_warning,
+            drawableTint = PrimaryColor,
+            title = "Submit Now?",
+            message = "you can check before final submission..",
+            onPositiveBtnPressed = {
+                showAlert = false
+
+                entityViewModel.getCorrectMarks().let {
+                    correctAns = entityViewModel.correctScore.value!!
+                }
+
+                entityViewModel.getWrongMarks().let {
+                    wrongAns = entityViewModel.wrongScore.value!!
+                }
+
+                Log.d(TAG, "onSubmitPressed: correct- $correctAns , wrong- $wrongAns")
+
+                userViewModel.insertTestResult(
+                    TestResult(
+                        testType = testType,
+                        testName = testName,
+                        totalQs = totalQs.toString(),
+                        answered = (correctAns + wrongAns).toString(),
+                        skipped = (totalQs - (correctAns + wrongAns)).toString(),
+                        correctAnswered = correctAns.toString(),
+                        wrongAnswered = wrongAns.toString(),
+                        status = if (((correctAns * 100) / totalQs) > .5f) STATUS_PASS else STATUS_FAILED,
+                        createdAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
+                        updatedAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
+                    )
+                )
+
+                testViewModel.onDonePressed(onSubmitAnswers)
+            },
+            onNegativeBtnPressed = {
+                showAlert = false
+            },
+        )
     }
 
 }
