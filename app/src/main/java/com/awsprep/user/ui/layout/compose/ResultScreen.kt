@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.awsprep.user.domain.models.TestResult
 import com.awsprep.user.navigation.BottomNavScreen
 import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.theme.GreyColor
@@ -44,11 +45,13 @@ import com.awsprep.user.viewmodel.UserViewModel
 @Composable
 fun ResultScreen(
     navController: NavController,
-    userViewModel: UserViewModel
+    userViewModel: UserViewModel,
+    testResult: TestResult
 ) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
@@ -67,7 +70,9 @@ fun ResultScreen(
                 .background(SecondaryColor, RoundedCornerShape(8.dp))
         ) {
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -84,20 +89,20 @@ fun ResultScreen(
                     ) {
 
                         Text(
-                            text = "25",
+                            text = testResult.correctAnswered,
                             style = TextStyle(
                                 fontSize = 18.sp,
-                                fontWeight = FontWeight(400),
+                                fontWeight = FontWeight.Bold,
                                 color = Color.White,
                                 textAlign = TextAlign.Center,
                             )
                         )
 
                         Text(
-                            text = "of 30",
+                            text = "of ${testResult.totalQs}",
                             style = TextStyle(
                                 fontSize = 12.sp,
-                                fontWeight = FontWeight(400),
+                                fontWeight = FontWeight.Normal,
                                 color = Color.White,
                                 textAlign = TextAlign.Center,
                             )
@@ -121,7 +126,7 @@ fun ResultScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "You’ve scored 55 points",
+                    text = "You’ve scored ${testResult.correctAnswered} points",
                     style = TextStyle(
                         fontSize = 15.sp,
                         fontWeight = FontWeight(700),
@@ -132,26 +137,29 @@ fun ResultScreen(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                Box(
-                    modifier = Modifier
-                        .background(
-                            Color(0xFF4C8A4D),
-                            RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
+                if (testResult.timeBased) {
+                    Box(
+                        modifier = Modifier
+                            .background(
+                                Color(0xFF4C8A4D),
+                                RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
+                            )
+                            .fillMaxWidth()
+                            .height(36.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "You took ${testResult.timeTaken} Min to complete the test",
+                            style = TextStyle(
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight(400),
+                                color = Color.White,
+                                textAlign = TextAlign.Center,
+                            )
                         )
-                        .fillMaxWidth()
-                        .height(36.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "You took 20 Min to complete the test", style = TextStyle(
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight(400),
-                            color = Color.White,
-                            textAlign = TextAlign.Center,
-                        )
-                    )
-
+                    }
                 }
+
             }
         }
 
@@ -186,7 +194,12 @@ fun ResultScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        StatusGridComposable("12", "8", "80%", "2")
+        StatusGridComposable(
+            testResult.correctAnswered,
+            testResult.wrongAnswered,
+            testResult.skipped,
+            ((testResult.correctAnswered.toInt() * 100) / testResult.totalQs.toInt()).toString() + "%"
+        )
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -208,8 +221,8 @@ fun ResultScreen(
 fun StatusGridComposable(
     correctAns: String,
     incorrectAns: String,
-    completion: String,
-    skipped: String
+    skipped: String,
+    completion: String
 ) {
     Box(
         contentAlignment = Alignment.Center,

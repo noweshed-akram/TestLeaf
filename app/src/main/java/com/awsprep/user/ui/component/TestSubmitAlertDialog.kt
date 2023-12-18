@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -37,22 +39,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.awsprep.user.R
+import com.awsprep.user.ui.layout.compose.StatusTextComposable
 import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.GreyColor
 import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.SecondaryColor
 
 /**
- * Created by Md. Noweshed Akram on 9/12/23.
+ * Created by Md. Noweshed Akram on 12/18/2023.
  */
 @Composable
-fun AlertDialog(
+fun TestSubmitAlertDialog(
     modifier: Modifier = Modifier,
     openDialogCustom: MutableState<Boolean>,
     @DrawableRes dialogIcon: Int,
     drawableTint: Color = PrimaryColor,
-    title: String = "Title",
-    message: String = "This is a message!",
+    title: String = "please check before submit",
+    message: String = "Total Questions",
+    totalQs: String = "0",
+    quesAnswered: String = "0",
+    skippedQues: String = "0",
     onPositiveBtnPressed: () -> Unit,
     onNegativeBtnPressed: () -> Unit,
 ) {
@@ -105,19 +111,49 @@ fun AlertDialog(
                             .padding(top = 5.dp)
                             .fillMaxWidth(),
                         style = MaterialTheme.typography.labelLarge,
-                        maxLines = 2,
+                        maxLines = 1,
+                        color = GreyColor,
+                        fontWeight = FontWeight.SemiBold,
                         overflow = TextOverflow.Ellipsis
                     )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
                     Text(
-                        text = message.trim(),
+                        text = message.trim() + " $totalQs",
                         textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold,
                         modifier = Modifier
                             .padding(top = 10.dp, start = 25.dp, end = 25.dp)
                             .fillMaxWidth(),
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
-                //.......................................................................
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row {
+                    StatusTextComposable(
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .wrapContentHeight()
+                            .weight(1.0f),
+                        status = "Question Tried",
+                        progress = quesAnswered
+                    )
+
+                    StatusTextComposable(
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .wrapContentHeight()
+                            .weight(1.0f),
+                        status = "Skipped",
+                        progress = skippedQues
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
                 Row(
                     Modifier
                         .fillMaxWidth()
@@ -135,9 +171,9 @@ fun AlertDialog(
                         }) {
 
                         Text(
-                            "Not Now",
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Red,
+                            "Goto Questions",
+                            fontWeight = FontWeight.Normal,
+                            color = Color.Black,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                         )
                     }
@@ -159,9 +195,9 @@ fun AlertDialog(
                             openDialogCustom.value = false
                         }) {
                         Text(
-                            "Yes",
-                            fontWeight = FontWeight.ExtraBold,
-                            color = SecondaryColor,
+                            "Submit Anyway",
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.Black,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                         )
                     }
@@ -174,10 +210,10 @@ fun AlertDialog(
 @SuppressLint("UnrememberedMutableState")
 @Preview(showBackground = true)
 @Composable
-fun AlertDialogPreview() {
-    AlertDialog(
+fun TestSubmitAlertDialogPreview() {
+    TestSubmitAlertDialog(
         openDialogCustom = mutableStateOf(false),
-        dialogIcon = R.drawable.ic_notification,
+        dialogIcon = R.drawable.ic_warning,
         onPositiveBtnPressed = {},
         onNegativeBtnPressed = {})
 }

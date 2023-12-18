@@ -6,6 +6,8 @@ package com.awsprep.user.domain.models
 data class TestResult(
     val testType: String = "",
     val testName: String = "",
+    val timeBased: Boolean = false,
+    val timeTaken: String = "",
     val totalQs: String = "",
     val answered: String = "",
     val skipped: String = "",

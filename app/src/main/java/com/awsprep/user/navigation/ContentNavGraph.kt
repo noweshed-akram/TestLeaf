@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.awsprep.user.domain.models.TestResult
 import com.awsprep.user.ui.layout.compose.AllCourseScreen
 import com.awsprep.user.ui.layout.compose.ChapterScreen
 import com.awsprep.user.ui.layout.compose.EditProfileScreen
@@ -19,6 +20,7 @@ import com.awsprep.user.ui.layout.compose.ReviewQuesScreen
 import com.awsprep.user.ui.layout.compose.SectionScreen
 import com.awsprep.user.ui.layout.compose.TestScreen
 import com.awsprep.user.ui.layout.compose.TimerScreen
+import com.awsprep.user.utils.fromPrettyJson
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.EntityViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
@@ -167,13 +169,9 @@ fun NavGraphBuilder.ContentNavGraph(
 
             activeTimer?.let {
                 TestScreen(
+                    navController = navController,
                     onBackPressed = {
                         navController.navigate(Graph.HOME) {
-                            popUpTo(ContentNavScreen.Test.route)
-                        }
-                    },
-                    onSubmitAnswers = {
-                        navController.navigate(ContentNavScreen.Result.route) {
                             popUpTo(ContentNavScreen.Test.route)
                         }
                     },
@@ -185,8 +183,22 @@ fun NavGraphBuilder.ContentNavGraph(
             }
         }
 
-        composable(ContentNavScreen.Result.route) {
-            ResultScreen(navController = navController, userViewModel = userViewModel)
+        composable(
+            route = ContentNavScreen.Result.route.plus(ContentNavScreen.Result.objectPath),
+            arguments = listOf(navArgument(ContentNavScreen.Result.objectName) {
+                type = NavType.StringType
+            })
+        ) {
+
+            val result = it.arguments?.getString(ContentNavScreen.Result.objectName)
+
+            val testResult = result?.fromPrettyJson<TestResult>()
+
+            ResultScreen(
+                navController = navController,
+                userViewModel = userViewModel,
+                testResult = testResult!!
+            )
         }
 
         composable(ContentNavScreen.ResultDashboard.route) {

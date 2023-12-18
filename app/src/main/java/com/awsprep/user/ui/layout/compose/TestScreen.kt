@@ -20,20 +20,23 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.Feedback
 import com.awsprep.user.domain.models.Question
 import com.awsprep.user.domain.models.TestResult
-import com.awsprep.user.ui.component.AlertDialog
+import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.MultipleChoiceQues
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.component.SingleChoiceQues
+import com.awsprep.user.ui.component.TestSubmitAlertDialog
 import com.awsprep.user.ui.component.getTransitionDirection
 import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.utils.AppConstant.DATE_TIME_FORMAT
 import com.awsprep.user.utils.AppConstant.STATUS_FAILED
 import com.awsprep.user.utils.AppConstant.STATUS_PASS
 import com.awsprep.user.utils.getCurrentDateTime
+import com.awsprep.user.utils.toPrettyJson
 import com.awsprep.user.utils.toString
 import com.awsprep.user.viewmodel.EntityViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
@@ -50,8 +53,8 @@ private const val CONTENT_ANIMATION_DURATION = 300
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun TestScreen(
+    navController: NavController,
     onBackPressed: () -> Unit,
-    onSubmitAnswers: () -> Unit,
     activeTimer: Boolean = true,
     userViewModel: UserViewModel,
     quesViewModel: QuesViewModel,
@@ -73,7 +76,6 @@ fun TestScreen(
     var successMsg by rememberSaveable { mutableStateOf("") }
 
     val totalQs by rememberSaveable { mutableIntStateOf(30) }
-    var selectedAns by rememberSaveable { mutableStateOf("") }
     var correctAns by rememberSaveable { mutableIntStateOf(0) }
     var wrongAns by rememberSaveable { mutableIntStateOf(0) }
 
@@ -142,6 +144,8 @@ fun TestScreen(
         },
         onSubmitPressed = {
 
+            showAlert = true
+
             entityViewModel.getCorrectMarks().let {
                 correctAns = entityViewModel.correctScore.value!!
             }
@@ -151,8 +155,6 @@ fun TestScreen(
             }
 
             Log.d(TAG, "onSubmitPressed: correct- $correctAns , wrong- $wrongAns")
-
-            showAlert = true
 
         }
     ) { paddingValues ->
@@ -181,12 +183,6 @@ fun TestScreen(
         ) { targetState ->
 
             Log.d(TAG, ": $targetState ")
-
-            entityViewModel.getSelectedAns(targetState.question.quesId).let {
-                selectedAns = entityViewModel.selectedAns.value ?: ""
-            }
-
-            Log.d(TAG, ": $selectedAns ")
 
             if (targetState.question.optionE.isNotEmpty()) {
                 MultipleChoiceQues(
@@ -243,12 +239,15 @@ fun TestScreen(
     }
 
     if (showAlert) {
-        AlertDialog(
+        TestSubmitAlertDialog(
             openDialogCustom = mutableStateOf(showAlert),
             dialogIcon = R.drawable.ic_warning,
             drawableTint = PrimaryColor,
-            title = "Submit Now?",
-            message = "you can check before final submission..",
+            title = "please check before submit..",
+            message = "Total Questions",
+            totalQs = totalQs.toString(),
+            quesAnswered = (correctAns + wrongAns).toString(),
+            skippedQues = (totalQs - (correctAns + wrongAns)).toString(),
             onPositiveBtnPressed = {
                 showAlert = false
 
@@ -262,22 +261,28 @@ fun TestScreen(
 
                 Log.d(TAG, "onSubmitPressed: correct- $correctAns , wrong- $wrongAns")
 
-                userViewModel.insertTestResult(
-                    TestResult(
-                        testType = testType,
-                        testName = testName,
-                        totalQs = totalQs.toString(),
-                        answered = (correctAns + wrongAns).toString(),
-                        skipped = (totalQs - (correctAns + wrongAns)).toString(),
-                        correctAnswered = correctAns.toString(),
-                        wrongAnswered = wrongAns.toString(),
-                        status = if (((correctAns * 100) / totalQs) > 50.0f) STATUS_PASS else STATUS_FAILED,
-                        createdAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
-                        updatedAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
-                    )
+                val testResult = TestResult(
+                    testType = testType,
+                    testName = testName,
+                    timeBased = activeTimer,
+                    timeTaken = "15",
+                    totalQs = totalQs.toString(),
+                    answered = (correctAns + wrongAns).toString(),
+                    skipped = (totalQs - (correctAns + wrongAns)).toString(),
+                    correctAnswered = correctAns.toString(),
+                    wrongAnswered = wrongAns.toString(),
+                    status = if (((correctAns * 100) / totalQs) > 50.0f) STATUS_PASS else STATUS_FAILED,
+                    createdAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
+                    updatedAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
                 )
 
-                testViewModel.onDonePressed(onSubmitAnswers)
+                userViewModel.insertTestResult(testResult)
+
+                testViewModel.onDonePressed {
+                    navController.navigate(ContentNavScreen.Result.route.plus("/${testResult.toPrettyJson()}")) {
+                        popUpTo(ContentNavScreen.Test.route)
+                    }
+                }
             },
             onNegativeBtnPressed = {
                 showAlert = false
