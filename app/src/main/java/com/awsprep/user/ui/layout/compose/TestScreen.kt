@@ -73,6 +73,7 @@ fun TestScreen(
     var successMsg by rememberSaveable { mutableStateOf("") }
 
     val totalQs by rememberSaveable { mutableIntStateOf(30) }
+    var selectedAns by rememberSaveable { mutableStateOf("") }
     var correctAns by rememberSaveable { mutableIntStateOf(0) }
     var wrongAns by rememberSaveable { mutableIntStateOf(0) }
 
@@ -179,7 +180,13 @@ fun TestScreen(
             label = "dataAnimation"
         ) { targetState ->
 
-            Log.d(TAG, ": " + targetState.toString())
+            Log.d(TAG, ": $targetState ")
+
+            entityViewModel.getSelectedAns(targetState.question.quesId).let {
+                selectedAns = entityViewModel.selectedAns.value ?: ""
+            }
+
+            Log.d(TAG, ": $selectedAns ")
 
             if (targetState.question.optionE.isNotEmpty()) {
                 MultipleChoiceQues(
@@ -264,7 +271,7 @@ fun TestScreen(
                         skipped = (totalQs - (correctAns + wrongAns)).toString(),
                         correctAnswered = correctAns.toString(),
                         wrongAnswered = wrongAns.toString(),
-                        status = if (((correctAns * 100) / totalQs) > .5f) STATUS_PASS else STATUS_FAILED,
+                        status = if (((correctAns * 100) / totalQs) > 50.0f) STATUS_PASS else STATUS_FAILED,
                         createdAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
                         updatedAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
                     )

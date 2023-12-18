@@ -20,6 +20,10 @@ class EntityRepoImpl @Inject constructor(
         return entityDao.getTestMark(marks)
     }
 
+    override suspend fun getSelectedAns(quesId: String): String {
+        return entityDao.getSelectedAns(quesId)
+    }
+
     override suspend fun clearLocalDb(): Int {
         return entityDao.clearLocalDb()
     }

@@ -10,9 +10,9 @@ interface EntityRepository {
 
     suspend fun insertTestData(testEntity: TestEntity)
 
-
     suspend fun getTestMark(marks: Int): Int
 
+    suspend fun getSelectedAns(quesId: String): String
 
     suspend fun clearLocalDb(): Int
 }

@@ -19,6 +19,9 @@ interface EntityDao {
     @Query("select count(*) from testentity where marks =:marks ")
     suspend fun getTestMark(marks: Int): Int
 
+    @Query("select selectedAnswers from testentity where quesId=:quesId ")
+    suspend fun getSelectedAns(quesId: String): String
+
     @Query("delete from testentity")
     suspend fun clearLocalDb(): Int
 

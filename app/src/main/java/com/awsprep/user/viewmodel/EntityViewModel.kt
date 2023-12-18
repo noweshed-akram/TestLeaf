@@ -30,6 +30,10 @@ class EntityViewModel @Inject constructor(
     val multiChoiceAns: MutableList<String> = mutableListOf()
     val singleChoiceAns: MutableState<String> = mutableStateOf("")
 
+    private val _selectedAns = MutableLiveData("")
+    val selectedAns: LiveData<String>
+        get() = _selectedAns
+
     private val _correctScore = MutableLiveData(0)
     val correctScore: LiveData<Int>
         get() = _correctScore
@@ -53,6 +57,12 @@ class EntityViewModel @Inject constructor(
     fun getWrongMarks(marks: Int = 0) {
         viewModelScope.launch {
             _wrongScore.value = entityUseCase.getTestMark(marks)
+        }
+    }
+
+    fun getSelectedAns(quesId: String) {
+        viewModelScope.launch {
+            _selectedAns.value = entityUseCase.getSelectedAns(quesId)
         }
     }
 
