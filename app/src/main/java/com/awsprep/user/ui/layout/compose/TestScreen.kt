@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -147,11 +148,11 @@ fun TestScreen(
             showAlert = true
 
             entityViewModel.getCorrectMarks().let {
-                correctAns = entityViewModel.correctScore.value!!
+                correctAns = entityViewModel.correctScore.value
             }
 
             entityViewModel.getWrongMarks().let {
-                wrongAns = entityViewModel.wrongScore.value!!
+                wrongAns = entityViewModel.wrongScore.value
             }
 
             Log.d(TAG, "onSubmitPressed: correct- $correctAns , wrong- $wrongAns")
@@ -198,8 +199,8 @@ fun TestScreen(
                         targetState.question.optionD,
                         targetState.question.optionE
                     ),
-                    selectedAnswers = testViewModel.multipleChoiceResponse[targetState.question.quesId]?.value
-                        ?: emptyList(),
+                    selectedAnswers = testViewModel.multipleChoiceResponse[targetState.question.quesId]
+                        ?: mutableStateListOf(),
                     correctAns = targetState.question.ans,
                     onOptionSelected = { selected, answer ->
                         testViewModel.onMultipleChoiceResponse(

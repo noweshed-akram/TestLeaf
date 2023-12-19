@@ -1,8 +1,5 @@
 package com.awsprep.user.viewmodel
 
-import android.annotation.SuppressLint
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
@@ -13,7 +10,7 @@ import com.awsprep.user.domain.models.QuestionIndexData
 /**
  * Created by Md. Noweshed Akram on 26/11/23.
  */
-class TestViewModel() : ViewModel() {
+class TestViewModel : ViewModel() {
 
     private var questionIndex = 0
 
@@ -41,23 +38,21 @@ class TestViewModel() : ViewModel() {
     )
 
 
-    private val _multipleChoiceResponse =
-        mutableStateMapOf<String, MutableState<MutableList<String>>>()
-    val multipleChoiceResponse: Map<String, State<List<String>>>
+    private val _multipleChoiceResponse = mutableStateMapOf<String, MutableList<String>>()
+    val multipleChoiceResponse: Map<String, List<String>>
         get() = _multipleChoiceResponse
 
-    @SuppressLint("MutableCollectionMutableState")
     fun onMultipleChoiceResponse(selected: Boolean, quesId: String, answer: String) {
-        if (selected) {
-            val answers = listOf(answer)
-            if (!_multipleChoiceResponse.containsKey(quesId)) {
-                _multipleChoiceResponse[quesId] = mutableStateOf(answers.toMutableList())
-            } else {
-                _multipleChoiceResponse[quesId]?.value?.add(answer)
-            }
+
+        val currentList = _multipleChoiceResponse[quesId] ?: mutableStateListOf()
+
+        if (answer in currentList) {
+            currentList.remove(answer)
         } else {
-            _multipleChoiceResponse[quesId]?.value?.remove(answer)
+            currentList.add(answer)
         }
+        _multipleChoiceResponse[quesId] = currentList
+
         _isNextEnabled.value = getIsNextEnabled()
     }
 
