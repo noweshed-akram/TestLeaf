@@ -1,6 +1,10 @@
 package com.awsprep.user.viewmodel
 
+import android.annotation.SuppressLint
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.awsprep.user.domain.models.Question
@@ -36,25 +40,34 @@ class TestViewModel() : ViewModel() {
         )
     )
 
-    private val _multipleChoiceResponse = mutableStateListOf<String>()
-    val multipleChoiceResponse: List<String>
+
+    private val _multipleChoiceResponse =
+        mutableStateMapOf<String, MutableState<MutableList<String>>>()
+    val multipleChoiceResponse: Map<String, State<List<String>>>
         get() = _multipleChoiceResponse
 
-    fun onMultipleChoiceResponse(selected: Boolean, answer: String) {
+    @SuppressLint("MutableCollectionMutableState")
+    fun onMultipleChoiceResponse(selected: Boolean, quesId: String, answer: String) {
         if (selected) {
-            _multipleChoiceResponse.add(answer)
+            val answers = listOf(answer)
+            if (!_multipleChoiceResponse.containsKey(quesId)) {
+                _multipleChoiceResponse[quesId] = mutableStateOf(answers.toMutableList())
+            } else {
+                _multipleChoiceResponse[quesId]?.value?.add(answer)
+            }
         } else {
-            _multipleChoiceResponse.remove(answer)
+            _multipleChoiceResponse[quesId]?.value?.remove(answer)
         }
         _isNextEnabled.value = getIsNextEnabled()
     }
 
-    private val _singleChoiceResponse = mutableStateOf("")
-    val singleChoiceResponse: String
-        get() = _singleChoiceResponse.value
 
-    fun onSingleChoiceResponse(answer: String) {
-        _singleChoiceResponse.value = answer
+    private val _singleChoiceResponse = mutableStateMapOf<String, String>()
+    val singleChoiceResponse: Map<String, String>
+        get() = _singleChoiceResponse
+
+    fun onSingleChoiceResponse(quesId: String, answer: String) {
+        _singleChoiceResponse[quesId] = answer
         _isNextEnabled.value = getIsNextEnabled()
     }
 

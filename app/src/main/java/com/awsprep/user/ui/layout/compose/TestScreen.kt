@@ -198,9 +198,16 @@ fun TestScreen(
                         targetState.question.optionD,
                         targetState.question.optionE
                     ),
-                    selectedAnswers = testViewModel.multipleChoiceResponse,
+                    selectedAnswers = testViewModel.multipleChoiceResponse[targetState.question.quesId]?.value
+                        ?: emptyList(),
                     correctAns = targetState.question.ans,
-                    onOptionSelected = testViewModel::onMultipleChoiceResponse
+                    onOptionSelected = { selected, answer ->
+                        testViewModel.onMultipleChoiceResponse(
+                            selected = selected,
+                            quesId = targetState.question.quesId,
+                            answer = answer
+                        )
+                    }
                 )
             } else {
                 SingleChoiceQues(
@@ -215,9 +222,15 @@ fun TestScreen(
                         targetState.question.optionC,
                         targetState.question.optionD
                     ),
-                    selectedAnswer = testViewModel.singleChoiceResponse,
+                    selectedAnswer = testViewModel.singleChoiceResponse[targetState.question.quesId]
+                        ?: "",
                     correctAns = targetState.question.ans,
-                    onOptionSelected = testViewModel::onSingleChoiceResponse
+                    onOptionSelected = { ans ->
+                        testViewModel.onSingleChoiceResponse(
+                            quesId = targetState.question.quesId,
+                            answer = ans
+                        )
+                    }
                 )
             }
 

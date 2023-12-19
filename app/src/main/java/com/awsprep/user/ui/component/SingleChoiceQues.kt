@@ -42,40 +42,22 @@ fun SingleChoiceQues(
     onOptionSelected: (String) -> Unit
 ) {
 
-    /*var userAns = ""
-    entityViewModel.getSelectedAns(quesId).let {
-        userAns = entityViewModel.selectedAns.value ?: ""
-    }
-
-    var userSelectedAns = ""
-    if (userAns.isNotEmpty()) {
-        if (userAns.lowercase() == "a") {
-            userSelectedAns = possibleAnswers[0]
-        } else if (userAns.lowercase() == "b") {
-            userSelectedAns = possibleAnswers[1]
-        } else if (userAns.lowercase() == "c") {
-            userSelectedAns = possibleAnswers[2]
-        } else if (userAns.lowercase() == "d") {
-            userSelectedAns = possibleAnswers[3]
-        }
-    }*/
-
     QuestionWrapper(
         questionTitle = questionTitle,
         directionsResourceId = directionsResourceId,
         modifier = modifier.selectableGroup(),
     ) {
-        possibleAnswers.forEachIndexed { index, it ->
-            val selected = it == selectedAnswer
+        possibleAnswers.forEachIndexed { index, choice ->
+            val selected = choice == selectedAnswer
             RadioButtonWithRow(
                 modifier = Modifier.padding(vertical = 8.dp),
                 entityViewModel = entityViewModel,
                 rowIndex = index,
                 quesId = quesId,
-                text = it,
+                text = choice,
                 selected = selected,
                 correctAns = correctAns,
-                onOptionSelected = { onOptionSelected(it) }
+                onOptionSelected = { onOptionSelected(choice) }
             )
         }
     }
