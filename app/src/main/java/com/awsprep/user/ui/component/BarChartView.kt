@@ -2,11 +2,12 @@ package com.awsprep.user.ui.component
 
 import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import co.yml.charts.axis.AxisData
+import co.yml.charts.axis.DataCategoryOptions
 import co.yml.charts.common.model.Point
 import co.yml.charts.ui.barchart.BarChart
 import co.yml.charts.ui.barchart.models.BarChartData
@@ -31,11 +32,11 @@ fun BarChartView(
         barData += BarData(
             point = Point(
                 x = (i + 1).toFloat(),
-                y = result.correctAnswered.toFloat(),
-                description = result.testName
+                y = "%.2f".format(result.correctAnswered.toDouble()).toFloat()
             ),
             color = PrimaryColor,
             label = (i + 1).toString(),
+            dataCategoryOptions = DataCategoryOptions(),
             description = result.testName
         )
     }
@@ -46,7 +47,7 @@ fun BarChartView(
 
         val xAxisData = AxisData.Builder()
             .axisStepSize(56.dp)
-            .steps(barData.size)
+            .steps(barData.size - 1)
             .bottomPadding(12.dp)
             .axisLabelAngle(0f)
             .startDrawPadding(32.dp)
@@ -77,7 +78,7 @@ fun BarChartView(
 
         BarChart(
             modifier = Modifier
-                .height(300.dp)
+                .wrapContentHeight()
                 .fillMaxWidth(),
             barChartData = barChartData
         )

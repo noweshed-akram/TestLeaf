@@ -3,15 +3,16 @@ package com.awsprep.user.ui.layout.compose.bottombar
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -101,6 +102,8 @@ fun MyProfileScreen(
 
     LaunchedEffect(key1 = true) {
 
+        userViewModel.getTestResult()
+
         userViewModel.resultData.collect {
             if (it.isLoading) {
                 showProgress = true
@@ -122,7 +125,8 @@ fun MyProfileScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
+            .wrapContentHeight()
             .padding(10.dp)
             .verticalScroll(rememberScrollState())
     ) {
@@ -197,9 +201,15 @@ fun MyProfileScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        BarChartView(
-            resultList = resultList
-        )
+        Box(
+            modifier = Modifier
+                .height(300.dp)
+                .fillMaxWidth()
+        ) {
+            BarChartView(
+                resultList = resultList
+            )
+        }
 
         Text(
             modifier = Modifier.fillMaxWidth(),

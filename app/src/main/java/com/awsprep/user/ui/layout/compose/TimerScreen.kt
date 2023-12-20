@@ -53,16 +53,16 @@ fun TimerScreen(
         mutableStateOf(emptyList<Question>())
     }
 
-    LaunchedEffect(key1 = true){
+    LaunchedEffect(key1 = true) {
         entityViewModel.clearLocalDb()
     }
 
     LaunchedEffect(key1 = true) {
 
-        Log.d("TimerScreen: ", courseId + " " + chapterId + " " + sectionId)
+        Log.d("TimerScreen: ", "$courseId $chapterId $sectionId")
 
         quesViewModel.getQuestions(
-            courseId, chapterId, sectionId, 30
+            courseId, chapterId, sectionId, 5
         )
 
         quesViewModel.questionData.collect {

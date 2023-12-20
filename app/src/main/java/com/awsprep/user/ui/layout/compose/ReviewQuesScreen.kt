@@ -51,6 +51,8 @@ fun ReviewQuesScreen(
 
     LaunchedEffect(key1 = true) {
 
+        quesViewModel.getReviewQues()
+
         quesViewModel.reviewQuesData.collect {
             if (it.isLoading) {
                 showProgress = true
