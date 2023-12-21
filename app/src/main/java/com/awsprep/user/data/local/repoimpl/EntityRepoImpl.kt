@@ -1,5 +1,6 @@
 package com.awsprep.user.data.local.repoimpl
 
+import androidx.lifecycle.LiveData
 import com.awsprep.user.data.local.dao.EntityDao
 import com.awsprep.user.data.local.entity.TestEntity
 import com.awsprep.user.domain.repositories.EntityRepository
@@ -16,7 +17,7 @@ class EntityRepoImpl @Inject constructor(
         entityDao.insertTestData(testEntity)
     }
 
-    override suspend fun getTestMark(marks: Int): Int {
+    override fun getTestMark(marks: Int): LiveData<Int> {
         return entityDao.getTestMark(marks)
     }
 

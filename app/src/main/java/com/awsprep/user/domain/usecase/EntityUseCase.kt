@@ -1,5 +1,6 @@
 package com.awsprep.user.domain.usecase
 
+import androidx.lifecycle.LiveData
 import com.awsprep.user.data.local.entity.TestEntity
 import com.awsprep.user.domain.repositories.EntityRepository
 import javax.inject.Inject
@@ -15,7 +16,7 @@ class EntityUseCase @Inject constructor(
         entityRepository.insertTestData(testEntity)
     }
 
-    suspend fun getTestMark(marks: Int): Int {
+    fun getTestMark(marks: Int): LiveData<Int> {
         return entityRepository.getTestMark(marks)
     }
 

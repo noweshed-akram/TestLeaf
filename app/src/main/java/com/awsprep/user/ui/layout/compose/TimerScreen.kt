@@ -62,7 +62,7 @@ fun TimerScreen(
         Log.d("TimerScreen: ", "$courseId $chapterId $sectionId")
 
         quesViewModel.getQuestions(
-            courseId, chapterId, sectionId, 5
+            courseId, chapterId, sectionId, 30
         )
 
         quesViewModel.questionData.collect {

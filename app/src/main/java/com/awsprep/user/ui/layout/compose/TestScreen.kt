@@ -18,8 +18,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.awsprep.user.R
@@ -67,6 +69,7 @@ fun TestScreen(
     val TAG = "TestScreen"
 
     val context = LocalContext.current
+    val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
 
     var showProgress by rememberSaveable { mutableStateOf(false) }
     var showError by rememberSaveable { mutableStateOf(false) }
@@ -145,15 +148,15 @@ fun TestScreen(
         },
         onSubmitPressed = {
 
+            entityViewModel.getCorrectMarks(1).observe(lifecycleOwner) { marks ->
+                correctAns = marks
+            }
+
+            entityViewModel.getWrongMarks(0).observe(lifecycleOwner) { marks ->
+                wrongAns = marks
+            }
+
             showAlert = true
-
-            entityViewModel.getCorrectMarks().let {
-                correctAns = entityViewModel.correctScore.value
-            }
-
-            entityViewModel.getWrongMarks().let {
-                wrongAns = entityViewModel.wrongScore.value
-            }
 
             Log.d(TAG, "onSubmitPressed: correct- $correctAns , wrong- $wrongAns")
 
@@ -264,14 +267,6 @@ fun TestScreen(
             skippedQues = (totalQs - (correctAns + wrongAns)).toString(),
             onPositiveBtnPressed = {
                 showAlert = false
-
-                entityViewModel.getCorrectMarks().let {
-                    correctAns = entityViewModel.correctScore.value!!
-                }
-
-                entityViewModel.getWrongMarks().let {
-                    wrongAns = entityViewModel.wrongScore.value!!
-                }
 
                 Log.d(TAG, "onSubmitPressed: correct- $correctAns , wrong- $wrongAns")
 
