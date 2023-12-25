@@ -95,7 +95,7 @@ fun HomeScreen(
         userViewModel.userData.collect { it ->
             if (it.error.isNotBlank()) {
                 Log.d("EmailSignScreen: ", it.error)
-                userViewModel.getUserData()
+                navController.navigate(AuthScreen.EmailSignIn.route)
             }
             it.data?.let {
                 userName = it.name
@@ -263,7 +263,7 @@ fun HomeScreen(
                                 R.drawable.ic_assesment, R.drawable.ic_assesment
                             ),
                             BottomMenuContent(
-                                "Practices",
+                                "Q&A",
                                 BottomNavScreen.Practices.route,
                                 R.drawable.ic_qna, R.drawable.ic_qna
                             ),

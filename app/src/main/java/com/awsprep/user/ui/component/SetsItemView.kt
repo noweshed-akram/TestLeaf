@@ -40,6 +40,7 @@ import com.awsprep.user.ui.theme.WhiteColor
  */
 @Composable
 fun SetsItemView(
+    modifier: Modifier = Modifier,
     @DrawableRes setsIcon: Int,
     title: String = "",
     subTitle: String = "",
@@ -47,7 +48,7 @@ fun SetsItemView(
 ) {
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(80.dp)
             .clip(RoundedCornerShape(8.dp))

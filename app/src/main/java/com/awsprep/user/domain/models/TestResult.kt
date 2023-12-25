@@ -1,8 +1,11 @@
 package com.awsprep.user.domain.models
 
+import androidx.annotation.Keep
+
 /**
  * Created by Md. Noweshed Akram on 20/11/23.
  */
+@Keep
 data class TestResult(
     val testType: String = "",
     val testName: String = "",

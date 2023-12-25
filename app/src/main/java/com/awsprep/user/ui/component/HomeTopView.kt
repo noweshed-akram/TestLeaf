@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,7 +36,12 @@ fun HomeTopView(
     onNotificationClick: () -> Unit
 ) {
 
-    Box(modifier = Modifier.background(color = PrimaryColor)) {
+    Box(
+        modifier = Modifier.background(
+            color = PrimaryColor,
+            shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)
+        )
+    ) {
         Row(
             modifier = Modifier.padding(10.dp),
             horizontalArrangement = Arrangement.Center,

@@ -5,6 +5,7 @@ import com.awsprep.user.domain.repositories.AsesmntRepository
 import com.awsprep.user.utils.AppConstant.COLL_CHAPTERS
 import com.awsprep.user.utils.AppConstant.COLL_COURSES
 import com.awsprep.user.utils.AppConstant.COLL_SECTIONS
+import com.awsprep.user.utils.AppConstant.FIELD_ACTIVE
 import com.awsprep.user.utils.AppConstant.FIELD_ORDER
 import com.awsprep.user.utils.Resource
 import com.google.firebase.firestore.FirebaseFirestore
@@ -31,7 +32,8 @@ class AsesmntRepositoryImpl @Inject constructor(
         try {
 
             val courses =
-                firebaseFirestore.collection(COLL_COURSES).limit(limit).orderBy(FIELD_ORDER).get()
+                firebaseFirestore.collection(COLL_COURSES).whereEqualTo(FIELD_ACTIVE, true)
+                    .limit(limit).orderBy(FIELD_ORDER).get()
                     .await()
             var courseList = emptyList<Course>()
 
@@ -63,7 +65,8 @@ class AsesmntRepositoryImpl @Inject constructor(
         try {
 
             val chapters = firebaseFirestore.collection(COLL_COURSES).document(courseId)
-                .collection(COLL_CHAPTERS).orderBy(FIELD_ORDER).get().await()
+                .collection(COLL_CHAPTERS).whereEqualTo(FIELD_ACTIVE, true).orderBy(FIELD_ORDER)
+                .get().await()
             var chapterList = emptyList<Course>()
 
             for (chapter in chapters) {
@@ -97,6 +100,7 @@ class AsesmntRepositoryImpl @Inject constructor(
         try {
             val sections = firebaseFirestore.collection(COLL_COURSES).document(courseId)
                 .collection(COLL_CHAPTERS).document(chapterId).collection(COLL_SECTIONS)
+                .whereEqualTo(FIELD_ACTIVE, true)
                 .orderBy(FIELD_ORDER).get().await()
             var sectionList = emptyList<Course>()
 

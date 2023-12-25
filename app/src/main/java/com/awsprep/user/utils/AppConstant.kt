@@ -29,6 +29,7 @@ object AppConstant {
     const val FIELD_UPDATED_AT = "updatedAt"
 
     const val FIELD_ORDER = "order"
+    const val FIELD_ACTIVE = "is_active"
 
     const val STATUS_PASS = "Pass"
     const val STATUS_FAILED = "Failed"

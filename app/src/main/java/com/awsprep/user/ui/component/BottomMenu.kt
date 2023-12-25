@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -14,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.awsprep.user.domain.models.BottomMenuContent
+import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.SecondaryColor
 
 /**
@@ -34,7 +36,10 @@ fun BottomMenu(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .background(Color.White)
+            .background(
+                color = ColorAccent,
+                shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
+            )
             .padding(10.dp)
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
