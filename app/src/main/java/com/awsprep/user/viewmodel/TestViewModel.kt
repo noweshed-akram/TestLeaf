@@ -37,6 +37,13 @@ class TestViewModel : ViewModel() {
         )
     )
 
+    fun onBackPressed(): Boolean {
+        if (questionIndex == 0) {
+            return false
+        }
+        changeQuestion(questionIndex - 1)
+        return true
+    }
 
     private val _multipleChoiceResponse = mutableStateMapOf<String, MutableList<String>>()
     val multipleChoiceResponse: Map<String, List<String>>
@@ -96,7 +103,14 @@ class TestViewModel : ViewModel() {
     }
 
     private fun getIsNextEnabled(): Boolean {
-        return questionIndex < questionOrder.size // TODO fix to check of question is answered
+        return questionIndex < questionOrder.size
+//        return when (questionOrder[questionIndex]) {
+//            questionIndexData?.question -> _singleChoiceResponse.isNotEmpty()
+//            questionIndexData?.question -> _multipleChoiceResponse.isNotEmpty()
+//            else -> {
+//                true
+//            }
+//        }
     }
 
     private fun createQuestionIndexData(): QuestionIndexData {

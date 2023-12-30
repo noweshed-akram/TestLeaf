@@ -316,6 +316,8 @@ fun QuestionTopAppBar(
             }
         }
 
+        Spacer(Modifier.height(8.dp))
+
     }
 
     if (showAlert) {
@@ -367,6 +369,7 @@ fun QuestionBottomBar(
                 }
                 Spacer(modifier = Modifier.width(16.dp))
             }
+
             if (shouldShowDoneButton) {
                 Button(
                     modifier = Modifier
@@ -379,15 +382,26 @@ fun QuestionBottomBar(
                     Text(text = "Submit")
                 }
             } else {
-                Button(
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(48.dp),
-                    onClick = onNextPressed,
-                    enabled = isNextButtonEnabled,
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text(text = "Next")
+                if (isNextButtonEnabled) {
+                    Button(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(48.dp),
+                        onClick = onNextPressed,
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text(text = "Next")
+                    }
+                } else {
+                    Button(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(48.dp),
+                        onClick = onSubmitPressed,
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text(text = "Skip")
+                    }
                 }
             }
         }

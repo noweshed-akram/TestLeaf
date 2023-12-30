@@ -7,6 +7,7 @@ import com.awsprep.user.domain.repositories.UserRepository
 import com.awsprep.user.utils.AppConstant.COLL_TEST_RESULTS
 import com.awsprep.user.utils.AppConstant.DATE_TIME_FORMAT
 import com.awsprep.user.utils.AppConstant.FIELD_ADDRESS
+import com.awsprep.user.utils.AppConstant.FIELD_CREATED_AT
 import com.awsprep.user.utils.AppConstant.FIELD_EMAIL
 import com.awsprep.user.utils.AppConstant.FIELD_IMAGE_URL
 import com.awsprep.user.utils.AppConstant.FIELD_NAME
@@ -19,6 +20,7 @@ import com.awsprep.user.utils.toString
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -153,9 +155,10 @@ class UserRepositoryImpl @Inject constructor(
         emit(Resource.Loading())
         if (firebaseAuth.currentUser != null) {
             try {
-                val results = userRef.document(firebaseAuth.currentUser!!.uid).collection(
-                    COLL_TEST_RESULTS
-                ).get().await()
+                val results = userRef.document(firebaseAuth.currentUser!!.uid)
+                    .collection(COLL_TEST_RESULTS)
+                    .orderBy(FIELD_CREATED_AT, Query.Direction.DESCENDING)
+                    .get().await()
 
                 var resultList = emptyList<TestResult>()
 

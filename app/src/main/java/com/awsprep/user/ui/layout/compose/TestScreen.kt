@@ -2,6 +2,7 @@ package com.awsprep.user.ui.layout.compose
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.tween
@@ -29,11 +30,13 @@ import com.awsprep.user.domain.models.Feedback
 import com.awsprep.user.domain.models.Question
 import com.awsprep.user.domain.models.TestResult
 import com.awsprep.user.navigation.ContentNavScreen
+import com.awsprep.user.ui.component.AlertDialog
 import com.awsprep.user.ui.component.MultipleChoiceQues
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.component.SingleChoiceQues
 import com.awsprep.user.ui.component.TestSubmitAlertDialog
 import com.awsprep.user.ui.component.getTransitionDirection
+import com.awsprep.user.ui.theme.ErrorColor
 import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.utils.AppConstant.DATE_TIME_FORMAT
 import com.awsprep.user.utils.AppConstant.STATUS_FAILED
@@ -74,7 +77,8 @@ fun TestScreen(
     var showProgress by rememberSaveable { mutableStateOf(false) }
     var showError by rememberSaveable { mutableStateOf(false) }
     var showSuccess by rememberSaveable { mutableStateOf(false) }
-    var showAlert by rememberSaveable { mutableStateOf(false) }
+    var submitAlert by rememberSaveable { mutableStateOf(false) }
+    var exitAlert by rememberSaveable { mutableStateOf(false) }
 
     var errorMsg by rememberSaveable { mutableStateOf("") }
     var successMsg by rememberSaveable { mutableStateOf("") }
@@ -87,6 +91,12 @@ fun TestScreen(
 
     var questionList by rememberSaveable {
         mutableStateOf(emptyList<Question>())
+    }
+
+    BackHandler {
+        if (!testViewModel.onBackPressed()) {
+            exitAlert = true
+        }
     }
 
     LaunchedEffect(key1 = true) {
@@ -156,7 +166,7 @@ fun TestScreen(
                 wrongAns = marks
             }
 
-            showAlert = true
+            submitAlert = true
 
             Log.d(TAG, "onSubmitPressed: correct- $correctAns , wrong- $wrongAns")
 
@@ -255,9 +265,26 @@ fun TestScreen(
         SweetToastUtil.SweetSuccess(message = successMsg, padding = PaddingValues(10.dp))
     }
 
-    if (showAlert) {
+    if (exitAlert) {
+        AlertDialog(
+            openDialogCustom = mutableStateOf(exitAlert),
+            dialogIcon = R.drawable.ic_warning,
+            drawableTint = ErrorColor,
+            title = "Warning!",
+            message = "Are you sure to quit the Test?",
+            onPositiveBtnPressed = {
+                exitAlert = false
+                onBackPressed()
+            },
+            onNegativeBtnPressed = {
+                exitAlert = false
+            },
+        )
+    }
+
+    if (submitAlert) {
         TestSubmitAlertDialog(
-            openDialogCustom = mutableStateOf(showAlert),
+            openDialogCustom = mutableStateOf(submitAlert),
             dialogIcon = R.drawable.ic_warning,
             drawableTint = PrimaryColor,
             title = "please check before submit..",
@@ -266,7 +293,7 @@ fun TestScreen(
             quesAnswered = (correctAns + wrongAns).toString(),
             skippedQues = (totalQs - (correctAns + wrongAns)).toString(),
             onPositiveBtnPressed = {
-                showAlert = false
+                submitAlert = false
 
                 Log.d(TAG, "onSubmitPressed: correct- $correctAns , wrong- $wrongAns")
 
@@ -294,7 +321,7 @@ fun TestScreen(
                 }
             },
             onNegativeBtnPressed = {
-                showAlert = false
+                submitAlert = false
             },
         )
     }

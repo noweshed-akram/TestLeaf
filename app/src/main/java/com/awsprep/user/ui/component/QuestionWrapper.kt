@@ -37,7 +37,7 @@ fun QuestionWrapper(
             .verticalScroll(rememberScrollState())
     ) {
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(8.dp))
 
         QuestionTitle(questionTitle)
 
