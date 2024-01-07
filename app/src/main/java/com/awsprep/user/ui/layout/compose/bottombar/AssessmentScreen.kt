@@ -113,7 +113,7 @@ fun AssessmentScreen(
                 .wrapContentHeight(),
             columns = 2
         ) {
-            courseList.forEach { course ->
+            courseList.forEachIndexed { index, course ->
                 Box(
                     modifier = Modifier
                         .padding(12.dp)
@@ -156,10 +156,10 @@ fun AssessmentScreen(
 
                         Text(
                             modifier = Modifier.padding(10.dp),
-                            text = course.name,
+                            text = "${index + 1}. ${course.name}",
                             style = Typography.titleMedium,
                             color = Color.Black,
-                            maxLines = 1
+                            maxLines = 2
                         )
 
                         Box(

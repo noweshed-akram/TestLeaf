@@ -102,26 +102,7 @@ fun CheckboxRow(
             }
         }
 
-        var isCorrect = false
-
-        for (ans in correctAns) {
-            for (selectAns in entityViewModel.multiChoiceAns) {
-                isCorrect = ans.lowercase() == selectAns.lowercase()
-            }
-        }
-
-        entityViewModel.insertTestData(
-            TestEntity(
-                quesId = quesId,
-                correctAnswers = correctAns.toString().lowercase(),
-                selectedAnswers = entityViewModel.multiChoiceAns.toString().lowercase(),
-                marks = if (isCorrect) 1 else 0
-            )
-        )
-
-        Log.d("SelectAnswers", "CheckboxRow: $quesId ${entityViewModel.multiChoiceAns} ")
-
-    } else if (!selected) {
+    } else {
 
         when (rowIndex) {
             0 -> {
@@ -149,26 +130,26 @@ fun CheckboxRow(
                     entityViewModel.multiChoiceAns -= "e"
             }
         }
-
-        var isCorrect = false
-
-        for (ans in correctAns) {
-            for (selectAns in entityViewModel.multiChoiceAns) {
-                isCorrect = ans.lowercase() == selectAns.lowercase()
-            }
-        }
-
-        entityViewModel.insertTestData(
-            TestEntity(
-                quesId = quesId,
-                correctAnswers = correctAns.toString().lowercase(),
-                selectedAnswers = entityViewModel.multiChoiceAns.toString().lowercase(),
-                marks = if (isCorrect) 1 else 0
-            )
-        )
-
-        Log.d("SelectAnswers", "CheckboxRow: $quesId ${entityViewModel.multiChoiceAns} ")
     }
+
+    var isCorrect = false
+
+    for (ans in correctAns) {
+        for (selectAns in entityViewModel.multiChoiceAns) {
+            isCorrect = ans.lowercase() == selectAns.lowercase()
+        }
+    }
+
+    entityViewModel.insertTestData(
+        TestEntity(
+            quesId = quesId,
+            correctAnswers = correctAns.toString().lowercase(),
+            selectedAnswers = entityViewModel.multiChoiceAns.toString().lowercase(),
+            marks = if (entityViewModel.multiChoiceAns.size < 1) -1 else if (isCorrect) 1 else 0
+        )
+    )
+
+    Log.d("SelectAnswers", "CheckboxRow: $quesId ${entityViewModel.multiChoiceAns} ")
 
     Surface(
         shape = MaterialTheme.shapes.small,

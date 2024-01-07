@@ -3,16 +3,17 @@ package com.awsprep.user.ui.layout.compose.bottombar
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -125,10 +126,9 @@ fun MyProfileScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(10.dp)
+            .fillMaxSize()
             .verticalScroll(rememberScrollState())
+            .padding(10.dp)
     ) {
 
         Text(text = "My Profile", style = Typography.titleLarge)
@@ -172,7 +172,7 @@ fun MyProfileScreen(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_edit),
                     contentDescription = "edit",
                     modifier = Modifier
-                        .size(48.dp)
+                        .size(36.dp)
                         .background(SecondaryColor, CircleShape)
                         .padding(8.dp),
                     tint = Color.White
@@ -190,7 +190,7 @@ fun MyProfileScreen(
         SetsItemView(
             setsIcon = R.drawable.ic_review_ques,
             title = "Review Questions",
-            subTitle = "explore review questions from your test"
+            subTitle = "explore your review questions for next Exam"
         ) {
             navController.navigate(ContentNavScreen.ReviewQues.route)
         }

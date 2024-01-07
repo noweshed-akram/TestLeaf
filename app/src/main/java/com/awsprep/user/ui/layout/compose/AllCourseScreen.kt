@@ -137,8 +137,8 @@ fun AllCourseScreen(
 
                         Text(
                             modifier = Modifier.padding(10.dp),
-                            text = courseList[it].name,
-                            style = Typography.bodyMedium,
+                            text = "${it + 1}. ${courseList[it].name}",
+                            style = Typography.titleMedium,
                             color = Color.Black,
                             maxLines = 2
                         )

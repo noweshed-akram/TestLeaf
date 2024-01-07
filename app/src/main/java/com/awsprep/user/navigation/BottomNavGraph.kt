@@ -2,7 +2,6 @@ package com.awsprep.user.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.core.os.BuildCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -10,7 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.awsprep.user.ui.layout.compose.bottombar.AcronymsScreen
 import com.awsprep.user.ui.layout.compose.bottombar.AssessmentScreen
 import com.awsprep.user.ui.layout.compose.bottombar.DefinitionScreen
-import com.awsprep.user.ui.layout.compose.bottombar.PractisesScreen
+import com.awsprep.user.ui.layout.compose.bottombar.PracticesScreen
 import com.awsprep.user.ui.layout.compose.bottombar.MyProfileScreen
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.AuthViewModel
@@ -47,7 +46,7 @@ fun BottomNavigation(
         }
 
         composable(BottomNavScreen.Practices.route) {
-            PractisesScreen(
+            PracticesScreen(
                 navController = navController,
                 userViewModel = userViewModel
             )

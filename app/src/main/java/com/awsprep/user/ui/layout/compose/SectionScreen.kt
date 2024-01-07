@@ -154,7 +154,7 @@ fun SectionScreen(
                             Text(
                                 modifier = Modifier.padding(10.dp),
                                 text = "${it + 1}. ${sectionsList[it].name}",
-                                style = Typography.bodyMedium,
+                                style = Typography.titleMedium,
                                 color = Color.Black,
                                 maxLines = 2
                             )

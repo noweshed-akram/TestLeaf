@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -46,6 +47,7 @@ fun InfoBannerCard(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .border(
                 width = 1.dp,
@@ -55,7 +57,7 @@ fun InfoBannerCard(
             .fillMaxWidth()
             .height(225.dp)
             .background(color = bgColor, shape = RoundedCornerShape(size = 8.dp))
-            .padding(30.dp)
+            .padding(8.dp)
             .clickable {
                 onCardClick()
             }

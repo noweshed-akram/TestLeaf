@@ -147,7 +147,7 @@ fun EditProfileScreen(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_photo_camera),
                     contentDescription = "edit_profile",
                     modifier = Modifier
-                        .size(48.dp)
+                        .size(40.dp)
                         .background(SecondaryColor, CircleShape)
                         .padding(8.dp),
                     tint = Color.White

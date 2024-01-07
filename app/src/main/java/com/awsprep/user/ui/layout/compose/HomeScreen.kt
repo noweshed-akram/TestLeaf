@@ -280,7 +280,7 @@ fun HomeScreen(
                             BottomMenuContent(
                                 "Profile",
                                 BottomNavScreen.MyProfile.route,
-                                R.drawable.ic_person, R.drawable.ic_person
+                                R.drawable.ic_outline_person, R.drawable.ic_person
                             ),
                         ),
                         navController = navController

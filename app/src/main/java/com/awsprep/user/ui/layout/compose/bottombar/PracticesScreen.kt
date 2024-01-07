@@ -15,7 +15,7 @@ import com.awsprep.user.viewmodel.UserViewModel
  * Created by Md. Noweshed Akram on 10/11/23.
  */
 @Composable
-fun PractisesScreen(
+fun PracticesScreen(
     navController: NavController,
     userViewModel: UserViewModel
 ) {
@@ -26,7 +26,7 @@ fun PractisesScreen(
             .wrapContentSize(Alignment.Center)
     ) {
         Text(
-            text = "PractisesScreen",
+            text = "Practice Screen",
             style = Typography.labelSmall
         )
     }

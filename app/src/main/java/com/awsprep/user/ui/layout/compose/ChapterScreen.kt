@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -152,7 +151,7 @@ fun ChapterScreen(
                             Text(
                                 modifier = Modifier.padding(10.dp),
                                 text = "${it + 1}. ${chapterList[it].name}",
-                                style = Typography.bodyMedium,
+                                style = Typography.titleMedium,
                                 color = Color.Black,
                                 maxLines = 2
                             )
