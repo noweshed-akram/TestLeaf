@@ -5,6 +5,10 @@ package com.awsprep.user.utils
  */
 object AppConstant {
 
+    // -------------- Notification ---------------
+    const val NOTIFICATION_CHANNEL_ID = "notification_channel"
+    const val NOTIFICATION_CHANNEL_NAME = "com.awsprep.pushnotification"
+
     // ------------------- Firebase Firestore -------------------
     // Collection Reference
     const val COLL_USER = "users"

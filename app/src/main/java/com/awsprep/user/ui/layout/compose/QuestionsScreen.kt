@@ -170,7 +170,7 @@ fun QuestionsScreen(
             bottomBar = {
                 QuestionBottomBar(
                     shouldShowPreviousButton = questionIndexData.shouldShowPreviousButton,
-                    shouldShowDoneButton = questionIndexData.shouldShowDoneButton,
+                    shouldShowSubmitButton = questionIndexData.shouldShowSubmitButton,
                     isNextButtonEnabled = isNextEnabled,
                     onPreviousPressed = onPreviousPressed,
                     onNextPressed = onNextPressed,
@@ -289,8 +289,7 @@ fun QuestionTopAppBar(
         LinearProgressIndicator(
             progress = animatedProgress,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
+                .fillMaxWidth(),
             trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
         )
 
@@ -341,7 +340,7 @@ fun QuestionTopAppBar(
 @Composable
 fun QuestionBottomBar(
     shouldShowPreviousButton: Boolean,
-    shouldShowDoneButton: Boolean,
+    shouldShowSubmitButton: Boolean,
     isNextButtonEnabled: Boolean,
     onPreviousPressed: () -> Unit,
     onNextPressed: () -> Unit,
@@ -370,7 +369,7 @@ fun QuestionBottomBar(
                 Spacer(modifier = Modifier.width(16.dp))
             }
 
-            if (shouldShowDoneButton) {
+            if (shouldShowSubmitButton) {
                 Button(
                     modifier = Modifier
                         .weight(1f)
@@ -397,7 +396,7 @@ fun QuestionBottomBar(
                         modifier = Modifier
                             .weight(1f)
                             .height(48.dp),
-                        onClick = onSubmitPressed,
+                        onClick = onNextPressed,
                         shape = RoundedCornerShape(8.dp)
                     ) {
                         Text(text = "Skip")

@@ -104,13 +104,6 @@ class TestViewModel : ViewModel() {
 
     private fun getIsNextEnabled(): Boolean {
         return questionIndex < questionOrder.size
-//        return when (questionOrder[questionIndex]) {
-//            questionIndexData?.question -> _singleChoiceResponse.isNotEmpty()
-//            questionIndexData?.question -> _multipleChoiceResponse.isNotEmpty()
-//            else -> {
-//                true
-//            }
-//        }
     }
 
     private fun createQuestionIndexData(): QuestionIndexData {
@@ -118,7 +111,7 @@ class TestViewModel : ViewModel() {
             questionIndex = questionIndex,
             questionCount = questionOrder.size,
             shouldShowPreviousButton = questionIndex > 0,
-            shouldShowDoneButton = questionIndex == questionOrder.size - 1,
+            shouldShowSubmitButton = questionIndex == questionOrder.size - 1,
             question = questionOrder[questionIndex],
         )
     }

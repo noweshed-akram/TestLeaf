@@ -94,9 +94,9 @@ fun AssessmentScreen(
 
     Column(
         modifier = Modifier
+            .verticalScroll(rememberScrollState())
             .fillMaxSize()
             .padding(vertical = 12.dp)
-            .verticalScroll(rememberScrollState())
     ) {
 
         Text(
@@ -214,7 +214,7 @@ fun AssessmentScreen(
             navController.navigate(ContentNavScreen.RandomSets.route)
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         SetsItemView(
             modifier = Modifier.padding(horizontal = 12.dp),
@@ -223,6 +223,25 @@ fun AssessmentScreen(
             subTitle = "100+ Practice Test Sets"
         ) {
             navController.navigate(ContentNavScreen.PracticeSets.route)
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            modifier = Modifier.padding(horizontal = 12.dp),
+            text = "Review Q's",
+            style = Typography.titleLarge
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        SetsItemView(
+            modifier = Modifier.padding(horizontal = 12.dp),
+            setsIcon = R.drawable.ic_review_ques,
+            title = "Review Questions",
+            subTitle = "explore your review questions for next Exam"
+        ) {
+            navController.navigate(ContentNavScreen.ReviewQues.route)
         }
 
     }

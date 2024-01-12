@@ -212,7 +212,8 @@ fun TestScreen(
                         targetState.question.optionD,
                         targetState.question.optionE
                     ),
-                    selectedAnswers = testViewModel.multipleChoiceResponse[targetState.question.quesId]
+                    selectedAnswers = testViewModel
+                        .multipleChoiceResponse[targetState.question.quesId]
                         ?: mutableStateListOf(),
                     correctAns = targetState.question.ans,
                     onOptionSelected = { selected, answer ->
@@ -236,8 +237,8 @@ fun TestScreen(
                         targetState.question.optionC,
                         targetState.question.optionD
                     ),
-                    selectedAnswer = testViewModel.singleChoiceResponse[targetState.question.quesId]
-                        ?: "",
+                    selectedAnswer = testViewModel
+                        .singleChoiceResponse[targetState.question.quesId] ?: "",
                     correctAns = targetState.question.ans,
                     onOptionSelected = { ans ->
                         testViewModel.onSingleChoiceResponse(

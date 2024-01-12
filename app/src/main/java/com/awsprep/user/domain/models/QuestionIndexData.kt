@@ -7,6 +7,6 @@ data class QuestionIndexData(
     val questionIndex: Int,
     val questionCount: Int,
     val shouldShowPreviousButton: Boolean,
-    val shouldShowDoneButton: Boolean,
+    val shouldShowSubmitButton: Boolean,
     val question: Question
 )

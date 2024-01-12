@@ -33,7 +33,7 @@ fun DrawerHeader() {
             .padding(vertical = 64.dp),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = "AWS Test Prep")
+        Text(text = "Test Prep")
     }
 }
 

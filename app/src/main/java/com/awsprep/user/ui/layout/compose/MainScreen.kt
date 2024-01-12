@@ -54,9 +54,7 @@ fun MainScreen(
             modifier = Modifier.padding(top = it.calculateBottomPadding() + it.calculateTopPadding())
         ) {
 
-            var startDestination = ""
-
-            startDestination = if (userViewModel.isUserAuthenticated) {
+            val startDestination = if (userViewModel.isUserAuthenticated) {
                 Graph.HOME
             } else {
                 Graph.AUTHENTICATION

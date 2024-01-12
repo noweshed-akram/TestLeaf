@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AWS Prep</string>
+    <string name="app_name">Test Prep</string>
 
 
     <string name="question_count">\u00A0of Q%d</string>

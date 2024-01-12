@@ -183,20 +183,6 @@ fun MyProfileScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = "Review Q's", style = Typography.titleLarge)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        SetsItemView(
-            setsIcon = R.drawable.ic_review_ques,
-            title = "Review Questions",
-            subTitle = "explore your review questions for next Exam"
-        ) {
-            navController.navigate(ContentNavScreen.ReviewQues.route)
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
         Text(text = "Test Summary", style = Typography.titleLarge)
 
         Spacer(modifier = Modifier.height(16.dp))
