@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -91,20 +93,18 @@ fun SectionScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 10.dp, vertical = 10.dp)
+            .padding(10.dp)
     ) {
 
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing = false),
             onRefresh = { }) {
 
-            LazyVerticalGrid(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(),
-                columns = GridCells.Fixed(2),
-                horizontalArrangement = Arrangement.spacedBy(20.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp)
+            LazyVerticalStaggeredGrid(
+                modifier = Modifier.fillMaxSize(),
+                columns = StaggeredGridCells.Fixed(2),
+                verticalItemSpacing = 20.dp,
+                horizontalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 items(sectionsList.size) {
                     Box(
@@ -146,7 +146,8 @@ fun SectionScreen(
                                     contentScale = ContentScale.Fit,
                                     modifier = Modifier
                                         .size(52.dp)
-                                        .padding(4.dp),
+                                        .padding(4.dp)
+                                        .clip(CircleShape),
                                     error = painterResource(id = R.drawable.ic_error_icon)
                                 )
                             }
