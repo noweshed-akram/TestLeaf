@@ -16,8 +16,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.ui.util.lerp
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -41,11 +43,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.lerp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.Course
+import com.awsprep.user.domain.models.Set
 import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.component.ProgressBar
@@ -81,6 +85,7 @@ fun AssessmentScreen(
     var showError by rememberSaveable { mutableStateOf(false) }
     var errorMsg by rememberSaveable { mutableStateOf("") }
     val coroutineScope = rememberCoroutineScope()
+    val scrollState = rememberScrollState()
 
     val pagerState = rememberPagerState(initialPage = 0)
     val imageSlider = listOf(
@@ -92,13 +97,17 @@ fun AssessmentScreen(
         mutableStateOf(emptyList<Course>())
     }
 
+    var setList by rememberSaveable {
+        mutableStateOf(emptyList<Set>())
+    }
+
     LaunchedEffect(key1 = true) {
         asesmntViewModel.getCourseList(6)
 
         asesmntViewModel.coursesData.collect {
             if (it.isLoading) {
                 showProgress = true
-                Log.d("AssessmentScreen: ", "Loading")
+                Log.d("AssessmentScreen: ", "Loading..")
             }
             if (it.error.isNotBlank()) {
                 showProgress = false
@@ -109,6 +118,29 @@ fun AssessmentScreen(
             it.dataList?.let {
                 showProgress = false
                 courseList = it as List<Course>
+                Log.d("AssessmentScreen: ", courseList.toString())
+            }
+        }
+    }
+
+    LaunchedEffect(key1 = true) {
+        asesmntViewModel.getSetList()
+
+        asesmntViewModel.setData.collect {
+            if (it.isLoading) {
+                showProgress = true
+                Log.d("AssessmentScreen: ", "Loading..")
+            }
+            if (it.error.isNotBlank()) {
+                showProgress = false
+                showError = true
+                errorMsg = it.error
+                Log.d("AssessmentScreen: ", it.error)
+            }
+            it.dataList?.let {
+                showProgress = false
+                setList = it as List<Set>
+                Log.d("AssessmentScreen: ", setList.toString())
             }
         }
     }
@@ -125,8 +157,8 @@ fun AssessmentScreen(
 
     Column(
         modifier = Modifier
-            .verticalScroll(rememberScrollState())
             .fillMaxSize()
+            .verticalScroll(scrollState)
             .padding(vertical = 12.dp)
     ) {
 
@@ -296,26 +328,35 @@ fun AssessmentScreen(
         )
 
         Spacer(modifier = Modifier.height(16.dp))
+//
+//        SetsItemView(
+//            modifier = Modifier.padding(horizontal = 12.dp),
+//            setsIcon = R.drawable.ic_random,
+//            title = "Random Test",
+//            subTitle = "100+ Random Test Sets"
+//        ) {
+//            navController.navigate(ContentNavScreen.RandomSets.route)
+//        }
+//
+//        Spacer(modifier = Modifier.height(16.dp))
 
-        SetsItemView(
-            modifier = Modifier.padding(horizontal = 12.dp),
-            setsIcon = R.drawable.ic_random,
-            title = "Random Test",
-            subTitle = "100+ Random Test Sets"
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            userScrollEnabled = false
         ) {
-            navController.navigate(ContentNavScreen.RandomSets.route)
+            items(setList) { set ->
+
+                SetsItemView(
+                    modifier = Modifier.padding(horizontal = 12.dp),
+                    setsIcon = R.drawable.ic_edit,
+                    title = set.name,
+                    subTitle = "100+ Practice Test Sets"
+                ) {
+                    navController.navigate(ContentNavScreen.PracticeSets.route)
+                }
+            }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        SetsItemView(
-            modifier = Modifier.padding(horizontal = 12.dp),
-            setsIcon = R.drawable.ic_edit,
-            title = "Practice Test",
-            subTitle = "100+ Practice Test Sets"
-        ) {
-            navController.navigate(ContentNavScreen.PracticeSets.route)
-        }
 
         Spacer(modifier = Modifier.height(16.dp))
 

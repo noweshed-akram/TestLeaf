@@ -33,6 +33,9 @@ class AsesmntViewModel @Inject constructor(
     private val _sectionsData = MutableStateFlow(ResponseState())
     val sectionsData: StateFlow<ResponseState> = _sectionsData
 
+    private val _setsData = MutableStateFlow(ResponseState())
+    val setData: StateFlow<ResponseState> = _setsData
+
     fun getCourseList(limit: Long) {
         viewModelScope.launch {
             asesmntUseCase.getCourseList(limit = limit).onEach {
@@ -96,6 +99,29 @@ class AsesmntViewModel @Inject constructor(
                     is Resource.Success -> {
                         Log.d("getSectionList: ", it.data.toString())
                         _sectionsData.value = ResponseState(dataList = it.data)
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
+
+    fun getSetList() {
+        viewModelScope.launch {
+            asesmntUseCase.getSetList().onEach {
+                when (it) {
+                    is Resource.Loading -> {
+                        Log.d("getSetList: ", it.data.toString())
+                        _setsData.value = ResponseState(isLoading = true)
+                    }
+
+                    is Resource.Error -> {
+                        Log.d("getSetList: ", it.data.toString())
+                        _setsData.value = ResponseState(error = it.message ?: "")
+                    }
+
+                    is Resource.Success -> {
+                        Log.d("getSetList: ", it.data.toString())
+                        _setsData.value = ResponseState(dataList = it.data)
                     }
                 }
             }.launchIn(viewModelScope)

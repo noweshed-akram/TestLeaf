@@ -1,10 +1,12 @@
 package com.awsprep.user.data.remote.repo
 
 import com.awsprep.user.domain.models.Course
+import com.awsprep.user.domain.models.Set
 import com.awsprep.user.domain.repositories.AsesmntRepository
 import com.awsprep.user.utils.AppConstant.COLL_CHAPTERS
 import com.awsprep.user.utils.AppConstant.COLL_COURSES
 import com.awsprep.user.utils.AppConstant.COLL_SECTIONS
+import com.awsprep.user.utils.AppConstant.COLL_SETS
 import com.awsprep.user.utils.AppConstant.FIELD_ACTIVE
 import com.awsprep.user.utils.AppConstant.FIELD_ORDER
 import com.awsprep.user.utils.Resource
@@ -113,6 +115,39 @@ class AsesmntRepositoryImpl @Inject constructor(
             }
 
             emit(Resource.Success(data = sectionList))
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.localizedMessage ?: "Unknown Error"))
+        } catch (e: IOException) {
+            emit(
+                Resource.Error(
+                    message = e.localizedMessage ?: "Check Your Internet Connection"
+                )
+            )
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.localizedMessage ?: ""))
+        }
+    }
+
+    override suspend fun getSetList(): Flow<Resource<List<Set>>> = flow {
+        emit(Resource.Loading())
+        try {
+
+            val sets = firebaseFirestore.collection(COLL_SETS)
+                .whereEqualTo(FIELD_ACTIVE, true)
+                .orderBy(FIELD_ORDER).get()
+                .await()
+            var setList = emptyList<Set>()
+
+            for (set in sets) {
+
+                val newSet: Set = set.toObject(Set::class.java)
+                newSet.setId = set.id
+
+                setList = setList + newSet
+            }
+
+            emit(Resource.Success(data = setList))
+
         } catch (e: HttpException) {
             emit(Resource.Error(message = e.localizedMessage ?: "Unknown Error"))
         } catch (e: IOException) {

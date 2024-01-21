@@ -1,6 +1,7 @@
 package com.awsprep.user.domain.usecase
 
 import com.awsprep.user.domain.models.Course
+import com.awsprep.user.domain.models.Set
 import com.awsprep.user.domain.repositories.AsesmntRepository
 import com.awsprep.user.utils.Resource
 import kotlinx.coroutines.flow.Flow
@@ -23,6 +24,10 @@ class AsesmntUseCase @Inject constructor(
 
     suspend fun getSectionList(courseId: String, chapterId: String): Flow<Resource<List<Course>>> {
         return asesmntRepository.getSectionList(courseId, chapterId)
+    }
+
+    suspend fun getSetList(): Flow<Resource<List<Set>>> {
+        return asesmntRepository.getSetList()
     }
 
 }
