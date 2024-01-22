@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -328,21 +327,12 @@ fun AssessmentScreen(
         )
 
         Spacer(modifier = Modifier.height(16.dp))
-//
-//        SetsItemView(
-//            modifier = Modifier.padding(horizontal = 12.dp),
-//            setsIcon = R.drawable.ic_random,
-//            title = "Random Test",
-//            subTitle = "100+ Random Test Sets"
-//        ) {
-//            navController.navigate(ContentNavScreen.RandomSets.route)
-//        }
-//
-//        Spacer(modifier = Modifier.height(16.dp))
 
         LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
-            userScrollEnabled = false
+            modifier = Modifier
+                .fillMaxWidth()
+                .height((setList.size * 92).dp),
+            userScrollEnabled = false,
         ) {
             items(setList) { set ->
 
@@ -354,9 +344,10 @@ fun AssessmentScreen(
                 ) {
                     navController.navigate(ContentNavScreen.PracticeSets.route)
                 }
+
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
-
 
         Spacer(modifier = Modifier.height(16.dp))
 
