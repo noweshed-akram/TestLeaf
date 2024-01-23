@@ -38,35 +38,35 @@ fun BottomNavigation(
         route = Graph.HOME
     ) {
 
-        composable(BottomNavScreen.Assessment.route) {
+        composable(route = BottomNavScreen.Assessment.route) {
             AssessmentScreen(
                 navController = navController,
                 asesmntViewModel = asesmntViewModel
             )
         }
 
-        composable(BottomNavScreen.Practices.route) {
+        composable(route = BottomNavScreen.Practices.route) {
             PracticesScreen(
                 navController = navController,
                 userViewModel = userViewModel
             )
         }
 
-        composable(BottomNavScreen.Acronyms.route) {
+        composable(route = BottomNavScreen.Acronyms.route) {
             AcronymsScreen(
                 navController = navController,
                 userViewModel = userViewModel
             )
         }
 
-        composable(BottomNavScreen.Definition.route) {
+        composable(route = BottomNavScreen.Definition.route) {
             DefinitionScreen(
                 navController = navController,
                 userViewModel = userViewModel
             )
         }
 
-        composable(BottomNavScreen.MyProfile.route) {
+        composable(route = BottomNavScreen.MyProfile.route) {
             MyProfileScreen(
                 navController = navController, userViewModel = userViewModel
             )

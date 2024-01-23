@@ -12,8 +12,7 @@ import com.awsprep.user.ui.layout.compose.AllCourseScreen
 import com.awsprep.user.ui.layout.compose.ChapterScreen
 import com.awsprep.user.ui.layout.compose.EditProfileScreen
 import com.awsprep.user.ui.layout.compose.NotificationScreen
-import com.awsprep.user.ui.layout.compose.PracticeSetsScreen
-import com.awsprep.user.ui.layout.compose.RandomSetsScreen
+import com.awsprep.user.ui.layout.compose.SubSetsScreen
 import com.awsprep.user.ui.layout.compose.ResultDashboard
 import com.awsprep.user.ui.layout.compose.ResultScreen
 import com.awsprep.user.ui.layout.compose.ReviewQuesScreen
@@ -57,7 +56,7 @@ fun NavGraphBuilder.ContentNavGraph(
         }
 
         composable(
-            ContentNavScreen.Chapters.route.plus(ContentNavScreen.Chapters.objectPath),
+            route = ContentNavScreen.Chapters.route.plus(ContentNavScreen.Chapters.objectPath),
             arguments = listOf(
                 navArgument(ContentNavScreen.Chapters.objectName) {
                     type = NavType.StringType
@@ -75,7 +74,7 @@ fun NavGraphBuilder.ContentNavGraph(
         }
 
         composable(
-            ContentNavScreen.Sections.route
+            route = ContentNavScreen.Sections.route
                 .plus(ContentNavScreen.Sections.objectPath)
                 .plus(ContentNavScreen.Sections.objectPathTwo),
             arguments = listOf(
@@ -102,7 +101,7 @@ fun NavGraphBuilder.ContentNavGraph(
         }
 
         composable(
-            ContentNavScreen.Timer.route
+            route = ContentNavScreen.Timer.route
                 .plus(ContentNavScreen.Timer.objectPath)
                 .plus(ContentNavScreen.Timer.objectPathTwo)
                 .plus(ContentNavScreen.Timer.objectPathThree),
@@ -139,7 +138,7 @@ fun NavGraphBuilder.ContentNavGraph(
 
         }
 
-        composable(ContentNavScreen.ReviewQues.route) {
+        composable(route = ContentNavScreen.ReviewQues.route) {
             ReviewQuesScreen(
                 navController = navController,
                 quesViewModel = quesViewModel,
@@ -147,17 +146,36 @@ fun NavGraphBuilder.ContentNavGraph(
             )
         }
 
-        composable(ContentNavScreen.RandomSets.route) {
-            RandomSetsScreen()
-        }
+        composable(
+            route = ContentNavScreen.SubSets.route.plus(ContentNavScreen.SubSets.objectPath)
+                .plus(ContentNavScreen.SubSets.objectPathTwo),
+            arguments = listOf(
+                navArgument(ContentNavScreen.SubSets.objectName) {
+                    type = NavType.StringType
+                },
+                navArgument(ContentNavScreen.SubSets.objectNameTwo) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val setId = it.arguments?.getString(ContentNavScreen.SubSets.objectName, "")
+            val subSetId = it.arguments?.getString(ContentNavScreen.SubSets.objectNameTwo, "")
 
-        composable(ContentNavScreen.PracticeSets.route) {
-            PracticeSetsScreen()
+            setId?.let {
+                subSetId?.let {
+                    SubSetsScreen(
+                        navController = navController,
+                        asesmntViewModel = asesmntViewModel,
+                        setId = setId,
+                        subSetId = subSetId
+                    )
+                }
+            }
+
         }
 
         composable(
-            ContentNavScreen.Test.route
-                .plus(ContentNavScreen.Test.objectPath),
+            route = ContentNavScreen.Test.route.plus(ContentNavScreen.Test.objectPath),
             arguments = listOf(
                 navArgument(ContentNavScreen.Test.objectName) {
                     type = NavType.BoolType
@@ -201,7 +219,7 @@ fun NavGraphBuilder.ContentNavGraph(
             )
         }
 
-        composable(ContentNavScreen.ResultDashboard.route) {
+        composable(route = ContentNavScreen.ResultDashboard.route) {
             ResultDashboard(navController = navController, userViewModel = userViewModel)
         }
 

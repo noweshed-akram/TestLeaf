@@ -30,4 +30,8 @@ class AsesmntUseCase @Inject constructor(
         return asesmntRepository.getSetList()
     }
 
+    suspend fun getSubSetList(setId: String, subSetId: String): Flow<Resource<List<Course>>> {
+        return asesmntRepository.getSubSetList(setId, subSetId)
+    }
+
 }

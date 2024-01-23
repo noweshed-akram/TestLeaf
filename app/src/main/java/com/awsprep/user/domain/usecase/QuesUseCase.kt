@@ -23,6 +23,14 @@ class QuesUseCase @Inject constructor(
         return quesRepository.getQuestions(courseId, chapterId, sectionId, limit)
     }
 
+    suspend fun getQuestions(
+        setId: String,
+        subSetId: String,
+        sectionId: String,
+    ): Flow<Resource<List<Question>>> {
+        return quesRepository.getQuestions(setId, subSetId, sectionId)
+    }
+
     suspend fun addToReviewQues(
         question: Question
     ): Flow<Resource<Question>> {

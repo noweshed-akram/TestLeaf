@@ -220,15 +220,9 @@ fun HomeScreen(
                         ) {
                             navController.popBackStack()
                         }
-                    } else if (currentRoute(navController = navController) == ContentNavScreen.RandomSets.route) {
+                    } else if (currentRoute(navController = navController) == ContentNavScreen.SubSets.route) {
                         AppBarWithArrow(
-                            scrollBehavior = scrollBehavior, title = "Random Sets"
-                        ) {
-                            navController.popBackStack()
-                        }
-                    } else if (currentRoute(navController = navController) == ContentNavScreen.PracticeSets.route) {
-                        AppBarWithArrow(
-                            scrollBehavior = scrollBehavior, title = "Practice Sets"
+                            scrollBehavior = scrollBehavior, title = "Sets"
                         ) {
                             navController.popBackStack()
                         }

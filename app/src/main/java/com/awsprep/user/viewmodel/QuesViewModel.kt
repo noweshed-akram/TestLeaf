@@ -61,6 +61,33 @@ class QuesViewModel @Inject constructor(
         }
     }
 
+    fun getQuestions(
+        setId: String,
+        subSetId: String,
+        sectionId: String,
+    ) {
+        viewModelScope.launch {
+            quesUseCase.getQuestions(setId, subSetId, sectionId).onEach {
+                when (it) {
+                    is Resource.Loading -> {
+                        Log.d("getQuestions: ", it.data.toString())
+                        _questionData.value = ResponseState(isLoading = true)
+                    }
+
+                    is Resource.Error -> {
+                        Log.d("getQuestions: ", it.data.toString())
+                        _questionData.value = ResponseState(error = it.message ?: "")
+                    }
+
+                    is Resource.Success -> {
+                        Log.d("getQuestions: ", it.data.toString())
+                        _questionData.value = ResponseState(dataList = it.data)
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
+
     fun addToReviewQues(
         question: Question
     ) {

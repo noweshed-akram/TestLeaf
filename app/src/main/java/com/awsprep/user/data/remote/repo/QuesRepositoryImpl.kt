@@ -9,6 +9,7 @@ import com.awsprep.user.utils.AppConstant.COLL_FEEDBACK
 import com.awsprep.user.utils.AppConstant.COLL_QUESTIONS
 import com.awsprep.user.utils.AppConstant.COLL_REVIEW_QUES
 import com.awsprep.user.utils.AppConstant.COLL_SECTIONS
+import com.awsprep.user.utils.AppConstant.COLL_SETS
 import com.awsprep.user.utils.Resource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
@@ -44,6 +45,44 @@ class QuesRepositoryImpl @Inject constructor(
                 .collection(COLL_CHAPTERS).document(chapterId)
                 .collection(COLL_SECTIONS).document(sectionId)
                 .collection(COLL_QUESTIONS).limit(limit).get()
+                .await()
+
+            var questionList = emptyList<Question>()
+
+            for (ques in questions) {
+
+                val newQues: Question = ques.toObject(Question::class.java)
+                newQues.quesId = ques.id
+
+                questionList = questionList + newQues
+            }
+
+            emit(Resource.Success(data = questionList))
+
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.localizedMessage ?: "Unknown Error"))
+        } catch (e: IOException) {
+            emit(
+                Resource.Error(
+                    message = e.localizedMessage ?: "Check Your Internet Connection"
+                )
+            )
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.localizedMessage ?: ""))
+        }
+    }
+
+    override suspend fun getQuestions(
+        setId: String,
+        subSetId: String,
+        sectionId: String,
+    ): Flow<Resource<List<Question>>> = flow {
+        emit(Resource.Loading())
+        try {
+
+            val questions = firebaseFirestore.collection(COLL_SETS).document(setId)
+                .collection(subSetId).document(sectionId)
+                .collection(COLL_QUESTIONS).limit(30).get()
                 .await()
 
             var questionList = emptyList<Question>()

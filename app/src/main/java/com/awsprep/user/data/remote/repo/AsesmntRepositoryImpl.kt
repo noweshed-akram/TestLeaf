@@ -161,4 +161,41 @@ class AsesmntRepositoryImpl @Inject constructor(
         }
     }
 
+
+    override suspend fun getSubSetList(
+        setId: String,
+        subSetId: String
+    ): Flow<Resource<List<Course>>> = flow {
+        emit(Resource.Loading())
+        try {
+
+            val sets = firebaseFirestore.collection(COLL_SETS).document(setId).collection(subSetId)
+                .whereEqualTo(FIELD_ACTIVE, true)
+                .orderBy(FIELD_ORDER).get()
+                .await()
+            var setList = emptyList<Course>()
+
+            for (set in sets) {
+
+                val newSet: Course = set.toObject(Course::class.java)
+                newSet.docId = set.id
+
+                setList = setList + newSet
+            }
+
+            emit(Resource.Success(data = setList))
+
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.localizedMessage ?: "Unknown Error"))
+        } catch (e: IOException) {
+            emit(
+                Resource.Error(
+                    message = e.localizedMessage ?: "Check Your Internet Connection"
+                )
+            )
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.localizedMessage ?: ""))
+        }
+    }
+
 }

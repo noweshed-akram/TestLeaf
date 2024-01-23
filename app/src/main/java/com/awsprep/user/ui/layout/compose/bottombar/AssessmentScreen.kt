@@ -342,7 +342,11 @@ fun AssessmentScreen(
                     title = set.name,
                     subTitle = "100+ Practice Test Sets"
                 ) {
-                    navController.navigate(ContentNavScreen.PracticeSets.route)
+                    navController.navigate(
+                        ContentNavScreen.SubSets.route
+                            .plus("/${set.setId}")
+                            .plus("/${set.flag}")
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))

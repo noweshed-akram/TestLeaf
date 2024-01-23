@@ -65,6 +65,8 @@ fun TimerScreen(
             courseId, chapterId, sectionId, 30
         )
 
+        quesViewModel.getQuestions(courseId, chapterId, sectionId)
+
         quesViewModel.questionData.collect {
             if (it.isLoading) {
                 showProgress = true
@@ -113,7 +115,7 @@ fun TimerScreen(
 
         PrimaryButton(
             onClick = {
-                if (questionList.size < 5) {
+                if (questionList.size <= 2) {
                     showError = true
                     errorMsg = "This section isn't available for Test! Please try later."
                 } else {

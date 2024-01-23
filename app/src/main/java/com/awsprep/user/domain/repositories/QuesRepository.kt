@@ -17,6 +17,12 @@ interface QuesRepository {
         limit: Long
     ): Flow<Resource<List<Question>>>
 
+    suspend fun getQuestions(
+        setId: String,
+        subSetId: String,
+        sectionId: String,
+    ): Flow<Resource<List<Question>>>
+
     suspend fun addToReviewQues(
         question: Question
     ): Flow<Resource<Question>>

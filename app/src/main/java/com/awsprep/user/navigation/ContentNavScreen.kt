@@ -39,8 +39,14 @@ sealed class ContentNavScreen(
     )
 
     object ReviewQues : ContentNavScreen(route = "review_ques_screen")
-    object RandomSets : ContentNavScreen(route = "random_sets_screen")
-    object PracticeSets : ContentNavScreen(route = "practice_sets_screen")
+    object SubSets : ContentNavScreen(
+        route = "sub_sets_screen",
+        objectName = "setId",
+        objectPath = "/{setId}",
+        objectNameTwo = "subSetId",
+        objectPathTwo = "/{subSetId}"
+    )
+
     object Result : ContentNavScreen(
         route = "result_screen",
         objectName = "testResult",

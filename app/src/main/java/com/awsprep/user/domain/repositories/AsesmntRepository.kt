@@ -18,4 +18,6 @@ interface AsesmntRepository {
 
     suspend fun getSetList(): Flow<Resource<List<Set>>>
 
+    suspend fun getSubSetList(setId: String, subSetId: String): Flow<Resource<List<Course>>>
+
 }

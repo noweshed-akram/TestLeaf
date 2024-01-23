@@ -24,25 +24,25 @@ fun NavGraphBuilder.AuthNavGraph(
         startDestination = startDestination
     ) {
 
-        composable(AuthScreen.EmailSignIn.route) {
+        composable(route = AuthScreen.EmailSignIn.route) {
             EmailSignScreen(
                 navController = navController, authViewModel = authViewModel
             )
         }
 
-        composable(AuthScreen.ForgotPassword.route) {
+        composable(route = AuthScreen.ForgotPassword.route) {
             ForgotPasswordScreen(
                 navController = navController, authViewModel = authViewModel
             )
         }
 
-        composable(AuthScreen.CheckEmail.route) {
+        composable(route = AuthScreen.CheckEmail.route) {
             CheckEmailScreen(
                 navController = navController
             )
         }
 
-        composable(AuthScreen.EmailRegistration.route) {
+        composable(route = AuthScreen.EmailRegistration.route) {
             EmailRegisterScreen(
                 navController = navController, authViewModel = authViewModel
             )
