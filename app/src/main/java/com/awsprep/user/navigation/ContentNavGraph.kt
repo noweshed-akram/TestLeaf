@@ -104,7 +104,8 @@ fun NavGraphBuilder.ContentNavGraph(
             route = ContentNavScreen.Timer.route
                 .plus(ContentNavScreen.Timer.objectPath)
                 .plus(ContentNavScreen.Timer.objectPathTwo)
-                .plus(ContentNavScreen.Timer.objectPathThree),
+                .plus(ContentNavScreen.Timer.objectPathThree)
+                .plus(ContentNavScreen.Timer.objectPathFour),
             arguments = listOf(
                 navArgument(ContentNavScreen.Timer.objectName) {
                     type = NavType.StringType
@@ -114,24 +115,31 @@ fun NavGraphBuilder.ContentNavGraph(
                 },
                 navArgument(ContentNavScreen.Timer.objectNameThree) {
                     type = NavType.StringType
+                },
+                navArgument(ContentNavScreen.Timer.objectNameFour) {
+                    type = NavType.StringType
                 }
             )
         ) {
-            val course = it.arguments?.getString(ContentNavScreen.Timer.objectName)
-            val chapter = it.arguments?.getString(ContentNavScreen.Timer.objectNameTwo)
-            val section = it.arguments?.getString(ContentNavScreen.Timer.objectNameThree)
+            val moduleType = it.arguments?.getString(ContentNavScreen.Timer.objectName)
+            val course = it.arguments?.getString(ContentNavScreen.Timer.objectNameTwo)
+            val chapter = it.arguments?.getString(ContentNavScreen.Timer.objectNameThree)
+            val section = it.arguments?.getString(ContentNavScreen.Timer.objectNameFour)
 
-            course?.let { courseId ->
-                chapter?.let { chapterId ->
-                    section?.let { sectionId ->
-                        TimerScreen(
-                            navController = navController,
-                            quesViewModel = quesViewModel,
-                            entityViewModel = entityViewModel,
-                            courseId = courseId,
-                            chapterId = chapterId,
-                            sectionId = sectionId
-                        )
+            moduleType?.let { type ->
+                course?.let { courseId ->
+                    chapter?.let { chapterId ->
+                        section?.let { sectionId ->
+                            TimerScreen(
+                                navController = navController,
+                                quesViewModel = quesViewModel,
+                                entityViewModel = entityViewModel,
+                                moduleType = type,
+                                courseId = courseId,
+                                chapterId = chapterId,
+                                sectionId = sectionId
+                            )
+                        }
                     }
                 }
             }

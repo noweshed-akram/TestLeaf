@@ -10,11 +10,16 @@ sealed class ContentNavScreen(
     val objectNameTwo: String = "",
     val objectPathTwo: String = "",
     val objectNameThree: String = "",
-    val objectPathThree: String = ""
+    val objectPathThree: String = "",
+    val objectNameFour: String = "",
+    val objectPathFour: String = ""
 ) {
     object EditProfile : ContentNavScreen(route = "edit_profile_screen")
+
     object Notification : ContentNavScreen(route = "notification_screen")
+
     object AllCourse : ContentNavScreen(route = "all_course_screen")
+
     object Chapters : ContentNavScreen(
         route = "chapters_screen",
         objectName = "courseId", objectPath = "/{courseId}"
@@ -28,9 +33,10 @@ sealed class ContentNavScreen(
 
     object Timer : ContentNavScreen(
         route = "timer_screen",
-        objectName = "courseId", objectPath = "/{courseId}",
-        objectNameTwo = "chapterId", objectPathTwo = "/{chapterId}",
-        objectNameThree = "sectionId", objectPathThree = "/{sectionId}",
+        objectName = "moduleType", objectPath = "/{moduleType}",
+        objectNameTwo = "courseId", objectPathTwo = "/{courseId}",
+        objectNameThree = "chapterId", objectPathThree = "/{chapterId}",
+        objectNameFour = "sectionId", objectPathFour = "/{sectionId}",
     )
 
     object Test : ContentNavScreen(
@@ -39,18 +45,16 @@ sealed class ContentNavScreen(
     )
 
     object ReviewQues : ContentNavScreen(route = "review_ques_screen")
+
     object SubSets : ContentNavScreen(
         route = "sub_sets_screen",
-        objectName = "setId",
-        objectPath = "/{setId}",
-        objectNameTwo = "subSetId",
-        objectPathTwo = "/{subSetId}"
+        objectName = "setId", objectPath = "/{setId}",
+        objectNameTwo = "subSetId", objectPathTwo = "/{subSetId}"
     )
 
     object Result : ContentNavScreen(
         route = "result_screen",
-        objectName = "testResult",
-        objectPath = "/{testResult}",
+        objectName = "testResult", objectPath = "/{testResult}",
     )
 
     object ResultDashboard : ContentNavScreen(route = "result_dashboard_screen")

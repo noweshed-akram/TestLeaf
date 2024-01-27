@@ -15,4 +15,5 @@ fun currentRoute(navController: NavController): String? {
         ?.substringBeforeLast("/")
         ?.substringBeforeLast("/")
         ?.substringBeforeLast("/")
+        ?.substringBeforeLast("/")
 }

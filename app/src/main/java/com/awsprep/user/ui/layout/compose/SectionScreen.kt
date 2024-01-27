@@ -45,6 +45,7 @@ import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.Typography
+import com.awsprep.user.utils.AppConstant
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -119,6 +120,7 @@ fun SectionScreen(
                             .clickable {
                                 navController.navigate(
                                     ContentNavScreen.Timer.route
+                                        .plus("/${AppConstant.COLL_COURSES}")
                                         .plus("/${courseId}")
                                         .plus("/${chapterId}")
                                         .plus("/${sectionsList[it].docId}")

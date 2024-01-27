@@ -42,6 +42,7 @@ import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.Typography
+import com.awsprep.user.utils.AppConstant
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -118,6 +119,7 @@ fun SubSetsScreen(
                             .clickable {
                                 navController.navigate(
                                     ContentNavScreen.Timer.route
+                                        .plus("/${AppConstant.COLL_SETS}")
                                         .plus("/${setId}")
                                         .plus("/${subSetId}")
                                         .plus("/${subSetList[it].docId}")

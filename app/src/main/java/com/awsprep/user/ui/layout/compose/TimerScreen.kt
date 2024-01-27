@@ -26,6 +26,8 @@ import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.WhiteColor
+import com.awsprep.user.utils.AppConstant.COLL_COURSES
+import com.awsprep.user.utils.AppConstant.COLL_SETS
 import com.awsprep.user.viewmodel.EntityViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
@@ -38,6 +40,7 @@ fun TimerScreen(
     navController: NavController,
     quesViewModel: QuesViewModel,
     entityViewModel: EntityViewModel,
+    moduleType: String = "",
     courseId: String = "",
     chapterId: String = "",
     sectionId: String = ""
@@ -61,11 +64,13 @@ fun TimerScreen(
 
         Log.d("TimerScreen: ", "$courseId $chapterId $sectionId")
 
-        quesViewModel.getQuestions(
-            courseId, chapterId, sectionId, 30
-        )
-
-        quesViewModel.getQuestions(courseId, chapterId, sectionId)
+        if (moduleType == COLL_COURSES) {
+            quesViewModel.getQuestions(
+                courseId, chapterId, sectionId, 30
+            )
+        } else if (moduleType == COLL_SETS) {
+            quesViewModel.getQuestions(courseId, chapterId, sectionId)
+        }
 
         quesViewModel.questionData.collect {
             if (it.isLoading) {

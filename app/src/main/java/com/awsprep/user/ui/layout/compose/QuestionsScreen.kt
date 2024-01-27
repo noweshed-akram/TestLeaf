@@ -195,7 +195,8 @@ private fun TopAppBarTitle(
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
         )
         Text(
-            text = stringResource(R.string.question_count, totalQuestionsCount),
+//            text = stringResource(R.string.question_count, totalQuestionsCount),
+            text = " of Q$totalQuestionsCount",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
         )
