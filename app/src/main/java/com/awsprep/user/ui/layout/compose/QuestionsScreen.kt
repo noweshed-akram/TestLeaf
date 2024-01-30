@@ -68,6 +68,7 @@ fun QuestionsScreen(
     questionIndexData: QuestionIndexData,
     isNextEnabled: Boolean,
     activeTimer: Boolean = true,
+    timeInMinutes: Long = 0,
     onBackPressed: () -> Unit,
     onClickToAddReviewQs: () -> Unit,
     onFeedbackSend: (feedback: String) -> Unit,
@@ -162,6 +163,7 @@ fun QuestionsScreen(
                         }
                     },
                     activeTimer = activeTimer,
+                    timeInMinutes = timeInMinutes,
                     questionIndex = questionIndexData.questionIndex,
                     totalQuestionsCount = questionIndexData.questionCount
                 )
@@ -211,6 +213,7 @@ fun QuestionTopAppBar(
     onClickToAddReviewQs: () -> Unit,
     onClickFeedback: () -> Unit,
     activeTimer: Boolean = false,
+    timeInMinutes: Long = 0,
     questionIndex: Int,
     totalQuestionsCount: Int
 ) {
@@ -310,7 +313,7 @@ fun QuestionTopAppBar(
                         color = MaterialTheme.colorScheme.onSurface
                             .copy(alpha = 0.87f),
                     )
-                    CountDownTimer(timeInMillisecond = 1800000) // multiply the time value by 60000
+                    CountDownTimer(timeInMillisecond = timeInMinutes * 60000) // multiply the time value by 60000
                 }
 
             }

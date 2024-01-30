@@ -101,7 +101,7 @@ fun TimerScreen(
         InfoBannerCard(
             icon = R.drawable.ic_stopwatch,
             titleText = "Time Base",
-            infoText = "30 Minutes | 30 Questions",
+            infoText = "${questionList.size} Minutes | ${questionList.size} Questions",
             strokeColor = if (activeTimeBaseCard) PrimaryColor else StrokeColor,
             bgColor = if (activeTimeBaseCard) ColorAccent else WhiteColor
         ) {
@@ -111,7 +111,7 @@ fun TimerScreen(
         InfoBannerCard(
             icon = R.drawable.ic_stopwatch_off,
             titleText = "No Time Limit",
-            infoText = "30 Questions",
+            infoText = "${questionList.size} Questions",
             strokeColor = if (!activeTimeBaseCard) PrimaryColor else StrokeColor,
             bgColor = if (!activeTimeBaseCard) ColorAccent else WhiteColor
         ) {

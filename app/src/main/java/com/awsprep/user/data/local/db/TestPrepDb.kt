@@ -5,13 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.awsprep.user.data.local.dao.EntityDao
+import com.awsprep.user.data.local.entity.NotificationEntity
 import com.awsprep.user.data.local.entity.TestEntity
 
 /**
  * Created by Md. Noweshed Akram on 15/12/23.
  */
 @Database(
-    entities = [TestEntity::class],
+    entities = [TestEntity::class, NotificationEntity::class],
     exportSchema = false,
     version = 1
 )

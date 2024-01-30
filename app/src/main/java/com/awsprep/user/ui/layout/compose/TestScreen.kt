@@ -83,7 +83,7 @@ fun TestScreen(
     var errorMsg by rememberSaveable { mutableStateOf("") }
     var successMsg by rememberSaveable { mutableStateOf("") }
 
-    val totalQs by rememberSaveable { mutableIntStateOf(30) }
+    var totalQs by rememberSaveable { mutableIntStateOf(0) }
     var correctAns by rememberSaveable { mutableIntStateOf(0) }
     var wrongAns by rememberSaveable { mutableIntStateOf(0) }
 
@@ -120,6 +120,7 @@ fun TestScreen(
                 showProgress = false
                 questionList = it as List<Question>
                 testViewModel.questionOrder = questionList
+                totalQs = questionList.size
             }
         }
     }
@@ -131,124 +132,127 @@ fun TestScreen(
         testViewModel.onPreviousPressed()
     }
 
-    QuestionsScreen(
-        questionIndexData = questionIndexData,
-        isNextEnabled = testViewModel.isNextEnabled,
-        activeTimer = activeTimer,
-        onBackPressed = onBackPressed,
-        onClickToAddReviewQs = {
-            quesViewModel.addToReviewQues(questionIndexData.question)
-        },
-        onFeedbackSend = { msg ->
-            quesViewModel.sendQuesFeedback(
-                Feedback(
-                    userId = FirebaseAuth.getInstance().uid,
-                    questionId = questionIndexData.question.quesId,
-                    feedback = msg,
-                    createdAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
-                    updatedAt = getCurrentDateTime().toString(DATE_TIME_FORMAT)
-                )
-            )
-        },
-        onPreviousPressed = { testViewModel.onPreviousPressed() },
-        onNextPressed = {
-            entityViewModel.singleChoiceAns.value = ""
-            entityViewModel.multiChoiceAns.clear()
-            testViewModel.onNextPressed()
-        },
-        onSubmitPressed = {
-
-            entityViewModel.getCorrectMarks(1).observe(lifecycleOwner) { marks ->
-                correctAns = marks
-            }
-
-            entityViewModel.getWrongMarks(0).observe(lifecycleOwner) { marks ->
-                wrongAns = marks
-            }
-
-            submitAlert = true
-
-            Log.d(TAG, "onSubmitPressed: correct- $correctAns , wrong- $wrongAns")
-
-        }
-    ) { paddingValues ->
-
-        val modifier = Modifier.padding(paddingValues)
-
-        AnimatedContent(
-            targetState = questionIndexData,
-            transitionSpec = {
-                val animationSpec: TweenSpec<IntOffset> = tween(CONTENT_ANIMATION_DURATION)
-
-                val direction = getTransitionDirection(
-                    initialIndex = initialState.questionIndex,
-                    targetIndex = initialState.questionCount,
-                )
-
-                slideIntoContainer(
-                    towards = direction,
-                    animationSpec = animationSpec,
-                ) togetherWith slideOutOfContainer(
-                    towards = direction,
-                    animationSpec = animationSpec
+    if (questionList.isNotEmpty()) {
+        QuestionsScreen(
+            questionIndexData = questionIndexData,
+            isNextEnabled = testViewModel.isNextEnabled,
+            activeTimer = activeTimer,
+            timeInMinutes = totalQs.toLong(),
+            onBackPressed = onBackPressed,
+            onClickToAddReviewQs = {
+                quesViewModel.addToReviewQues(questionIndexData.question)
+            },
+            onFeedbackSend = { msg ->
+                quesViewModel.sendQuesFeedback(
+                    Feedback(
+                        userId = FirebaseAuth.getInstance().uid,
+                        questionId = questionIndexData.question.quesId,
+                        feedback = msg,
+                        createdAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
+                        updatedAt = getCurrentDateTime().toString(DATE_TIME_FORMAT)
+                    )
                 )
             },
-            label = "dataAnimation"
-        ) { targetState ->
+            onPreviousPressed = { testViewModel.onPreviousPressed() },
+            onNextPressed = {
+                entityViewModel.singleChoiceAns.value = ""
+                entityViewModel.multiChoiceAns.clear()
+                testViewModel.onNextPressed()
+            },
+            onSubmitPressed = {
 
-            Log.d(TAG, ": $targetState ")
+                entityViewModel.getCorrectMarks(1).observe(lifecycleOwner) { marks ->
+                    correctAns = marks
+                }
 
-            if (targetState.question.optionE.isNotEmpty()) {
-                MultipleChoiceQues(
-                    modifier = modifier,
-                    entityViewModel = entityViewModel,
-                    quesId = targetState.question.quesId,
-                    questionTitle = targetState.question.ques,
-                    directionsResourceId = R.string.select_all,
-                    possibleAnswers = listOf(
-                        targetState.question.optionA,
-                        targetState.question.optionB,
-                        targetState.question.optionC,
-                        targetState.question.optionD,
-                        targetState.question.optionE
-                    ),
-                    selectedAnswers = testViewModel
-                        .multipleChoiceResponse[targetState.question.quesId]
-                        ?: mutableStateListOf(),
-                    correctAns = targetState.question.ans,
-                    onOptionSelected = { selected, answer ->
-                        testViewModel.onMultipleChoiceResponse(
-                            selected = selected,
-                            quesId = targetState.question.quesId,
-                            answer = answer
-                        )
-                    }
-                )
-            } else {
-                SingleChoiceQues(
-                    modifier = modifier,
-                    entityViewModel = entityViewModel,
-                    quesId = targetState.question.quesId,
-                    questionTitle = targetState.question.ques,
-                    directionsResourceId = R.string.select_one,
-                    possibleAnswers = listOf(
-                        targetState.question.optionA,
-                        targetState.question.optionB,
-                        targetState.question.optionC,
-                        targetState.question.optionD
-                    ),
-                    selectedAnswer = testViewModel
-                        .singleChoiceResponse[targetState.question.quesId] ?: "",
-                    correctAns = targetState.question.ans,
-                    onOptionSelected = { ans ->
-                        testViewModel.onSingleChoiceResponse(
-                            quesId = targetState.question.quesId,
-                            answer = ans
-                        )
-                    }
-                )
+                entityViewModel.getWrongMarks(0).observe(lifecycleOwner) { marks ->
+                    wrongAns = marks
+                }
+
+                submitAlert = true
+
+                Log.d(TAG, "onSubmitPressed: correct- $correctAns , wrong- $wrongAns")
+
             }
+        ) { paddingValues ->
 
+            val modifier = Modifier.padding(paddingValues)
+
+            AnimatedContent(
+                targetState = questionIndexData,
+                transitionSpec = {
+                    val animationSpec: TweenSpec<IntOffset> = tween(CONTENT_ANIMATION_DURATION)
+
+                    val direction = getTransitionDirection(
+                        initialIndex = initialState.questionIndex,
+                        targetIndex = initialState.questionCount,
+                    )
+
+                    slideIntoContainer(
+                        towards = direction,
+                        animationSpec = animationSpec,
+                    ) togetherWith slideOutOfContainer(
+                        towards = direction,
+                        animationSpec = animationSpec
+                    )
+                },
+                label = "dataAnimation"
+            ) { targetState ->
+
+                Log.d(TAG, ": $targetState ")
+
+                if (targetState.question.optionE.isNotEmpty()) {
+                    MultipleChoiceQues(
+                        modifier = modifier,
+                        entityViewModel = entityViewModel,
+                        quesId = targetState.question.quesId,
+                        questionTitle = targetState.question.ques,
+                        directionsResourceId = R.string.select_all,
+                        possibleAnswers = listOf(
+                            targetState.question.optionA,
+                            targetState.question.optionB,
+                            targetState.question.optionC,
+                            targetState.question.optionD,
+                            targetState.question.optionE
+                        ),
+                        selectedAnswers = testViewModel
+                            .multipleChoiceResponse[targetState.question.quesId]
+                            ?: mutableStateListOf(),
+                        correctAns = targetState.question.ans,
+                        onOptionSelected = { selected, answer ->
+                            testViewModel.onMultipleChoiceResponse(
+                                selected = selected,
+                                quesId = targetState.question.quesId,
+                                answer = answer
+                            )
+                        }
+                    )
+                } else {
+                    SingleChoiceQues(
+                        modifier = modifier,
+                        entityViewModel = entityViewModel,
+                        quesId = targetState.question.quesId,
+                        questionTitle = targetState.question.ques,
+                        directionsResourceId = R.string.select_one,
+                        possibleAnswers = listOf(
+                            targetState.question.optionA,
+                            targetState.question.optionB,
+                            targetState.question.optionC,
+                            targetState.question.optionD
+                        ),
+                        selectedAnswer = testViewModel
+                            .singleChoiceResponse[targetState.question.quesId] ?: "",
+                        correctAns = targetState.question.ans,
+                        onOptionSelected = { ans ->
+                            testViewModel.onSingleChoiceResponse(
+                                quesId = targetState.question.quesId,
+                                answer = ans
+                            )
+                        }
+                    )
+                }
+
+            }
         }
     }
 
