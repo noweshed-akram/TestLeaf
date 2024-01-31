@@ -42,6 +42,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.Course
+import com.awsprep.user.domain.models.ExamMetaData
 import com.awsprep.user.domain.models.Set
 import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.PrimaryButton
@@ -235,6 +236,13 @@ fun AssessmentScreen(
                             RoundedCornerShape(8.dp)
                         )
                         .clickable {
+
+                            val examMetaData = ExamMetaData(
+                                examName = course.name,
+                                examType = "Course",
+                                courseId = course.docId
+                            )
+
                             navController.navigate(ContentNavScreen.Chapters.route.plus("/${course.docId}"))
                         }
                 ) {

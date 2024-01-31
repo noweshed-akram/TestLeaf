@@ -56,7 +56,7 @@ fun CountDownTimer(
             (timeData.longValue / (1000 * 60) % 60),
             (timeData.longValue / 1000) % 60
         ) else "Time's Up",
-        color = if (timeData.longValue > 600000) {
+        color = if (timeData.longValue > 300000) {
             TextColor
         } else {
             ErrorColor
