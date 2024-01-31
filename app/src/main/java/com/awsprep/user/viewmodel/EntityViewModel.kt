@@ -6,10 +6,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.awsprep.user.data.local.entity.NotificationEntity
 import com.awsprep.user.data.local.entity.TestEntity
 import com.awsprep.user.domain.usecase.EntityUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -43,6 +45,20 @@ class EntityViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             entityUseCase.clearLocalDb()
         }
+    }
+
+    fun insertNotification(notificationEntity: NotificationEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            entityUseCase.insertNotification(notificationEntity)
+        }
+    }
+
+    fun getNotifications(): Flow<List<NotificationEntity>> {
+        return entityUseCase.getNotifications()
+    }
+
+    fun updateNotificationReadStatus(id: Int, isSeen: Boolean): Int {
+        return entityUseCase.updateNotificationReadStatus(id, isSeen)
     }
 
 }

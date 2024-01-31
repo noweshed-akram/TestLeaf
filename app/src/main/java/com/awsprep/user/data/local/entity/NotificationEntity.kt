@@ -8,15 +8,15 @@ import androidx.room.PrimaryKey
  * Created by Md. Noweshed Akram on 1/30/2024.
  */
 @Entity(
-    tableName = "Notification",
+    tableName = "notification",
     indices = [Index(value = ["notificationId"], unique = true)]
 )
 data class NotificationEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val notificationId: Int,
     val title: String,
     val msg: String,
+    val isSeen: Boolean,
     val createdAt: String,
-    val updatedAt: String,
-    val isSeen: Boolean
+    val updatedAt: String
 )

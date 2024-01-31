@@ -2,8 +2,10 @@ package com.awsprep.user.data.local.repoimpl
 
 import androidx.lifecycle.LiveData
 import com.awsprep.user.data.local.dao.EntityDao
+import com.awsprep.user.data.local.entity.NotificationEntity
 import com.awsprep.user.data.local.entity.TestEntity
 import com.awsprep.user.domain.repositories.EntityRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 /**
@@ -21,12 +23,20 @@ class EntityRepoImpl @Inject constructor(
         return entityDao.getTestMark(marks)
     }
 
-    override suspend fun getSelectedAns(quesId: String): String {
-        return entityDao.getSelectedAns(quesId)
-    }
-
     override suspend fun clearLocalDb(): Int {
         return entityDao.clearLocalDb()
+    }
+
+    override suspend fun insertNotification(notificationEntity: NotificationEntity) {
+        return entityDao.insertNotification(notificationEntity)
+    }
+
+    override fun getNotifications(): Flow<List<NotificationEntity>> {
+        return entityDao.getNotifications()
+    }
+
+    override fun updateNotificationReadStatus(id: Int, isSeen: Boolean): Int {
+        return entityDao.updateNotificationReadStatus(id, isSeen)
     }
 
 }

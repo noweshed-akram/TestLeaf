@@ -1,7 +1,9 @@
 package com.awsprep.user.domain.repositories
 
 import androidx.lifecycle.LiveData
+import com.awsprep.user.data.local.entity.NotificationEntity
 import com.awsprep.user.data.local.entity.TestEntity
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by Md. Noweshed Akram on 15/12/23.
@@ -12,7 +14,12 @@ interface EntityRepository {
 
     fun getTestMark(marks: Int): LiveData<Int>
 
-    suspend fun getSelectedAns(quesId: String): String
-
     suspend fun clearLocalDb(): Int
+
+    suspend fun insertNotification(notificationEntity: NotificationEntity)
+
+    fun getNotifications(): Flow<List<NotificationEntity>>
+
+    fun updateNotificationReadStatus(id: Int, isSeen: Boolean): Int
+
 }
