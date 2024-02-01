@@ -39,12 +39,16 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.Course
+import com.awsprep.user.domain.models.ExamMetaData
 import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.Typography
+import com.awsprep.user.utils.AppConstant
+import com.awsprep.user.utils.AppConstant.COLL_COURSES
 import com.awsprep.user.viewmodel.AsesmntViewModel
+import com.google.gson.Gson
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 /**
@@ -108,7 +112,17 @@ fun AllCourseScreen(
                             RoundedCornerShape(8.dp)
                         )
                         .clickable {
-                            navController.navigate(ContentNavScreen.Chapters.route.plus("/${courseList[it].docId}"))
+
+                            val examData = ExamMetaData(
+                                examName = courseList[it].name,
+                                examType = COLL_COURSES,
+                                courseId = courseList[it].docId
+                            )
+
+                            val gson = Gson()
+                            val examMetaDataJson = gson.toJson(examData)
+
+                            navController.navigate(ContentNavScreen.Chapters.route.plus("/${examMetaDataJson}"))
                         }
                 ) {
                     Column(

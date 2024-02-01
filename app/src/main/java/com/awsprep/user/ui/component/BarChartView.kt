@@ -37,7 +37,7 @@ fun BarChartView(
             color = PrimaryColor,
             label = (i + 1).toString(),
             dataCategoryOptions = DataCategoryOptions(),
-            description = result.testName
+            description = result.examName
         )
     }
 

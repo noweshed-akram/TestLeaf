@@ -39,14 +39,17 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.Course
+import com.awsprep.user.domain.models.ExamMetaData
 import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.Typography
+import com.awsprep.user.utils.AppConstant
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.google.gson.Gson
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 /**
@@ -56,7 +59,7 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 fun ChapterScreen(
     navController: NavController,
     asesmntViewModel: AsesmntViewModel,
-    courseId: String = ""
+    examMetaData: ExamMetaData
 ) {
 
     var showProgress by rememberSaveable { mutableStateOf(false) }
@@ -68,7 +71,7 @@ fun ChapterScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        asesmntViewModel.getChapterList(courseId)
+        asesmntViewModel.getChapterList(examMetaData.courseId!!)
 
         asesmntViewModel.chaptersData.collect {
             if (it.isLoading) {
@@ -115,10 +118,20 @@ fun ChapterScreen(
                                 RoundedCornerShape(8.dp)
                             )
                             .clickable {
+
+                                val examData = ExamMetaData(
+                                    examName = examMetaData.examName,
+                                    examType = examMetaData.examType,
+                                    courseId = examMetaData.courseId,
+                                    chapterId = chapterList[it].docId
+                                )
+
+                                val gson = Gson()
+                                val examMetaDataJson = gson.toJson(examData)
+
                                 navController.navigate(
                                     ContentNavScreen.Sections.route
-                                        .plus("/${courseId}")
-                                        .plus("/${chapterList[it].docId}")
+                                        .plus("/${examMetaDataJson}")
                                 )
                             }
                     ) {

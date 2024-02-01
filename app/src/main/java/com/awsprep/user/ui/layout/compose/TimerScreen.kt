@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.awsprep.user.R
+import com.awsprep.user.domain.models.ExamMetaData
 import com.awsprep.user.domain.models.Question
 import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.InfoBannerCard
@@ -30,6 +31,7 @@ import com.awsprep.user.utils.AppConstant.COLL_COURSES
 import com.awsprep.user.utils.AppConstant.COLL_SETS
 import com.awsprep.user.viewmodel.EntityViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
+import com.google.gson.Gson
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 /**
@@ -40,10 +42,7 @@ fun TimerScreen(
     navController: NavController,
     quesViewModel: QuesViewModel,
     entityViewModel: EntityViewModel,
-    moduleType: String = "",
-    courseId: String = "",
-    chapterId: String = "",
-    sectionId: String = ""
+    examMetaData: ExamMetaData
 ) {
 
     var showProgress by rememberSaveable { mutableStateOf(false) }
@@ -62,14 +61,21 @@ fun TimerScreen(
 
     LaunchedEffect(key1 = true) {
 
-        Log.d("TimerScreen: ", "$courseId $chapterId $sectionId")
+        Log.d(
+            "TimerScreen: ",
+            "${examMetaData.courseId} ${examMetaData.chapterId} ${examMetaData.sectionId}"
+        )
 
-        if (moduleType == COLL_COURSES) {
+        if (examMetaData.examType == COLL_COURSES) {
             quesViewModel.getQuestions(
-                courseId, chapterId, sectionId, 30
+                examMetaData.courseId!!, examMetaData.chapterId!!, examMetaData.sectionId!!, 30
             )
-        } else if (moduleType == COLL_SETS) {
-            quesViewModel.getQuestions(courseId, chapterId, sectionId)
+        } else if (examMetaData.examType == COLL_SETS) {
+            quesViewModel.getQuestions(
+                examMetaData.setId!!,
+                examMetaData.setFlag!!,
+                examMetaData.subsetId!!
+            )
         }
 
         quesViewModel.questionData.collect {
@@ -124,9 +130,19 @@ fun TimerScreen(
                     showError = true
                     errorMsg = "This section isn't available for Test! Please try later."
                 } else {
+
+                    val examData = ExamMetaData(
+                        examName = examMetaData.examName,
+                        examType = examMetaData.examType,
+                        activeTimer = activeTimeBaseCard
+                    )
+
+                    val gson = Gson()
+                    val examMetaDataJson = gson.toJson(examData)
+
                     navController.navigate(
                         ContentNavScreen.Test.route
-                            .plus("/${activeTimeBaseCard}")
+                            .plus("/${examMetaDataJson}")
                     )
                 }
             },

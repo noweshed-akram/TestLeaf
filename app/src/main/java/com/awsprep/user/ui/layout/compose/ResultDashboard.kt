@@ -89,8 +89,8 @@ fun ResultDashboard(
                         items = resultList
                     ) { result ->
                         ResultListItem(
-                            examType = result.testType,
-                            examName = result.testName,
+                            examType = result.examType,
+                            examName = result.examName,
                             totalQs = result.totalQs,
                             correctAns = result.correctAnswered,
                             testDate = result.createdAt,

@@ -134,9 +134,13 @@ fun CheckboxRow(
 
     var isCorrect = false
 
-    for (ans in correctAns) {
-        for (selectAns in entityViewModel.multiChoiceAns) {
-            isCorrect = ans.lowercase() == selectAns.lowercase()
+    if (correctAns.size != entityViewModel.multiChoiceAns.size) {
+        isCorrect = false
+    } else {
+        for (ans in correctAns) {
+            for (selectAns in entityViewModel.multiChoiceAns) {
+                isCorrect = ans.lowercase() == selectAns.lowercase()
+            }
         }
     }
 

@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.awsprep.user.domain.models.ExamMetaData
 import com.awsprep.user.domain.models.TestResult
 import com.awsprep.user.ui.layout.compose.AllCourseScreen
 import com.awsprep.user.ui.layout.compose.ChapterScreen
@@ -24,6 +25,7 @@ import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.EntityViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
 import com.awsprep.user.viewmodel.UserViewModel
+import com.google.gson.Gson
 
 /**
  * Created by noweshedakram on 16/8/23.
@@ -63,87 +65,66 @@ fun NavGraphBuilder.ContentNavGraph(
                 }
             ),
         ) {
+
             val response = it.arguments?.getString(ContentNavScreen.Chapters.objectName)
-            response?.let {
+            val gson = Gson()
+            val examMetaData = gson.fromJson(response, ExamMetaData::class.java)
+
+            examMetaData?.let { data ->
                 ChapterScreen(
                     navController = navController,
                     asesmntViewModel = asesmntViewModel,
-                    courseId = it
+                    examMetaData = data
                 )
             }
         }
 
         composable(
             route = ContentNavScreen.Sections.route
-                .plus(ContentNavScreen.Sections.objectPath)
-                .plus(ContentNavScreen.Sections.objectPathTwo),
+                .plus(ContentNavScreen.Sections.objectPath),
             arguments = listOf(
                 navArgument(ContentNavScreen.Sections.objectName) {
-                    type = NavType.StringType
-                },
-                navArgument(ContentNavScreen.Sections.objectNameTwo) {
                     type = NavType.StringType
                 }
             )
         ) {
-            val course = it.arguments?.getString(ContentNavScreen.Sections.objectName)
-            val chapter = it.arguments?.getString(ContentNavScreen.Sections.objectNameTwo)
 
-            course?.let { courseId ->
-                chapter?.let { chapterId ->
-                    SectionScreen(
-                        navController = navController, asesmntViewModel = asesmntViewModel,
-                        courseId = courseId, chapterId = chapterId
-                    )
-                }
+            val response = it.arguments?.getString(ContentNavScreen.Chapters.objectName)
+            val gson = Gson()
+            val examMetaData = gson.fromJson(response, ExamMetaData::class.java)
+
+            examMetaData?.let { data ->
+                SectionScreen(
+                    navController = navController,
+                    asesmntViewModel = asesmntViewModel,
+                    examMetaData = data
+                )
             }
 
         }
 
         composable(
             route = ContentNavScreen.Timer.route
-                .plus(ContentNavScreen.Timer.objectPath)
-                .plus(ContentNavScreen.Timer.objectPathTwo)
-                .plus(ContentNavScreen.Timer.objectPathThree)
-                .plus(ContentNavScreen.Timer.objectPathFour),
+                .plus(ContentNavScreen.Timer.objectPath),
             arguments = listOf(
                 navArgument(ContentNavScreen.Timer.objectName) {
-                    type = NavType.StringType
-                },
-                navArgument(ContentNavScreen.Timer.objectNameTwo) {
-                    type = NavType.StringType
-                },
-                navArgument(ContentNavScreen.Timer.objectNameThree) {
-                    type = NavType.StringType
-                },
-                navArgument(ContentNavScreen.Timer.objectNameFour) {
                     type = NavType.StringType
                 }
             )
         ) {
-            val moduleType = it.arguments?.getString(ContentNavScreen.Timer.objectName)
-            val course = it.arguments?.getString(ContentNavScreen.Timer.objectNameTwo)
-            val chapter = it.arguments?.getString(ContentNavScreen.Timer.objectNameThree)
-            val section = it.arguments?.getString(ContentNavScreen.Timer.objectNameFour)
 
-            moduleType?.let { type ->
-                course?.let { courseId ->
-                    chapter?.let { chapterId ->
-                        section?.let { sectionId ->
-                            TimerScreen(
-                                navController = navController,
-                                quesViewModel = quesViewModel,
-                                entityViewModel = entityViewModel,
-                                moduleType = type,
-                                courseId = courseId,
-                                chapterId = chapterId,
-                                sectionId = sectionId
-                            )
-                        }
-                    }
-                }
+            val response = it.arguments?.getString(ContentNavScreen.Chapters.objectName)
+            val gson = Gson()
+            val examMetaData = gson.fromJson(response, ExamMetaData::class.java)
+
+            examMetaData?.let { data ->
+                TimerScreen(
+                    navController = navController,
+                    quesViewModel = quesViewModel,
+                    entityViewModel = entityViewModel,
+                    examMetaData = data
+                )
             }
-
         }
 
         composable(route = ContentNavScreen.ReviewQues.route) {
@@ -155,29 +136,23 @@ fun NavGraphBuilder.ContentNavGraph(
         }
 
         composable(
-            route = ContentNavScreen.SubSets.route.plus(ContentNavScreen.SubSets.objectPath)
-                .plus(ContentNavScreen.SubSets.objectPathTwo),
+            route = ContentNavScreen.SubSets.route.plus(ContentNavScreen.SubSets.objectPath),
             arguments = listOf(
                 navArgument(ContentNavScreen.SubSets.objectName) {
-                    type = NavType.StringType
-                },
-                navArgument(ContentNavScreen.SubSets.objectNameTwo) {
                     type = NavType.StringType
                 }
             )
         ) {
-            val setId = it.arguments?.getString(ContentNavScreen.SubSets.objectName, "")
-            val subSetId = it.arguments?.getString(ContentNavScreen.SubSets.objectNameTwo, "")
+            val response = it.arguments?.getString(ContentNavScreen.Chapters.objectName)
+            val gson = Gson()
+            val examMetaData = gson.fromJson(response, ExamMetaData::class.java)
 
-            setId?.let {
-                subSetId?.let {
-                    SubSetsScreen(
-                        navController = navController,
-                        asesmntViewModel = asesmntViewModel,
-                        setId = setId,
-                        subSetId = subSetId
-                    )
-                }
+            examMetaData?.let { data ->
+                SubSetsScreen(
+                    navController = navController,
+                    asesmntViewModel = asesmntViewModel,
+                    examMetaData = data
+                )
             }
 
         }
@@ -186,14 +161,16 @@ fun NavGraphBuilder.ContentNavGraph(
             route = ContentNavScreen.Test.route.plus(ContentNavScreen.Test.objectPath),
             arguments = listOf(
                 navArgument(ContentNavScreen.Test.objectName) {
-                    type = NavType.BoolType
+                    type = NavType.StringType
                 }
             )
         ) {
 
-            val activeTimer = it.arguments?.getBoolean(ContentNavScreen.Test.objectName, true)
+            val response = it.arguments?.getString(ContentNavScreen.Chapters.objectName)
+            val gson = Gson()
+            val examMetaData = gson.fromJson(response, ExamMetaData::class.java)
 
-            activeTimer?.let {
+            examMetaData?.let {
                 TestScreen(
                     navController = navController,
                     onBackPressed = {
@@ -201,10 +178,10 @@ fun NavGraphBuilder.ContentNavGraph(
                             popUpTo(ContentNavScreen.Test.route)
                         }
                     },
-                    activeTimer = it,
                     userViewModel = userViewModel,
                     quesViewModel = quesViewModel,
-                    entityViewModel = entityViewModel
+                    entityViewModel = entityViewModel,
+                    examMetaData = examMetaData
                 )
             }
         }
@@ -230,7 +207,5 @@ fun NavGraphBuilder.ContentNavGraph(
         composable(route = ContentNavScreen.ResultDashboard.route) {
             ResultDashboard(navController = navController, userViewModel = userViewModel)
         }
-
     }
-
 }

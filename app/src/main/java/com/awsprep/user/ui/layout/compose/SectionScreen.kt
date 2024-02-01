@@ -40,6 +40,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.Course
+import com.awsprep.user.domain.models.ExamMetaData
 import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.ColorAccent
@@ -49,6 +50,7 @@ import com.awsprep.user.utils.AppConstant
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.google.gson.Gson
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 /**
@@ -58,8 +60,7 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 fun SectionScreen(
     navController: NavController,
     asesmntViewModel: AsesmntViewModel,
-    courseId: String = "",
-    chapterId: String = ""
+    examMetaData: ExamMetaData
 ) {
 
     var showProgress by rememberSaveable { mutableStateOf(false) }
@@ -71,7 +72,7 @@ fun SectionScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        asesmntViewModel.getSectionList(courseId, chapterId)
+        asesmntViewModel.getSectionList(examMetaData.courseId!!, examMetaData.chapterId!!)
 
         asesmntViewModel.sectionsData.collect {
             if (it.isLoading) {
@@ -118,12 +119,21 @@ fun SectionScreen(
                                 RoundedCornerShape(8.dp)
                             )
                             .clickable {
+
+                                val examData = ExamMetaData(
+                                    examName = examMetaData.examName,
+                                    examType = examMetaData.examType,
+                                    courseId = examMetaData.courseId,
+                                    chapterId = examMetaData.chapterId,
+                                    sectionId = sectionsList[it].docId
+                                )
+
+                                val gson = Gson()
+                                val examMetaDataJson = gson.toJson(examData)
+
                                 navController.navigate(
                                     ContentNavScreen.Timer.route
-                                        .plus("/${AppConstant.COLL_COURSES}")
-                                        .plus("/${courseId}")
-                                        .plus("/${chapterId}")
-                                        .plus("/${sectionsList[it].docId}")
+                                        .plus("/${examMetaDataJson}")
                                 )
                             }
                     ) {

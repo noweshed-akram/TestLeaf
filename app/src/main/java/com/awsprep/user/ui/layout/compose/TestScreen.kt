@@ -26,6 +26,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.awsprep.user.R
+import com.awsprep.user.domain.models.ExamMetaData
 import com.awsprep.user.domain.models.Feedback
 import com.awsprep.user.domain.models.Question
 import com.awsprep.user.domain.models.TestResult
@@ -61,12 +62,10 @@ private const val CONTENT_ANIMATION_DURATION = 300
 fun TestScreen(
     navController: NavController,
     onBackPressed: () -> Unit,
-    activeTimer: Boolean = true,
     userViewModel: UserViewModel,
     quesViewModel: QuesViewModel,
     entityViewModel: EntityViewModel,
-    testType: String = "Course",
-    testName: String = "Course001"
+    examMetaData: ExamMetaData
 ) {
 
     val TAG = "TestScreen"
@@ -136,7 +135,7 @@ fun TestScreen(
         QuestionsScreen(
             questionIndexData = questionIndexData,
             isNextEnabled = testViewModel.isNextEnabled,
-            activeTimer = activeTimer,
+            activeTimer = examMetaData.activeTimer!!,
             timeInMinutes = totalQs.toLong(),
             onBackPressed = onBackPressed,
             onClickToAddReviewQs = {
@@ -303,9 +302,9 @@ fun TestScreen(
                 Log.d(TAG, "onSubmitPressed: correct- $correctAns , wrong- $wrongAns")
 
                 val testResult = TestResult(
-                    testType = testType,
-                    testName = testName,
-                    timeBased = activeTimer,
+                    examType = examMetaData.examType!!,
+                    examName = examMetaData.examName!!,
+                    timeBased = examMetaData.activeTimer!!,
                     timeTaken = "15",
                     totalQs = totalQs.toString(),
                     answered = (correctAns + wrongAns).toString(),

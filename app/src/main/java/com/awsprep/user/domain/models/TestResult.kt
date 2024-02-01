@@ -7,8 +7,8 @@ import androidx.annotation.Keep
  */
 @Keep
 data class TestResult(
-    val testType: String = "",
-    val testName: String = "",
+    val examType: String = "",
+    val examName: String = "",
     val timeBased: Boolean = false,
     val timeTaken: String = "",
     val totalQs: String = "",

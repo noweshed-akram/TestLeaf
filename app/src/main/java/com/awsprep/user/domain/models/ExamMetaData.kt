@@ -6,9 +6,11 @@ package com.awsprep.user.domain.models
 data class ExamMetaData(
     val examName: String? = "",
     val examType: String? = "",
+    val activeTimer: Boolean? = false,
     val courseId: String? = "",
     val chapterId: String? = "",
     val sectionId: String? = "",
     val setId: String? = "",
+    val setFlag: String? = "",
     val subsetId: String? = ""
 )

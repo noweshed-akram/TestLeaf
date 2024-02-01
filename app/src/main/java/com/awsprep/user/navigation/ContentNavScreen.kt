@@ -6,13 +6,7 @@ package com.awsprep.user.navigation
 sealed class ContentNavScreen(
     val route: String,
     val objectName: String = "",
-    val objectPath: String = "",
-    val objectNameTwo: String = "",
-    val objectPathTwo: String = "",
-    val objectNameThree: String = "",
-    val objectPathThree: String = "",
-    val objectNameFour: String = "",
-    val objectPathFour: String = ""
+    val objectPath: String = ""
 ) {
     object EditProfile : ContentNavScreen(route = "edit_profile_screen")
 
@@ -22,34 +16,29 @@ sealed class ContentNavScreen(
 
     object Chapters : ContentNavScreen(
         route = "chapters_screen",
-        objectName = "courseId", objectPath = "/{courseId}"
+        objectName = "examMetaData", objectPath = "/{examMetaData}"
     )
 
     object Sections : ContentNavScreen(
         route = "sections_screen",
-        objectName = "courseId", objectPath = "/{courseId}",
-        objectNameTwo = "chapterId", objectPathTwo = "/{chapterId}",
+        objectName = "examMetaData", objectPath = "/{examMetaData}"
     )
 
     object Timer : ContentNavScreen(
         route = "timer_screen",
-        objectName = "moduleType", objectPath = "/{moduleType}",
-        objectNameTwo = "courseId", objectPathTwo = "/{courseId}",
-        objectNameThree = "chapterId", objectPathThree = "/{chapterId}",
-        objectNameFour = "sectionId", objectPathFour = "/{sectionId}",
+        objectName = "examMetaData", objectPath = "/{examMetaData}",
     )
 
     object Test : ContentNavScreen(
         route = "test_screen",
-        objectName = "activeTimer", objectPath = "/{activeTimer}"
+        objectName = "examMetaData", objectPath = "/{examMetaData}"
     )
 
     object ReviewQues : ContentNavScreen(route = "review_ques_screen")
 
     object SubSets : ContentNavScreen(
         route = "sub_sets_screen",
-        objectName = "setId", objectPath = "/{setId}",
-        objectNameTwo = "subSetId", objectPathTwo = "/{subSetId}"
+        objectName = "examMetaData", objectPath = "/{examMetaData}"
     )
 
     object Result : ContentNavScreen(

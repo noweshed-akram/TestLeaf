@@ -37,15 +37,18 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.Course
+import com.awsprep.user.domain.models.ExamMetaData
 import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.Typography
 import com.awsprep.user.utils.AppConstant
+import com.awsprep.user.utils.AppConstant.COLL_SETS
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.google.gson.Gson
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 /**
@@ -55,8 +58,7 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 fun SubSetsScreen(
     navController: NavController,
     asesmntViewModel: AsesmntViewModel,
-    setId: String = "",
-    subSetId: String = ""
+    examMetaData: ExamMetaData
 ) {
 
     var showProgress by rememberSaveable { mutableStateOf(false) }
@@ -68,7 +70,7 @@ fun SubSetsScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        asesmntViewModel.getSubSetList(setId, subSetId)
+        asesmntViewModel.getSubSetList(examMetaData.setId!!, examMetaData.setFlag!!)
 
         asesmntViewModel.subSetData.collect {
             if (it.isLoading) {
@@ -117,12 +119,21 @@ fun SubSetsScreen(
                                 RoundedCornerShape(8.dp)
                             )
                             .clickable {
+
+                                val examData = ExamMetaData(
+                                    examName = examMetaData.examName,
+                                    examType = examMetaData.examType,
+                                    setId = examMetaData.setId,
+                                    setFlag = examMetaData.setFlag,
+                                    subsetId = subSetList[it].docId
+                                )
+
+                                val gson = Gson()
+                                val examMetaDataJson = gson.toJson(examData)
+
                                 navController.navigate(
                                     ContentNavScreen.Timer.route
-                                        .plus("/${AppConstant.COLL_SETS}")
-                                        .plus("/${setId}")
-                                        .plus("/${subSetId}")
-                                        .plus("/${subSetList[it].docId}")
+                                        .plus("/${examMetaDataJson}")
                                 )
                             }
                     ) {

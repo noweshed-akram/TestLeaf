@@ -54,9 +54,12 @@ import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.Typography
 import com.awsprep.user.ui.theme.WhiteColor
+import com.awsprep.user.utils.AppConstant.COLL_COURSES
+import com.awsprep.user.utils.AppConstant.COLL_SETS
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
+import com.google.gson.Gson
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 /**
@@ -237,13 +240,16 @@ fun AssessmentScreen(
                         )
                         .clickable {
 
-                            val examMetaData = ExamMetaData(
+                            val examData = ExamMetaData(
                                 examName = course.name,
-                                examType = "Course",
+                                examType = COLL_COURSES,
                                 courseId = course.docId
                             )
 
-                            navController.navigate(ContentNavScreen.Chapters.route.plus("/${course.docId}"))
+                            val gson = Gson()
+                            val examMetaDataJson = gson.toJson(examData)
+
+                            navController.navigate(ContentNavScreen.Chapters.route.plus("/${examMetaDataJson}"))
                         }
                 ) {
                     Column(
@@ -338,10 +344,20 @@ fun AssessmentScreen(
                     title = set.name,
                     subTitle = "100+ Practice Test Sets"
                 ) {
+
+                    val examData = ExamMetaData(
+                        examName = set.name,
+                        examType = COLL_SETS,
+                        setId = set.setId,
+                        setFlag = set.flag
+                    )
+
+                    val gson = Gson()
+                    val examMetaDataJson = gson.toJson(examData)
+
                     navController.navigate(
                         ContentNavScreen.SubSets.route
-                            .plus("/${set.setId}")
-                            .plus("/${set.flag}")
+                            .plus("/${examMetaDataJson}")
                     )
                 }
 
