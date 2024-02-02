@@ -10,6 +10,7 @@ import androidx.navigation.navigation
 import com.awsprep.user.domain.models.ExamMetaData
 import com.awsprep.user.domain.models.TestResult
 import com.awsprep.user.ui.layout.compose.AllCourseScreen
+import com.awsprep.user.ui.layout.compose.AnswerSheetScreen
 import com.awsprep.user.ui.layout.compose.ChapterScreen
 import com.awsprep.user.ui.layout.compose.EditProfileScreen
 import com.awsprep.user.ui.layout.compose.NotificationScreen
@@ -170,7 +171,7 @@ fun NavGraphBuilder.ContentNavGraph(
             val gson = Gson()
             val examMetaData = gson.fromJson(response, ExamMetaData::class.java)
 
-            examMetaData?.let {
+            examMetaData?.let { data ->
                 TestScreen(
                     navController = navController,
                     onBackPressed = {
@@ -181,26 +182,57 @@ fun NavGraphBuilder.ContentNavGraph(
                     userViewModel = userViewModel,
                     quesViewModel = quesViewModel,
                     entityViewModel = entityViewModel,
-                    examMetaData = examMetaData
+                    examMetaData = data
                 )
             }
         }
 
         composable(
-            route = ContentNavScreen.Result.route.plus(ContentNavScreen.Result.objectPath),
-            arguments = listOf(navArgument(ContentNavScreen.Result.objectName) {
-                type = NavType.StringType
-            })
+            route = ContentNavScreen.Result.route
+                .plus(ContentNavScreen.Result.objectPath)
+                .plus(ContentNavScreen.Result.objectPathTwo),
+            arguments = listOf(
+                navArgument(ContentNavScreen.Result.objectName) {
+                    type = NavType.StringType
+                },
+                navArgument(ContentNavScreen.Result.objectNameTwo) {
+                    type = NavType.StringType
+                }
+            )
         ) {
 
             val result = it.arguments?.getString(ContentNavScreen.Result.objectName)
+            val metaData = it.arguments?.getString(ContentNavScreen.Result.objectNameTwo)
 
             val testResult = result?.fromPrettyJson<TestResult>()
+            val examMetaData = metaData?.fromPrettyJson<ExamMetaData>()
 
             ResultScreen(
                 navController = navController,
                 userViewModel = userViewModel,
-                testResult = testResult!!
+                testResult = testResult!!,
+                examMetaData = examMetaData!!
+            )
+        }
+
+        composable(
+            route = ContentNavScreen.AnswerSheet.route
+                .plus(ContentNavScreen.AnswerSheet.objectPath),
+            arguments = listOf(
+                navArgument(ContentNavScreen.AnswerSheet.objectName) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+
+            val response = it.arguments?.getString(ContentNavScreen.AnswerSheet.objectName)
+            val gson = Gson()
+            val examMetaData = gson.fromJson(response, ExamMetaData::class.java)
+
+            AnswerSheetScreen(
+                quesViewModel = quesViewModel,
+                entityViewModel = entityViewModel,
+                examMetaData = examMetaData
             )
         }
 

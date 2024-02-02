@@ -6,7 +6,9 @@ package com.awsprep.user.navigation
 sealed class ContentNavScreen(
     val route: String,
     val objectName: String = "",
-    val objectPath: String = ""
+    val objectPath: String = "",
+    val objectNameTwo: String = "",
+    val objectPathTwo: String = ""
 ) {
     object EditProfile : ContentNavScreen(route = "edit_profile_screen")
 
@@ -44,6 +46,12 @@ sealed class ContentNavScreen(
     object Result : ContentNavScreen(
         route = "result_screen",
         objectName = "testResult", objectPath = "/{testResult}",
+        objectNameTwo = "examMetaData", objectPathTwo = "/{examMetaData}"
+    )
+
+    object AnswerSheet : ContentNavScreen(
+        route = "answer_sheet_screen",
+        objectName = "examMetaData", objectPath = "/{examMetaData}",
     )
 
     object ResultDashboard : ContentNavScreen(route = "result_dashboard_screen")

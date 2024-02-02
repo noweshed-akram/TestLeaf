@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.CircleShape
@@ -45,11 +43,10 @@ import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.Typography
-import com.awsprep.user.utils.AppConstant
+import com.awsprep.user.utils.toPrettyJson
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.google.gson.Gson
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 /**
@@ -119,19 +116,16 @@ fun ChapterScreen(
                             )
                             .clickable {
 
-                                val examData = ExamMetaData(
+                                val xmMetaData = ExamMetaData(
                                     examName = examMetaData.examName,
                                     examType = examMetaData.examType,
                                     courseId = examMetaData.courseId,
                                     chapterId = chapterList[it].docId
                                 )
 
-                                val gson = Gson()
-                                val examMetaDataJson = gson.toJson(examData)
-
                                 navController.navigate(
                                     ContentNavScreen.Sections.route
-                                        .plus("/${examMetaDataJson}")
+                                        .plus("/${xmMetaData.toPrettyJson()}")
                                 )
                             }
                     ) {
@@ -156,7 +150,7 @@ fun ChapterScreen(
                                     contentScale = ContentScale.Fit,
                                     modifier = Modifier
                                         .size(52.dp)
-                                        .padding(4.dp)
+                                        .padding(1.dp)
                                         .clip(CircleShape),
                                     error = painterResource(id = R.drawable.ic_error_icon)
                                 )

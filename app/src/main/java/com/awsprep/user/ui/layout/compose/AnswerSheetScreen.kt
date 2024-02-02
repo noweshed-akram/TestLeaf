@@ -17,14 +17,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.awsprep.user.R
+import com.awsprep.user.domain.models.ExamMetaData
 import com.awsprep.user.domain.models.Question
-import com.awsprep.user.ui.component.InfoBannerCard
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.component.QuesAnsListItem
-import com.awsprep.user.ui.theme.StrokeColor
-import com.awsprep.user.ui.theme.WhiteColor
+import com.awsprep.user.utils.AppConstant
 import com.awsprep.user.viewmodel.EntityViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -32,13 +29,13 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 /**
- * Created by Md. Noweshed Akram on 17/11/23.
+ * Created by Md. Noweshed Akram on 2/2/24.
  */
 @Composable
-fun ReviewQuesScreen(
-    navController: NavController,
+fun AnswerSheetScreen(
     quesViewModel: QuesViewModel,
-    entityViewModel: EntityViewModel
+    entityViewModel: EntityViewModel,
+    examMetaData: ExamMetaData
 ) {
 
     var showProgress by rememberSaveable { mutableStateOf(false) }
@@ -51,26 +48,40 @@ fun ReviewQuesScreen(
 
     LaunchedEffect(key1 = true) {
 
-        quesViewModel.getReviewQues()
+        Log.d(
+            "TimerScreen: ",
+            "${examMetaData.courseId} ${examMetaData.chapterId} ${examMetaData.sectionId}"
+        )
 
-        quesViewModel.reviewQuesData.collect {
+        if (examMetaData.examType == AppConstant.COLL_COURSES) {
+            quesViewModel.getQuestions(
+                examMetaData.courseId!!,
+                examMetaData.chapterId!!,
+                examMetaData.sectionId!!,
+                30
+            )
+        } else if (examMetaData.examType == AppConstant.COLL_SETS) {
+            quesViewModel.getQuestions(
+                examMetaData.setId!!,
+                examMetaData.setFlag!!,
+                examMetaData.subsetId!!
+            )
+        }
+
+        quesViewModel.questionData.collect {
             if (it.isLoading) {
                 showProgress = true
-                Log.d("ReviewQuesScreen: ", "Loading")
+                Log.d("TimerScreen: ", "Loading")
             }
             if (it.error.isNotBlank()) {
                 showProgress = false
                 showError = true
                 errorMsg = it.error
-                Log.d("ReviewQuesScreen: ", it.error)
+                Log.d("TimerScreen: ", it.error)
             }
             it.dataList?.let {
                 showProgress = false
                 questionList = it as List<Question>
-            }
-            it.data?.let {
-                showProgress = false
-                quesViewModel.getReviewQues()
             }
         }
     }
@@ -97,7 +108,7 @@ fun ReviewQuesScreen(
                         QuesAnsListItem(
                             quesNo = index + 1,
                             question = question,
-                            deleteBtnVisibility = true
+                            deleteBtnVisibility = false
                         ) { quesId ->
                             quesViewModel.deleteReviewQues(quesId)
                         }
@@ -105,14 +116,14 @@ fun ReviewQuesScreen(
                 }
             }
         } else {
-            InfoBannerCard(
-                icon = R.drawable.ic_question_mark,
-                titleText = "No question found",
-                infoText = "You can add review questions during Test",
-                strokeColor = StrokeColor,
-                bgColor = WhiteColor,
-                onCardClick = {}
-            )
+//            InfoBannerCard(
+//                icon = R.drawable.ic_question_mark,
+//                titleText = "No question found",
+//                infoText = "You can add review questions during Test",
+//                strokeColor = StrokeColor,
+//                bgColor = WhiteColor,
+//                onCardClick = {}
+//            )
         }
 
     }

@@ -319,7 +319,11 @@ fun TestScreen(
                 userViewModel.insertTestResult(testResult)
 
                 testViewModel.onDonePressed {
-                    navController.navigate(ContentNavScreen.Result.route.plus("/${testResult.toPrettyJson()}")) {
+                    navController.navigate(
+                        ContentNavScreen.Result.route
+                            .plus("/${testResult.toPrettyJson()}")
+                            .plus("/${examMetaData.toPrettyJson()}")
+                    ) {
                         popUpTo(ContentNavScreen.Test.route)
                     }
                 }

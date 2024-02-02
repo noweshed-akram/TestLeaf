@@ -29,9 +29,9 @@ import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.WhiteColor
 import com.awsprep.user.utils.AppConstant.COLL_COURSES
 import com.awsprep.user.utils.AppConstant.COLL_SETS
+import com.awsprep.user.utils.toPrettyJson
 import com.awsprep.user.viewmodel.EntityViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
-import com.google.gson.Gson
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 /**
@@ -68,7 +68,10 @@ fun TimerScreen(
 
         if (examMetaData.examType == COLL_COURSES) {
             quesViewModel.getQuestions(
-                examMetaData.courseId!!, examMetaData.chapterId!!, examMetaData.sectionId!!, 30
+                examMetaData.courseId!!,
+                examMetaData.chapterId!!,
+                examMetaData.sectionId!!,
+                30
             )
         } else if (examMetaData.examType == COLL_SETS) {
             quesViewModel.getQuestions(
@@ -131,18 +134,21 @@ fun TimerScreen(
                     errorMsg = "This section isn't available for Test! Please try later."
                 } else {
 
-                    val examData = ExamMetaData(
+                    val xmMetaData = ExamMetaData(
                         examName = examMetaData.examName,
                         examType = examMetaData.examType,
-                        activeTimer = activeTimeBaseCard
+                        activeTimer = activeTimeBaseCard,
+                        courseId = examMetaData.courseId,
+                        chapterId = examMetaData.chapterId,
+                        sectionId = examMetaData.sectionId,
+                        setId = examMetaData.setId,
+                        setFlag = examMetaData.setFlag,
+                        subsetId = examMetaData.subsetId
                     )
-
-                    val gson = Gson()
-                    val examMetaDataJson = gson.toJson(examData)
 
                     navController.navigate(
                         ContentNavScreen.Test.route
-                            .plus("/${examMetaDataJson}")
+                            .plus("/${xmMetaData.toPrettyJson()}")
                     )
                 }
             },

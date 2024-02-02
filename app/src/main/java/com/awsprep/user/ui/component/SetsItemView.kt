@@ -86,7 +86,8 @@ fun SetsItemView(
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
                         .size(48.dp)
-                        .padding(8.dp),
+                        .padding(8.dp)
+                        .clip(CircleShape),
                     error = painterResource(id = setsIcon),
                     colorFilter = ColorFilter.tint(color = PrimaryColor)
                 )

@@ -31,13 +31,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.awsprep.user.domain.models.ExamMetaData
 import com.awsprep.user.domain.models.TestResult
 import com.awsprep.user.navigation.BottomNavScreen
+import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.theme.GreyColor
 import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.ui.theme.WhiteColor
+import com.awsprep.user.utils.toPrettyJson
 import com.awsprep.user.viewmodel.UserViewModel
 
 /**
@@ -47,7 +50,8 @@ import com.awsprep.user.viewmodel.UserViewModel
 fun ResultScreen(
     navController: NavController,
     userViewModel: UserViewModel,
-    testResult: TestResult
+    testResult: TestResult,
+    examMetaData: ExamMetaData
 ) {
 
     Column(
@@ -63,8 +67,8 @@ fun ResultScreen(
             modifier = Modifier
                 .shadow(
                     elevation = 16.dp,
-                    spotColor = Color(0x0D000000),
-                    ambientColor = Color(0x0D000000)
+                    spotColor = Color.White,
+                    ambientColor = Color.White
                 )
                 .fillMaxWidth()
                 .wrapContentHeight()
@@ -171,7 +175,10 @@ fun ResultScreen(
             PrimaryButton(
                 modifier = Modifier.weight(1.0f),
                 onClick = {
-
+                    navController.navigate(
+                        ContentNavScreen.Timer.route
+                            .plus("/${examMetaData.toPrettyJson()}")
+                    )
                 },
                 buttonText = "Retake",
                 backgroundColor = WhiteColor,
@@ -184,7 +191,10 @@ fun ResultScreen(
             PrimaryButton(
                 modifier = Modifier.weight(1.0f),
                 onClick = {
-
+                    navController.navigate(
+                        ContentNavScreen.AnswerSheet.route
+                            .plus("/${examMetaData.toPrettyJson()}")
+                    )
                 },
                 buttonText = "Check Answers",
                 backgroundColor = WhiteColor,

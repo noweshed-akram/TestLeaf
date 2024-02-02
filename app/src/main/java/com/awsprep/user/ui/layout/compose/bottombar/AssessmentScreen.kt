@@ -56,10 +56,10 @@ import com.awsprep.user.ui.theme.Typography
 import com.awsprep.user.ui.theme.WhiteColor
 import com.awsprep.user.utils.AppConstant.COLL_COURSES
 import com.awsprep.user.utils.AppConstant.COLL_SETS
+import com.awsprep.user.utils.toPrettyJson
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
-import com.google.gson.Gson
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 /**
@@ -240,16 +240,16 @@ fun AssessmentScreen(
                         )
                         .clickable {
 
-                            val examData = ExamMetaData(
+                            val examMetaData = ExamMetaData(
                                 examName = course.name,
                                 examType = COLL_COURSES,
                                 courseId = course.docId
                             )
 
-                            val gson = Gson()
-                            val examMetaDataJson = gson.toJson(examData)
-
-                            navController.navigate(ContentNavScreen.Chapters.route.plus("/${examMetaDataJson}"))
+                            navController.navigate(
+                                ContentNavScreen.Chapters.route
+                                    .plus("/${examMetaData.toPrettyJson()}")
+                            )
                         }
                 ) {
                     Column(
@@ -273,7 +273,7 @@ fun AssessmentScreen(
                                 contentScale = ContentScale.Fit,
                                 modifier = Modifier
                                     .size(52.dp)
-                                    .padding(4.dp)
+                                    .padding(1.dp)
                                     .clip(CircleShape),
                                 error = painterResource(id = R.drawable.ic_error_icon)
                             )
@@ -345,19 +345,16 @@ fun AssessmentScreen(
                     subTitle = "100+ Practice Test Sets"
                 ) {
 
-                    val examData = ExamMetaData(
+                    val examMetaData = ExamMetaData(
                         examName = set.name,
                         examType = COLL_SETS,
                         setId = set.setId,
                         setFlag = set.flag
                     )
 
-                    val gson = Gson()
-                    val examMetaDataJson = gson.toJson(examData)
-
                     navController.navigate(
                         ContentNavScreen.SubSets.route
-                            .plus("/${examMetaDataJson}")
+                            .plus("/${examMetaData.toPrettyJson()}")
                     )
                 }
 

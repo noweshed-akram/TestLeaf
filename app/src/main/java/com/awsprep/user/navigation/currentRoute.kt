@@ -13,4 +13,5 @@ fun currentRoute(navController: NavController): String? {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     return navBackStackEntry?.destination?.route
         ?.substringBeforeLast("/")
+        ?.substringBeforeLast("/")
 }

@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.CircleShape
@@ -45,10 +43,9 @@ import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.Typography
-import com.awsprep.user.utils.AppConstant
 import com.awsprep.user.utils.AppConstant.COLL_COURSES
+import com.awsprep.user.utils.toPrettyJson
 import com.awsprep.user.viewmodel.AsesmntViewModel
-import com.google.gson.Gson
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 /**
@@ -113,16 +110,16 @@ fun AllCourseScreen(
                         )
                         .clickable {
 
-                            val examData = ExamMetaData(
+                            val examMetaData = ExamMetaData(
                                 examName = courseList[it].name,
                                 examType = COLL_COURSES,
                                 courseId = courseList[it].docId
                             )
 
-                            val gson = Gson()
-                            val examMetaDataJson = gson.toJson(examData)
-
-                            navController.navigate(ContentNavScreen.Chapters.route.plus("/${examMetaDataJson}"))
+                            navController.navigate(
+                                ContentNavScreen.Chapters.route
+                                    .plus("/${examMetaData.toPrettyJson()}")
+                            )
                         }
                 ) {
                     Column(
@@ -146,7 +143,7 @@ fun AllCourseScreen(
                                 contentScale = ContentScale.Fit,
                                 modifier = Modifier
                                     .size(52.dp)
-                                    .padding(4.dp)
+                                    .padding(1.dp)
                                     .clip(CircleShape),
                                 error = painterResource(id = R.drawable.ic_error_icon)
                             )

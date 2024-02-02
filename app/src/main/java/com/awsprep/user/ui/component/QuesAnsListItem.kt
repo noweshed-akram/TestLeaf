@@ -57,9 +57,10 @@ import com.awsprep.user.ui.theme.WhiteColor
  */
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun ReviewQuesItem(
+fun QuesAnsListItem(
     quesNo: Int,
     question: Question,
+    deleteBtnVisibility: Boolean = true,
     onQuestionDelete: (quesId: String) -> Unit,
 ) {
 
@@ -82,20 +83,22 @@ fun ReviewQuesItem(
                     verticalAlignment = CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    ChipItemView("Review Q$quesNo")
+                    ChipItemView("Q$quesNo")
 
-                    IconButton(
-                        modifier = Modifier.wrapContentSize(),
-                        onClick = {
-                            showAlert = true
-                        },
-                        enabled = true,
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_trash),
-                            contentDescription = "delete",
-                            tint = ErrorColor
-                        )
+                    if (deleteBtnVisibility) {
+                        IconButton(
+                            modifier = Modifier.wrapContentSize(),
+                            onClick = {
+                                showAlert = true
+                            },
+                            enabled = true,
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_trash),
+                                contentDescription = "delete",
+                                tint = ErrorColor
+                            )
+                        }
                     }
                 }
 
