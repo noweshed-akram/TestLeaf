@@ -98,10 +98,6 @@ class TestViewModel : ViewModel() {
         _questionIndexData.value = createQuestionIndexData()
     }
 
-    fun onDonePressed(onTestComplete: () -> Unit) {
-        onTestComplete()
-    }
-
     private fun getIsNextEnabled(): Boolean {
         return questionIndex < questionOrder.size
     }

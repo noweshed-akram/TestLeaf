@@ -54,9 +54,9 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
  */
 @Composable
 fun SectionScreen(
-    navController: NavController,
     asesmntViewModel: AsesmntViewModel,
-    examMetaData: ExamMetaData
+    examMetaData: ExamMetaData,
+    onSectionItemClick: (ExamMetaData) -> Unit
 ) {
 
     var showProgress by rememberSaveable { mutableStateOf(false) }
@@ -124,10 +124,8 @@ fun SectionScreen(
                                     sectionId = sectionsList[it].docId
                                 )
 
-                                navController.navigate(
-                                    ContentNavScreen.Timer.route
-                                        .plus("/${xmMetaData.toPrettyJson()}")
-                                )
+                                onSectionItemClick(xmMetaData)
+
                             }
                     ) {
                         Column(

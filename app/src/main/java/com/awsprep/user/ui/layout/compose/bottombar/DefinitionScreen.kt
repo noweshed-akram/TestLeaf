@@ -8,22 +8,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.Question
 import com.awsprep.user.ui.component.InfoBannerCard
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.StrokeColor
-import com.awsprep.user.ui.theme.Typography
 import com.awsprep.user.ui.theme.WhiteColor
 import com.awsprep.user.viewmodel.UserViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -35,7 +31,6 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
  */
 @Composable
 fun DefinitionScreen(
-    navController: NavController,
     userViewModel: UserViewModel
 ) {
 

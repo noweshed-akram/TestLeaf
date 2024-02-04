@@ -14,9 +14,7 @@ import com.awsprep.user.ui.theme.Typography
  * Created by Md. Noweshed Akram on 11/11/23.
  */
 @Composable
-fun NotificationScreen(
-    navController: NavController
-) {
+fun NotificationScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()

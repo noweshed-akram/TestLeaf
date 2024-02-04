@@ -37,14 +37,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.Course
 import com.awsprep.user.domain.models.ExamMetaData
 import com.awsprep.user.domain.models.Set
-import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.component.SetsItemView
@@ -56,7 +54,6 @@ import com.awsprep.user.ui.theme.Typography
 import com.awsprep.user.ui.theme.WhiteColor
 import com.awsprep.user.utils.AppConstant.COLL_COURSES
 import com.awsprep.user.utils.AppConstant.COLL_SETS
-import com.awsprep.user.utils.toPrettyJson
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
@@ -68,8 +65,11 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun AssessmentScreen(
-    navController: NavController,
-    asesmntViewModel: AsesmntViewModel
+    asesmntViewModel: AsesmntViewModel,
+    onCourseItemClick: (ExamMetaData) -> Unit,
+    onSetItemClick: (ExamMetaData) -> Unit,
+    onAllCourseBtnClick: () -> Unit,
+    onReviewQuesClick: () -> Unit
 ) {
 
     var showProgress by rememberSaveable { mutableStateOf(false) }
@@ -246,10 +246,7 @@ fun AssessmentScreen(
                                 courseId = course.docId
                             )
 
-                            navController.navigate(
-                                ContentNavScreen.Chapters.route
-                                    .plus("/${examMetaData.toPrettyJson()}")
-                            )
+                            onCourseItemClick(examMetaData)
                         }
                 ) {
                     Column(
@@ -312,7 +309,7 @@ fun AssessmentScreen(
         PrimaryButton(
             modifier = Modifier.padding(horizontal = 12.dp),
             onClick = {
-                navController.navigate(ContentNavScreen.AllCourse.route)
+                onAllCourseBtnClick()
             },
             buttonText = "Explore More Course",
             backgroundColor = WhiteColor,
@@ -352,10 +349,8 @@ fun AssessmentScreen(
                         setFlag = set.flag
                     )
 
-                    navController.navigate(
-                        ContentNavScreen.SubSets.route
-                            .plus("/${examMetaData.toPrettyJson()}")
-                    )
+                    onSetItemClick(examMetaData)
+
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -378,7 +373,7 @@ fun AssessmentScreen(
             title = "Review Questions",
             subTitle = "explore your review questions for next Exam"
         ) {
-            navController.navigate(ContentNavScreen.ReviewQues.route)
+            onReviewQuesClick()
         }
 
     }

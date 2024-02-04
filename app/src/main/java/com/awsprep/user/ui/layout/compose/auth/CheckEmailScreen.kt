@@ -1,5 +1,6 @@
 package com.awsprep.user.ui.layout.compose.auth
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,9 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.awsprep.user.R
-import com.awsprep.user.navigation.AuthScreen
 import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.theme.PrimaryColor
 
@@ -28,8 +27,13 @@ import com.awsprep.user.ui.theme.PrimaryColor
  */
 @Composable
 fun CheckEmailScreen(
-    navController: NavController
+    onPressedBackToLogin: () -> Unit,
 ) {
+
+    BackHandler {
+        onPressedBackToLogin()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -64,9 +68,9 @@ fun CheckEmailScreen(
 
         PrimaryButton(
             onClick = {
-                navController.navigate(AuthScreen.EmailSignIn.route)
+                onPressedBackToLogin()
             },
-            buttonText = "Login",
+            buttonText = "Back to Login",
             backgroundColor = PrimaryColor
         )
 

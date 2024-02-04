@@ -32,19 +32,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.Course
 import com.awsprep.user.domain.models.ExamMetaData
-import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.Typography
 import com.awsprep.user.utils.AppConstant.COLL_COURSES
-import com.awsprep.user.utils.toPrettyJson
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
@@ -53,8 +50,8 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
  */
 @Composable
 fun AllCourseScreen(
-    navController: NavController,
-    asesmntViewModel: AsesmntViewModel
+    asesmntViewModel: AsesmntViewModel,
+    onCourseItemClick: (ExamMetaData) -> Unit
 ) {
 
     var showProgress by rememberSaveable { mutableStateOf(false) }
@@ -116,10 +113,8 @@ fun AllCourseScreen(
                                 courseId = courseList[it].docId
                             )
 
-                            navController.navigate(
-                                ContentNavScreen.Chapters.route
-                                    .plus("/${examMetaData.toPrettyJson()}")
-                            )
+                            onCourseItemClick(examMetaData)
+
                         }
                 ) {
                     Column(

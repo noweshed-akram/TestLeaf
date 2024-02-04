@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -32,9 +31,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.awsprep.user.R
-import com.awsprep.user.navigation.AuthScreen
 import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.PrimaryColor
@@ -48,8 +45,8 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetInfo
  */
 @Composable
 fun ForgotPasswordScreen(
-    navController: NavController,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    onResetEmailSent: () -> Unit
 ) {
 
     var inputEmail by rememberSaveable { mutableStateOf("") }
@@ -64,7 +61,7 @@ fun ForgotPasswordScreen(
             if (isPasswordResetEmailSent == true) {
                 SweetInfo(message = "Password Reset Email Sent. Please Check Inbox/Spam Folder!")
                 LaunchedEffect(isPasswordResetEmailSent) {
-                    navController.navigate(AuthScreen.CheckEmail.route)
+                    onResetEmailSent()
                 }
             }
         }

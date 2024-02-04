@@ -26,25 +26,45 @@ fun NavGraphBuilder.AuthNavGraph(
 
         composable(route = AuthScreen.EmailSignIn.route) {
             EmailSignScreen(
-                navController = navController, authViewModel = authViewModel
+                authViewModel = authViewModel,
+                onSuccessLogin = {
+                    navController.navigate(Graph.HOME)
+                },
+                onResetBtnClick = {
+                    navController.navigate(AuthScreen.ForgotPassword.route)
+                },
+                onNavigateToRegister = {
+                    navController.navigate(AuthScreen.EmailRegistration.route)
+                }
             )
         }
 
         composable(route = AuthScreen.ForgotPassword.route) {
             ForgotPasswordScreen(
-                navController = navController, authViewModel = authViewModel
+                authViewModel = authViewModel,
+                onResetEmailSent = {
+                    navController.navigate(AuthScreen.CheckEmail.route)
+                }
             )
         }
 
         composable(route = AuthScreen.CheckEmail.route) {
             CheckEmailScreen(
-                navController = navController
+                onPressedBackToLogin = {
+                    navController.navigate(AuthScreen.EmailSignIn.route)
+                }
             )
         }
 
         composable(route = AuthScreen.EmailRegistration.route) {
             EmailRegisterScreen(
-                navController = navController, authViewModel = authViewModel
+                authViewModel = authViewModel,
+                onSuccessRegister = {
+                    navController.navigate(Graph.HOME)
+                },
+                onPressedBackToLogin = {
+                    navController.navigate(AuthScreen.EmailSignIn.route)
+                }
             )
         }
 

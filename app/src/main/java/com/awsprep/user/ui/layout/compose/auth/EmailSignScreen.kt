@@ -37,10 +37,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.awsprep.user.R
-import com.awsprep.user.navigation.AuthScreen
-import com.awsprep.user.navigation.Graph
 import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.Typography
@@ -53,8 +50,10 @@ import kotlinx.coroutines.launch
  */
 @Composable
 fun EmailSignScreen(
-    navController: NavController,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    onSuccessLogin: () -> Unit,
+    onResetBtnClick: () -> Unit,
+    onNavigateToRegister: () -> Unit
 ) {
 
     val context = LocalContext.current
@@ -82,7 +81,7 @@ fun EmailSignScreen(
                 }
                 it.data?.let {
                     showProgress = false
-                    navController.navigate(Graph.HOME)
+                    onSuccessLogin()
                 }
             }
         }
@@ -192,7 +191,7 @@ fun EmailSignScreen(
             Text(text = "Forgot Password?")
 
             TextButton(onClick = {
-                navController.navigate(AuthScreen.ForgotPassword.route)
+                onResetBtnClick()
             }) {
                 Text(text = "Reset Now")
             }
@@ -225,9 +224,9 @@ fun EmailSignScreen(
             Text(text = "Don't Have an Account?")
 
             TextButton(onClick = {
-                navController.navigate(AuthScreen.EmailRegistration.route)
+                onNavigateToRegister()
             }) {
-                Text(text = "Sign Up")
+                Text(text = "Register Now!")
             }
         }
     }

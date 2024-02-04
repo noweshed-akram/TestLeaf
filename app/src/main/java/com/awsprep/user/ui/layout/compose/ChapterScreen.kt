@@ -32,18 +32,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.Course
 import com.awsprep.user.domain.models.ExamMetaData
-import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.Typography
-import com.awsprep.user.utils.toPrettyJson
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -54,9 +51,9 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
  */
 @Composable
 fun ChapterScreen(
-    navController: NavController,
     asesmntViewModel: AsesmntViewModel,
-    examMetaData: ExamMetaData
+    examMetaData: ExamMetaData,
+    onChapterItemClick: (ExamMetaData) -> Unit
 ) {
 
     var showProgress by rememberSaveable { mutableStateOf(false) }
@@ -123,10 +120,8 @@ fun ChapterScreen(
                                     chapterId = chapterList[it].docId
                                 )
 
-                                navController.navigate(
-                                    ContentNavScreen.Sections.route
-                                        .plus("/${xmMetaData.toPrettyJson()}")
-                                )
+                                onChapterItemClick(xmMetaData)
+
                             }
                     ) {
                         Column(

@@ -222,7 +222,9 @@ fun HomeScreen(
                     AppBarWithArrow(
                         scrollBehavior = scrollBehavior, title = "Test Result"
                     ) {
-                        navController.navigate(BottomNavScreen.Assessment.route)
+                        navController.navigate(BottomNavScreen.Assessment.route) {
+                            popUpTo(BottomNavScreen.Assessment.route)
+                        }
                     }
                 } else if (currentRoute(navController = navController) == ContentNavScreen.AnswerSheet.route) {
                     AppBarWithArrow(

@@ -22,6 +22,7 @@ import com.awsprep.user.ui.layout.compose.SectionScreen
 import com.awsprep.user.ui.layout.compose.TestScreen
 import com.awsprep.user.ui.layout.compose.TimerScreen
 import com.awsprep.user.utils.fromPrettyJson
+import com.awsprep.user.utils.toPrettyJson
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.EntityViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
@@ -47,24 +48,28 @@ fun NavGraphBuilder.ContentNavGraph(
     ) {
 
         composable(ContentNavScreen.EditProfile.route) {
-            EditProfileScreen(navController = navController, userViewModel = userViewModel)
+            EditProfileScreen(userViewModel = userViewModel)
         }
 
         composable(ContentNavScreen.Notification.route) {
-            NotificationScreen(navController = navController)
+            NotificationScreen()
         }
 
         composable(ContentNavScreen.AllCourse.route) {
-            AllCourseScreen(navController = navController, asesmntViewModel = asesmntViewModel)
+            AllCourseScreen(
+                asesmntViewModel = asesmntViewModel,
+                onCourseItemClick = { examMetaData ->
+                    navController.navigate(
+                        ContentNavScreen.Chapters.route.plus("/${examMetaData.toPrettyJson()}")
+                    )
+                })
         }
 
         composable(
             route = ContentNavScreen.Chapters.route.plus(ContentNavScreen.Chapters.objectPath),
-            arguments = listOf(
-                navArgument(ContentNavScreen.Chapters.objectName) {
-                    type = NavType.StringType
-                }
-            ),
+            arguments = listOf(navArgument(ContentNavScreen.Chapters.objectName) {
+                type = NavType.StringType
+            }),
         ) {
 
             val response = it.arguments?.getString(ContentNavScreen.Chapters.objectName)
@@ -73,21 +78,21 @@ fun NavGraphBuilder.ContentNavGraph(
 
             examMetaData?.let { data ->
                 ChapterScreen(
-                    navController = navController,
                     asesmntViewModel = asesmntViewModel,
-                    examMetaData = data
-                )
+                    examMetaData = data,
+                    onChapterItemClick = { xmMetaData ->
+                        navController.navigate(
+                            ContentNavScreen.Sections.route.plus("/${xmMetaData.toPrettyJson()}")
+                        )
+                    })
             }
         }
 
         composable(
-            route = ContentNavScreen.Sections.route
-                .plus(ContentNavScreen.Sections.objectPath),
-            arguments = listOf(
-                navArgument(ContentNavScreen.Sections.objectName) {
-                    type = NavType.StringType
-                }
-            )
+            route = ContentNavScreen.Sections.route.plus(ContentNavScreen.Sections.objectPath),
+            arguments = listOf(navArgument(ContentNavScreen.Sections.objectName) {
+                type = NavType.StringType
+            })
         ) {
 
             val response = it.arguments?.getString(ContentNavScreen.Chapters.objectName)
@@ -96,22 +101,22 @@ fun NavGraphBuilder.ContentNavGraph(
 
             examMetaData?.let { data ->
                 SectionScreen(
-                    navController = navController,
                     asesmntViewModel = asesmntViewModel,
-                    examMetaData = data
-                )
+                    examMetaData = data,
+                    onSectionItemClick = { xmMetaData ->
+                        navController.navigate(
+                            ContentNavScreen.Timer.route.plus("/${xmMetaData.toPrettyJson()}")
+                        )
+                    })
             }
 
         }
 
         composable(
-            route = ContentNavScreen.Timer.route
-                .plus(ContentNavScreen.Timer.objectPath),
-            arguments = listOf(
-                navArgument(ContentNavScreen.Timer.objectName) {
-                    type = NavType.StringType
-                }
-            )
+            route = ContentNavScreen.Timer.route.plus(ContentNavScreen.Timer.objectPath),
+            arguments = listOf(navArgument(ContentNavScreen.Timer.objectName) {
+                type = NavType.StringType
+            })
         ) {
 
             val response = it.arguments?.getString(ContentNavScreen.Chapters.objectName)
@@ -120,17 +125,21 @@ fun NavGraphBuilder.ContentNavGraph(
 
             examMetaData?.let { data ->
                 TimerScreen(
-                    navController = navController,
                     quesViewModel = quesViewModel,
                     entityViewModel = entityViewModel,
-                    examMetaData = data
+                    examMetaData = data,
+                    onStartBtnClick = { xmMetaData ->
+                        navController.navigate(
+                            ContentNavScreen.Test.route
+                                .plus("/${xmMetaData.toPrettyJson()}")
+                        )
+                    }
                 )
             }
         }
 
         composable(route = ContentNavScreen.ReviewQues.route) {
             ReviewQuesScreen(
-                navController = navController,
                 quesViewModel = quesViewModel,
                 entityViewModel = entityViewModel
             )
@@ -138,11 +147,9 @@ fun NavGraphBuilder.ContentNavGraph(
 
         composable(
             route = ContentNavScreen.SubSets.route.plus(ContentNavScreen.SubSets.objectPath),
-            arguments = listOf(
-                navArgument(ContentNavScreen.SubSets.objectName) {
-                    type = NavType.StringType
-                }
-            )
+            arguments = listOf(navArgument(ContentNavScreen.SubSets.objectName) {
+                type = NavType.StringType
+            })
         ) {
             val response = it.arguments?.getString(ContentNavScreen.Chapters.objectName)
             val gson = Gson()
@@ -150,21 +157,22 @@ fun NavGraphBuilder.ContentNavGraph(
 
             examMetaData?.let { data ->
                 SubSetsScreen(
-                    navController = navController,
                     asesmntViewModel = asesmntViewModel,
-                    examMetaData = data
-                )
+                    examMetaData = data,
+                    onSubsetItemClick = { xmMetaData ->
+                        navController.navigate(
+                            ContentNavScreen.Timer.route.plus("/${xmMetaData.toPrettyJson()}")
+                        )
+                    })
             }
 
         }
 
         composable(
             route = ContentNavScreen.Test.route.plus(ContentNavScreen.Test.objectPath),
-            arguments = listOf(
-                navArgument(ContentNavScreen.Test.objectName) {
-                    type = NavType.StringType
-                }
-            )
+            arguments = listOf(navArgument(ContentNavScreen.Test.objectName) {
+                type = NavType.StringType
+            })
         ) {
 
             val response = it.arguments?.getString(ContentNavScreen.Chapters.objectName)
@@ -173,32 +181,36 @@ fun NavGraphBuilder.ContentNavGraph(
 
             examMetaData?.let { data ->
                 TestScreen(
-                    navController = navController,
+                    userViewModel = userViewModel,
+                    quesViewModel = quesViewModel,
+                    entityViewModel = entityViewModel,
+                    examMetaData = data,
                     onBackPressed = {
                         navController.navigate(Graph.HOME) {
                             popUpTo(ContentNavScreen.Test.route)
                         }
                     },
-                    userViewModel = userViewModel,
-                    quesViewModel = quesViewModel,
-                    entityViewModel = entityViewModel,
-                    examMetaData = data
+                    onSubmitTestBtnClick = { testResult, xmData ->
+                        navController.navigate(
+                            ContentNavScreen.Result.route
+                                .plus("/${testResult.toPrettyJson()}")
+                                .plus("/${xmData.toPrettyJson()}")
+                        ) {
+                            popUpTo(ContentNavScreen.Test.route)
+                        }
+                    }
                 )
             }
         }
 
         composable(
-            route = ContentNavScreen.Result.route
-                .plus(ContentNavScreen.Result.objectPath)
+            route = ContentNavScreen.Result.route.plus(ContentNavScreen.Result.objectPath)
                 .plus(ContentNavScreen.Result.objectPathTwo),
-            arguments = listOf(
-                navArgument(ContentNavScreen.Result.objectName) {
-                    type = NavType.StringType
-                },
-                navArgument(ContentNavScreen.Result.objectNameTwo) {
-                    type = NavType.StringType
-                }
-            )
+            arguments = listOf(navArgument(ContentNavScreen.Result.objectName) {
+                type = NavType.StringType
+            }, navArgument(ContentNavScreen.Result.objectNameTwo) {
+                type = NavType.StringType
+            })
         ) {
 
             val result = it.arguments?.getString(ContentNavScreen.Result.objectName)
@@ -208,21 +220,37 @@ fun NavGraphBuilder.ContentNavGraph(
             val examMetaData = metaData?.fromPrettyJson<ExamMetaData>()
 
             ResultScreen(
-                navController = navController,
                 userViewModel = userViewModel,
                 testResult = testResult!!,
-                examMetaData = examMetaData!!
+                examMetaData = examMetaData!!,
+                onBackBtnClick = {
+                    navController.navigate(BottomNavScreen.Assessment.route) {
+                        popUpTo(BottomNavScreen.Assessment.route)
+                    }
+                },
+                onHomeBtnClick = {
+                    navController.navigate(BottomNavScreen.Assessment.route)
+                },
+                onRetakeBtnClick = { xmData ->
+                    navController.navigate(
+                        ContentNavScreen.Timer.route
+                            .plus("/${xmData.toPrettyJson()}")
+                    )
+                },
+                onCheckAnswersBtnClick = { xmData ->
+                    navController.navigate(
+                        ContentNavScreen.AnswerSheet.route
+                            .plus("/${xmData.toPrettyJson()}")
+                    )
+                }
             )
         }
 
         composable(
-            route = ContentNavScreen.AnswerSheet.route
-                .plus(ContentNavScreen.AnswerSheet.objectPath),
-            arguments = listOf(
-                navArgument(ContentNavScreen.AnswerSheet.objectName) {
-                    type = NavType.StringType
-                }
-            )
+            route = ContentNavScreen.AnswerSheet.route.plus(ContentNavScreen.AnswerSheet.objectPath),
+            arguments = listOf(navArgument(ContentNavScreen.AnswerSheet.objectName) {
+                type = NavType.StringType
+            })
         ) {
 
             val response = it.arguments?.getString(ContentNavScreen.AnswerSheet.objectName)
@@ -237,7 +265,7 @@ fun NavGraphBuilder.ContentNavGraph(
         }
 
         composable(route = ContentNavScreen.ResultDashboard.route) {
-            ResultDashboard(navController = navController, userViewModel = userViewModel)
+            ResultDashboard(userViewModel = userViewModel)
         }
     }
 }

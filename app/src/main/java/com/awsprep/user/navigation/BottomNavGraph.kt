@@ -11,6 +11,7 @@ import com.awsprep.user.ui.layout.compose.bottombar.AssessmentScreen
 import com.awsprep.user.ui.layout.compose.bottombar.DefinitionScreen
 import com.awsprep.user.ui.layout.compose.bottombar.PracticesScreen
 import com.awsprep.user.ui.layout.compose.bottombar.MyProfileScreen
+import com.awsprep.user.utils.toPrettyJson
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.AuthViewModel
 import com.awsprep.user.viewmodel.EntityViewModel
@@ -40,35 +41,55 @@ fun BottomNavigation(
 
         composable(route = BottomNavScreen.Assessment.route) {
             AssessmentScreen(
-                navController = navController,
-                asesmntViewModel = asesmntViewModel
+                asesmntViewModel = asesmntViewModel,
+                onCourseItemClick = { examMetaData ->
+                    navController.navigate(
+                        ContentNavScreen.Chapters.route
+                            .plus("/${examMetaData.toPrettyJson()}")
+                    )
+                },
+                onSetItemClick = { examMetaData ->
+                    navController.navigate(
+                        ContentNavScreen.SubSets.route
+                            .plus("/${examMetaData.toPrettyJson()}")
+                    )
+                },
+                onAllCourseBtnClick = {
+                    navController.navigate(ContentNavScreen.AllCourse.route)
+                },
+                onReviewQuesClick = {
+                    navController.navigate(ContentNavScreen.ReviewQues.route)
+                }
             )
         }
 
         composable(route = BottomNavScreen.Practices.route) {
             PracticesScreen(
-                navController = navController,
                 userViewModel = userViewModel
             )
         }
 
         composable(route = BottomNavScreen.Acronyms.route) {
             AcronymsScreen(
-                navController = navController,
                 userViewModel = userViewModel
             )
         }
 
         composable(route = BottomNavScreen.Definition.route) {
             DefinitionScreen(
-                navController = navController,
                 userViewModel = userViewModel
             )
         }
 
         composable(route = BottomNavScreen.MyProfile.route) {
             MyProfileScreen(
-                navController = navController, userViewModel = userViewModel
+                userViewModel = userViewModel,
+                onEditBtnClick = {
+                    navController.navigate(ContentNavScreen.EditProfile.route)
+                },
+                onDashboardBtnClick = {
+                    navController.navigate(ContentNavScreen.ResultDashboard.route)
+                }
             )
         }
 

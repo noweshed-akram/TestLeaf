@@ -40,7 +40,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.User
@@ -58,7 +57,6 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 @androidx.core.os.BuildCompat.PrereleaseSdkCheck
 @Composable
 fun EditProfileScreen(
-    navController: NavController,
     userViewModel: UserViewModel
 ) {
     val context = LocalContext.current

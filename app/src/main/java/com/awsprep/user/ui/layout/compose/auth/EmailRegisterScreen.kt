@@ -36,11 +36,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.User
-import com.awsprep.user.navigation.AuthScreen
-import com.awsprep.user.navigation.Graph
 import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.PrimaryColor
@@ -59,8 +56,9 @@ import kotlinx.coroutines.launch
  */
 @Composable
 fun EmailRegisterScreen(
-    navController: NavController,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    onSuccessRegister: () -> Unit,
+    onPressedBackToLogin: () -> Unit
 ) {
 
     val coroutineScope = rememberCoroutineScope()
@@ -89,7 +87,7 @@ fun EmailRegisterScreen(
                 it.data?.let {
                     showProgress = false
                     authViewModel.sendEmailVerification()
-                    navController.navigate(Graph.HOME)
+                    onSuccessRegister()
                 }
             }
         }
@@ -266,7 +264,7 @@ fun EmailRegisterScreen(
             Text(text = "Already Have an Account?")
 
             TextButton(onClick = {
-                navController.navigate(AuthScreen.EmailSignIn.route)
+                onPressedBackToLogin()
             }) {
                 Text(text = "Sign In")
             }

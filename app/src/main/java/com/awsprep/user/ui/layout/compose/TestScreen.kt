@@ -24,13 +24,11 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.ExamMetaData
 import com.awsprep.user.domain.models.Feedback
 import com.awsprep.user.domain.models.Question
 import com.awsprep.user.domain.models.TestResult
-import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.AlertDialog
 import com.awsprep.user.ui.component.MultipleChoiceQues
 import com.awsprep.user.ui.component.ProgressBar
@@ -43,7 +41,6 @@ import com.awsprep.user.utils.AppConstant.DATE_TIME_FORMAT
 import com.awsprep.user.utils.AppConstant.STATUS_FAILED
 import com.awsprep.user.utils.AppConstant.STATUS_PASS
 import com.awsprep.user.utils.getCurrentDateTime
-import com.awsprep.user.utils.toPrettyJson
 import com.awsprep.user.utils.toString
 import com.awsprep.user.viewmodel.EntityViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
@@ -60,12 +57,12 @@ private const val CONTENT_ANIMATION_DURATION = 300
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun TestScreen(
-    navController: NavController,
-    onBackPressed: () -> Unit,
     userViewModel: UserViewModel,
     quesViewModel: QuesViewModel,
     entityViewModel: EntityViewModel,
-    examMetaData: ExamMetaData
+    examMetaData: ExamMetaData,
+    onBackPressed: () -> Unit,
+    onSubmitTestBtnClick: (TestResult, ExamMetaData) -> Unit
 ) {
 
     val TAG = "TestScreen"
@@ -318,15 +315,8 @@ fun TestScreen(
 
                 userViewModel.insertTestResult(testResult)
 
-                testViewModel.onDonePressed {
-                    navController.navigate(
-                        ContentNavScreen.Result.route
-                            .plus("/${testResult.toPrettyJson()}")
-                            .plus("/${examMetaData.toPrettyJson()}")
-                    ) {
-                        popUpTo(ContentNavScreen.Test.route)
-                    }
-                }
+                onSubmitTestBtnClick(testResult, examMetaData)
+
             },
             onNegativeBtnPressed = {
                 submitAlert = false

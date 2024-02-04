@@ -30,17 +30,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.awsprep.user.domain.models.ExamMetaData
 import com.awsprep.user.domain.models.TestResult
-import com.awsprep.user.navigation.BottomNavScreen
-import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.theme.GreyColor
 import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.ui.theme.WhiteColor
-import com.awsprep.user.utils.toPrettyJson
 import com.awsprep.user.viewmodel.UserViewModel
 
 /**
@@ -48,10 +44,13 @@ import com.awsprep.user.viewmodel.UserViewModel
  */
 @Composable
 fun ResultScreen(
-    navController: NavController,
     userViewModel: UserViewModel,
     testResult: TestResult,
-    examMetaData: ExamMetaData
+    examMetaData: ExamMetaData,
+    onBackBtnClick: () -> Unit,
+    onHomeBtnClick: () -> Unit,
+    onRetakeBtnClick: (ExamMetaData) -> Unit,
+    onCheckAnswersBtnClick: (ExamMetaData) -> Unit
 ) {
 
     Column(
@@ -175,10 +174,7 @@ fun ResultScreen(
             PrimaryButton(
                 modifier = Modifier.weight(1.0f),
                 onClick = {
-                    navController.navigate(
-                        ContentNavScreen.Timer.route
-                            .plus("/${examMetaData.toPrettyJson()}")
-                    )
+                    onRetakeBtnClick(examMetaData)
                 },
                 buttonText = "Retake",
                 backgroundColor = WhiteColor,
@@ -191,10 +187,7 @@ fun ResultScreen(
             PrimaryButton(
                 modifier = Modifier.weight(1.0f),
                 onClick = {
-                    navController.navigate(
-                        ContentNavScreen.AnswerSheet.route
-                            .plus("/${examMetaData.toPrettyJson()}")
-                    )
+                    onCheckAnswersBtnClick(examMetaData)
                 },
                 buttonText = "Check Answers",
                 backgroundColor = WhiteColor,
@@ -216,7 +209,7 @@ fun ResultScreen(
 
         PrimaryButton(
             onClick = {
-                navController.navigate(BottomNavScreen.Assessment.route)
+                onHomeBtnClick()
             },
             buttonText = "Home",
             backgroundColor = GreyColor,
@@ -227,7 +220,7 @@ fun ResultScreen(
     }
 
     BackHandler {
-        navController.navigate(BottomNavScreen.Assessment.route)
+        onBackBtnClick()
     }
 
 }

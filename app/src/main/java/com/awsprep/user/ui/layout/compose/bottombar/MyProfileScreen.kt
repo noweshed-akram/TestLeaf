@@ -3,7 +3,6 @@ package com.awsprep.user.ui.layout.compose.bottombar
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -37,15 +36,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.TestResult
-import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.BarChartView
 import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.component.ProgressBar
-import com.awsprep.user.ui.component.SetsItemView
 import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.GreyColor
 import com.awsprep.user.ui.theme.PrimaryColor
@@ -60,7 +56,9 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
  */
 @Composable
 fun MyProfileScreen(
-    navController: NavController, userViewModel: UserViewModel
+    userViewModel: UserViewModel,
+    onEditBtnClick: () -> Unit,
+    onDashboardBtnClick: () -> Unit
 ) {
 
     var inputName by rememberSaveable { mutableStateOf("") }
@@ -166,7 +164,7 @@ fun MyProfileScreen(
             IconButton(
                 modifier = Modifier.padding(8.dp),
                 onClick = {
-                    navController.navigate(ContentNavScreen.EditProfile.route)
+                    onEditBtnClick()
                 }) {
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_edit),
@@ -210,7 +208,7 @@ fun MyProfileScreen(
 
         PrimaryButton(
             onClick = {
-                navController.navigate(ContentNavScreen.ResultDashboard.route)
+                onDashboardBtnClick()
             },
             buttonText = "Result Dashboard",
             backgroundColor = WhiteColor,

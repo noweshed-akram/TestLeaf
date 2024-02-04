@@ -15,11 +15,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.ExamMetaData
 import com.awsprep.user.domain.models.Question
-import com.awsprep.user.navigation.ContentNavScreen
 import com.awsprep.user.ui.component.InfoBannerCard
 import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.component.ProgressBar
@@ -29,7 +27,6 @@ import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.WhiteColor
 import com.awsprep.user.utils.AppConstant.COLL_COURSES
 import com.awsprep.user.utils.AppConstant.COLL_SETS
-import com.awsprep.user.utils.toPrettyJson
 import com.awsprep.user.viewmodel.EntityViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
@@ -39,10 +36,10 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
  */
 @Composable
 fun TimerScreen(
-    navController: NavController,
     quesViewModel: QuesViewModel,
     entityViewModel: EntityViewModel,
-    examMetaData: ExamMetaData
+    examMetaData: ExamMetaData,
+    onStartBtnClick: (ExamMetaData) -> Unit
 ) {
 
     var showProgress by rememberSaveable { mutableStateOf(false) }
@@ -146,10 +143,8 @@ fun TimerScreen(
                         subsetId = examMetaData.subsetId
                     )
 
-                    navController.navigate(
-                        ContentNavScreen.Test.route
-                            .plus("/${xmMetaData.toPrettyJson()}")
-                    )
+                    onStartBtnClick(xmMetaData)
+
                 }
             },
             buttonText = "Start"

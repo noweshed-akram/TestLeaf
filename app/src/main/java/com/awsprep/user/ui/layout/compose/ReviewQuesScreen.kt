@@ -17,7 +17,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.Question
 import com.awsprep.user.ui.component.InfoBannerCard
@@ -36,7 +35,6 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
  */
 @Composable
 fun ReviewQuesScreen(
-    navController: NavController,
     quesViewModel: QuesViewModel,
     entityViewModel: EntityViewModel
 ) {
