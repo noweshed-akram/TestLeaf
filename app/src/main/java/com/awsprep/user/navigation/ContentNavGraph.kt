@@ -225,11 +225,17 @@ fun NavGraphBuilder.ContentNavGraph(
                 examMetaData = examMetaData!!,
                 onBackBtnClick = {
                     navController.navigate(BottomNavScreen.Assessment.route) {
-                        popUpTo(BottomNavScreen.Assessment.route)
+                        popUpTo(BottomNavScreen.Assessment.route) {
+                            inclusive = true
+                        }
                     }
                 },
                 onHomeBtnClick = {
-                    navController.navigate(BottomNavScreen.Assessment.route)
+                    navController.navigate(BottomNavScreen.Assessment.route) {
+                        popUpTo(BottomNavScreen.Assessment.route) {
+                            inclusive = true
+                        }
+                    }
                 },
                 onRetakeBtnClick = { xmData ->
                     navController.navigate(
