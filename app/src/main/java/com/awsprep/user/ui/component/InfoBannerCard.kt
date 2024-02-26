@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -45,9 +46,7 @@ fun InfoBannerCard(
     bgColor: Color = WhiteColor,
     onCardClick: () -> Unit
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+    Card(
         modifier = Modifier
             .border(
                 width = 1.dp,
@@ -55,47 +54,55 @@ fun InfoBannerCard(
                 shape = RoundedCornerShape(size = 8.dp)
             )
             .fillMaxWidth()
-            .height(225.dp)
-            .background(color = bgColor, shape = RoundedCornerShape(size = 8.dp))
-            .padding(8.dp)
+            .height(200.dp)
             .clickable {
                 onCardClick()
-            }
-    )
-    {
-
-        Image(
-            imageVector = ImageVector.vectorResource(id = icon), contentDescription = "Stopwatch",
-            modifier = Modifier
-                .background(color = SecondaryColorLight, shape = CircleShape)
-                .padding(10.dp)
+            },
+        backgroundColor = bgColor,
+        shape = RoundedCornerShape(size = 8.dp),
+        elevation = 2.dp
+    ) {
+        Column(
+            modifier = Modifier.padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         )
+        {
 
-        Spacer(modifier = Modifier.height(30.dp))
-
-        Text(
-            text = titleText,
-            style = TextStyle(
-                fontSize = 32.sp,
-                fontWeight = FontWeight(600),
-                color = Color.Black,
+            Image(
+                imageVector = ImageVector.vectorResource(id = icon),
+                contentDescription = "Stopwatch",
+                modifier = Modifier
+                    .background(color = SecondaryColorLight, shape = CircleShape)
+                    .padding(10.dp)
             )
-        )
 
-        Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
-        Text(
-            text = infoText,
-            modifier = Modifier.fillMaxWidth(),
-            style = TextStyle(
-                fontSize = 13.sp,
-                lineHeight = 20.sp,
-                fontWeight = FontWeight(400),
-                color = GreyColor,
-            ),
-            textAlign = TextAlign.Center
-        )
+            Text(
+                text = titleText,
+                style = TextStyle(
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight(600),
+                    color = Color.Black,
+                )
+            )
 
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Text(
+                text = infoText,
+                modifier = Modifier.fillMaxWidth(),
+                style = TextStyle(
+                    fontSize = 13.sp,
+                    lineHeight = 20.sp,
+                    fontWeight = FontWeight(400),
+                    color = GreyColor,
+                ),
+                textAlign = TextAlign.Center
+            )
+
+        }
     }
 }
 

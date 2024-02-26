@@ -1,4 +1,4 @@
-package com.awsprep.user.ui.layout.compose.bottombar
+package com.awsprep.user.ui.layout.compose
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -129,9 +129,9 @@ fun MyProfileScreen(
             .padding(10.dp)
     ) {
 
-        Text(text = "My Profile", style = Typography.titleLarge)
+//        Text(text = "My Profile", style = Typography.titleLarge)
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         Row(
             modifier = Modifier.background(

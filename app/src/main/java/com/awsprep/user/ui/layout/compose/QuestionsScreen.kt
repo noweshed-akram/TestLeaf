@@ -75,6 +75,7 @@ fun QuestionsScreen(
     onPreviousPressed: () -> Unit,
     onNextPressed: () -> Unit,
     onSubmitPressed: () -> Unit,
+    onTimesUp: () -> Unit,
     content: @Composable (PaddingValues) -> Unit,
 ) {
 
@@ -162,6 +163,7 @@ fun QuestionsScreen(
                                 modalSheetState.show() //(ModalBottomSheetValue.Expanded)
                         }
                     },
+                    onTimesUp = onTimesUp,
                     activeTimer = activeTimer,
                     timeInMinutes = timeInMinutes,
                     questionIndex = questionIndexData.questionIndex,
@@ -212,6 +214,7 @@ fun QuestionTopAppBar(
     onBackPressed: () -> Unit,
     onClickToAddReviewQs: () -> Unit,
     onClickFeedback: () -> Unit,
+    onTimesUp: () -> Unit,
     activeTimer: Boolean = false,
     timeInMinutes: Long = 0,
     questionIndex: Int,
@@ -313,7 +316,9 @@ fun QuestionTopAppBar(
                         color = MaterialTheme.colorScheme.onSurface
                             .copy(alpha = 0.87f),
                     )
-                    CountDownTimer(timeInMillisecond = timeInMinutes * 60000) // multiply the time value by 60000
+                    CountDownTimer(timeInMillisecond = timeInMinutes * 60000) {
+                        onTimesUp()
+                    }// multiply the time value by 60000
                 }
 
             }

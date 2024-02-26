@@ -9,8 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.awsprep.user.ui.layout.compose.bottombar.AcronymsScreen
 import com.awsprep.user.ui.layout.compose.bottombar.AssessmentScreen
 import com.awsprep.user.ui.layout.compose.bottombar.DefinitionScreen
-import com.awsprep.user.ui.layout.compose.bottombar.PracticesScreen
-import com.awsprep.user.ui.layout.compose.bottombar.MyProfileScreen
+import com.awsprep.user.ui.layout.compose.bottombar.LessonsScreen
 import com.awsprep.user.utils.toPrettyJson
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.AuthViewModel
@@ -63,8 +62,8 @@ fun BottomNavigation(
             )
         }
 
-        composable(route = BottomNavScreen.Practices.route) {
-            PracticesScreen(
+        composable(route = BottomNavScreen.Lessons.route) {
+            LessonsScreen(
                 userViewModel = userViewModel
             )
         }
@@ -81,17 +80,17 @@ fun BottomNavigation(
             )
         }
 
-        composable(route = BottomNavScreen.MyProfile.route) {
-            MyProfileScreen(
-                userViewModel = userViewModel,
-                onEditBtnClick = {
-                    navController.navigate(ContentNavScreen.EditProfile.route)
-                },
-                onDashboardBtnClick = {
-                    navController.navigate(ContentNavScreen.ResultDashboard.route)
-                }
-            )
-        }
+//        composable(route = BottomNavScreen.MyProfile.route) {
+//            MyProfileScreen(
+//                userViewModel = userViewModel,
+//                onEditBtnClick = {
+//                    navController.navigate(ContentNavScreen.EditProfile.route)
+//                },
+//                onDashboardBtnClick = {
+//                    navController.navigate(ContentNavScreen.ResultDashboard.route)
+//                }
+//            )
+//        }
 
         ContentNavGraph(
             navController = navController,

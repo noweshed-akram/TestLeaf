@@ -54,5 +54,10 @@ sealed class ContentNavScreen(
         objectName = "examMetaData", objectPath = "/{examMetaData}",
     )
 
+    object MyProfile : ContentNavScreen(route = "my_profile_screen")
+
     object ResultDashboard : ContentNavScreen(route = "result_dashboard_screen")
+
+    object SubscribePage : ContentNavScreen(route = "subscribe_page")
+
 }

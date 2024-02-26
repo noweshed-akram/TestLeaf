@@ -137,8 +137,8 @@ fun CheckboxRow(
     if (correctAns.size != entityViewModel.multiChoiceAns.size) {
         isCorrect = false
     } else {
-        for (ans in correctAns) {
-            for (selectAns in entityViewModel.multiChoiceAns) {
+        for (ans in correctAns.sorted()) {
+            for (selectAns in entityViewModel.multiChoiceAns.sorted()) {
                 isCorrect = ans.lowercase() == selectAns.lowercase()
             }
         }
@@ -147,8 +147,8 @@ fun CheckboxRow(
     entityViewModel.insertTestData(
         TestEntity(
             quesId = quesId,
-            correctAnswers = correctAns.toString().lowercase(),
-            selectedAnswers = entityViewModel.multiChoiceAns.toString().lowercase(),
+            correctAnswers = correctAns.sorted().toString().lowercase(),
+            selectedAnswers = entityViewModel.multiChoiceAns.sorted().toString().lowercase(),
             marks = if (entityViewModel.multiChoiceAns.size < 1) -1 else if (isCorrect) 1 else 0
         )
     )

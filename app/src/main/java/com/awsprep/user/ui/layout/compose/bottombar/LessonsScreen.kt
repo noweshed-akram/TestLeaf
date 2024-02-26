@@ -30,7 +30,7 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
  * Created by Md. Noweshed Akram on 10/11/23.
  */
 @Composable
-fun PracticesScreen(
+fun LessonsScreen(
     userViewModel: UserViewModel
 ) {
 

@@ -17,6 +17,7 @@ object AppConstant {
     const val COLL_SECTIONS = "sections"
     const val COLL_SETS = "sets"
     const val COLL_QUESTIONS = "questions"
+    const val COLL_ANSWERS = "answers"
     const val COLL_TEST_RESULTS = "test_results"
     const val COLL_REVIEW_QUES = "review_ques"
     const val COLL_FEEDBACK = "feedback"
