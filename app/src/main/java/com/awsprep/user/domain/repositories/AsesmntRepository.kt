@@ -1,6 +1,8 @@
 package com.awsprep.user.domain.repositories
 
+import com.awsprep.user.domain.models.Acronyms
 import com.awsprep.user.domain.models.Course
+import com.awsprep.user.domain.models.Definition
 import com.awsprep.user.domain.models.Set
 import com.awsprep.user.utils.Resource
 import kotlinx.coroutines.flow.Flow
@@ -19,5 +21,9 @@ interface AsesmntRepository {
     suspend fun getSetList(): Flow<Resource<List<Set>>>
 
     suspend fun getSubSetList(setId: String, subSetId: String): Flow<Resource<List<Course>>>
+
+    suspend fun getAcronyms():Flow<Resource<List<Acronyms>>>
+
+    suspend fun getDefinition():Flow<Resource<List<Definition>>>
 
 }

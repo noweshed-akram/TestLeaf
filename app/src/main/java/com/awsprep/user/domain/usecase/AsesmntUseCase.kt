@@ -1,6 +1,8 @@
 package com.awsprep.user.domain.usecase
 
+import com.awsprep.user.domain.models.Acronyms
 import com.awsprep.user.domain.models.Course
+import com.awsprep.user.domain.models.Definition
 import com.awsprep.user.domain.models.Set
 import com.awsprep.user.domain.repositories.AsesmntRepository
 import com.awsprep.user.utils.Resource
@@ -32,6 +34,14 @@ class AsesmntUseCase @Inject constructor(
 
     suspend fun getSubSetList(setId: String, subSetId: String): Flow<Resource<List<Course>>> {
         return asesmntRepository.getSubSetList(setId, subSetId)
+    }
+
+    suspend fun getAcronyms(): Flow<Resource<List<Acronyms>>> {
+        return asesmntRepository.getAcronyms()
+    }
+
+    suspend fun getDefinition(): Flow<Resource<List<Definition>>> {
+        return asesmntRepository.getDefinition()
     }
 
 }

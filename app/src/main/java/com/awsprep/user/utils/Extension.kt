@@ -28,6 +28,14 @@ fun getCurrentDateTime(): Date {
     return Calendar.getInstance().time
 }
 
+fun getRemainingTimes(timeData: Long): String {
+    return String.format(
+        "%02d:%02d",
+        (timeData / (1000 * 60) % 60),
+        (timeData / 1000) % 60
+    )
+}
+
 inline fun <reified T : Any> T.toPrettyJson(): String = Gson().toJson(this, T::class.java)
 
 inline fun <reified T : Any> String.fromPrettyJson(): T = Gson().fromJson(this, T::class.java)

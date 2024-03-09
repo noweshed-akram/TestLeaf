@@ -41,6 +41,7 @@ import com.awsprep.user.utils.AppConstant.DATE_TIME_FORMAT
 import com.awsprep.user.utils.AppConstant.STATUS_FAILED
 import com.awsprep.user.utils.AppConstant.STATUS_PASS
 import com.awsprep.user.utils.getCurrentDateTime
+import com.awsprep.user.utils.getRemainingTimes
 import com.awsprep.user.utils.toString
 import com.awsprep.user.viewmodel.EntityViewModel
 import com.awsprep.user.viewmodel.QuesViewModel
@@ -82,6 +83,8 @@ fun TestScreen(
     var totalQs by rememberSaveable { mutableIntStateOf(0) }
     var correctAns by rememberSaveable { mutableIntStateOf(0) }
     var wrongAns by rememberSaveable { mutableIntStateOf(0) }
+
+    val startTime = System.currentTimeMillis()
 
     val testViewModel: TestViewModel = viewModel()
 
@@ -169,6 +172,37 @@ fun TestScreen(
 
                 Log.d(TAG, "onSubmitPressed: correct- $correctAns , wrong- $wrongAns")
 
+            },
+            onTimesUp = {
+
+                entityViewModel.getCorrectMarks(1).observe(lifecycleOwner) { corrMarks ->
+                    correctAns = corrMarks
+
+                    entityViewModel.getWrongMarks(0).observe(lifecycleOwner) { wrongMarks ->
+                        wrongAns = wrongMarks
+
+                        Log.d(TAG, "onSubmitPressed: correct- $correctAns , wrong- $wrongAns")
+
+                        val testResult = TestResult(
+                            examType = examMetaData.examType!!,
+                            examName = examMetaData.examName!!,
+                            timeBased = examMetaData.activeTimer,
+                            timeTaken = getRemainingTimes(System.currentTimeMillis() - startTime),
+                            totalQs = totalQs.toString(),
+                            answered = (correctAns + wrongAns).toString(),
+                            skipped = (totalQs - (correctAns + wrongAns)).toString(),
+                            correctAnswered = correctAns.toString(),
+                            wrongAnswered = wrongAns.toString(),
+                            status = if (((correctAns * 100) / totalQs) > 50.0f) STATUS_PASS else STATUS_FAILED,
+                            createdAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
+                            updatedAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
+                        )
+
+                        userViewModel.insertTestResult(testResult)
+
+                        onSubmitTestBtnClick(testResult, examMetaData)
+                    }
+                }
             }
         ) { paddingValues ->
 
@@ -302,7 +336,7 @@ fun TestScreen(
                     examType = examMetaData.examType!!,
                     examName = examMetaData.examName!!,
                     timeBased = examMetaData.activeTimer!!,
-                    timeTaken = "15",
+                    timeTaken = getRemainingTimes(System.currentTimeMillis() - startTime),
                     totalQs = totalQs.toString(),
                     answered = (correctAns + wrongAns).toString(),
                     skipped = (totalQs - (correctAns + wrongAns)).toString(),

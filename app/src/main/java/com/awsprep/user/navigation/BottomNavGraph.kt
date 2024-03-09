@@ -70,13 +70,15 @@ fun BottomNavigation(
 
         composable(route = BottomNavScreen.Acronyms.route) {
             AcronymsScreen(
-                userViewModel = userViewModel
+                userViewModel = userViewModel,
+                asesmntViewModel = asesmntViewModel
             )
         }
 
         composable(route = BottomNavScreen.Definition.route) {
             DefinitionScreen(
-                userViewModel = userViewModel
+                userViewModel = userViewModel,
+                asesmntViewModel = asesmntViewModel
             )
         }
 

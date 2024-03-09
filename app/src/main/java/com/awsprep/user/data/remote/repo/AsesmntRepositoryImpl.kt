@@ -1,10 +1,14 @@
 package com.awsprep.user.data.remote.repo
 
+import com.awsprep.user.domain.models.Acronyms
 import com.awsprep.user.domain.models.Course
+import com.awsprep.user.domain.models.Definition
 import com.awsprep.user.domain.models.Set
 import com.awsprep.user.domain.repositories.AsesmntRepository
+import com.awsprep.user.utils.AppConstant.COLL_ACRONYMS
 import com.awsprep.user.utils.AppConstant.COLL_CHAPTERS
 import com.awsprep.user.utils.AppConstant.COLL_COURSES
+import com.awsprep.user.utils.AppConstant.COLL_DEFINITIONS
 import com.awsprep.user.utils.AppConstant.COLL_SECTIONS
 import com.awsprep.user.utils.AppConstant.COLL_SETS
 import com.awsprep.user.utils.AppConstant.FIELD_ACTIVE
@@ -161,7 +165,6 @@ class AsesmntRepositoryImpl @Inject constructor(
         }
     }
 
-
     override suspend fun getSubSetList(
         setId: String,
         subSetId: String
@@ -184,6 +187,68 @@ class AsesmntRepositoryImpl @Inject constructor(
             }
 
             emit(Resource.Success(data = setList))
+
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.localizedMessage ?: "Unknown Error"))
+        } catch (e: IOException) {
+            emit(
+                Resource.Error(
+                    message = e.localizedMessage ?: "Check Your Internet Connection"
+                )
+            )
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.localizedMessage ?: ""))
+        }
+    }
+
+    override suspend fun getAcronyms(): Flow<Resource<List<Acronyms>>> = flow {
+        emit(Resource.Loading())
+        try {
+
+            val acronyms = firebaseFirestore.collection(COLL_ACRONYMS).get().await()
+
+            var acronymList = emptyList<Acronyms>()
+
+            for (acronym in acronyms) {
+
+                val newAcronym: Acronyms = acronym.toObject(Acronyms::class.java)
+                newAcronym.docId = acronym.id
+
+                acronymList = acronymList + newAcronym
+            }
+
+            emit(Resource.Success(data = acronymList))
+
+        } catch (e: HttpException) {
+            emit(Resource.Error(message = e.localizedMessage ?: "Unknown Error"))
+        } catch (e: IOException) {
+            emit(
+                Resource.Error(
+                    message = e.localizedMessage ?: "Check Your Internet Connection"
+                )
+            )
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.localizedMessage ?: ""))
+        }
+    }
+
+    override suspend fun getDefinition(): Flow<Resource<List<Definition>>> = flow {
+        emit(Resource.Loading())
+        try {
+
+            val definitions = firebaseFirestore.collection(COLL_DEFINITIONS).get().await()
+
+            var definitionList = emptyList<Definition>()
+
+            for (definition in definitions) {
+
+                val newDefinition: Definition = definition.toObject(Definition::class.java)
+                newDefinition.docId = definition.id
+
+                definitionList = definitionList + newDefinition
+            }
+
+            emit(Resource.Success(data = definitionList))
 
         } catch (e: HttpException) {
             emit(Resource.Error(message = e.localizedMessage ?: "Unknown Error"))

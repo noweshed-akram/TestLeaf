@@ -79,6 +79,7 @@ fun AssessmentScreen(
     val scrollState = rememberScrollState()
 
     val pagerState = rememberPagerState(initialPage = 0)
+
     val imageSlider = listOf(
         painterResource(id = R.drawable.ic_error_icon),
         painterResource(id = R.drawable.ic_error_icon)

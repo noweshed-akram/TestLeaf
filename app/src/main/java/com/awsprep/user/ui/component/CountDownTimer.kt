@@ -13,13 +13,15 @@ import androidx.compose.runtime.setValue
 import com.awsprep.user.ui.theme.ErrorColor
 import com.awsprep.user.ui.theme.TextColor
 import com.awsprep.user.ui.theme.Typography
+import com.awsprep.user.utils.getRemainingTimes
 
 /**
  * Created by noweshedakram on 27/7/23.
  */
 @Composable
 fun CountDownTimer(
-    timeInMillisecond: Long
+    timeInMillisecond: Long,
+    onTimesUp: () -> Unit
 ) {
 
     val millisInFuture: Long = timeInMillisecond
@@ -32,13 +34,14 @@ fun CountDownTimer(
 
     val countDownTimer = object : CountDownTimer(millisInFuture, 1000) {
         override fun onTick(millisUntilFinished: Long) {
-            Log.d("TAG", "onTick: $millisUntilFinished")
+            Log.d("CountDownTimer", "onTick: $millisUntilFinished")
 
             timeData.longValue = millisUntilFinished
         }
 
         override fun onFinish() {
             showTimer = false
+            onTimesUp()
         }
     }
 
@@ -51,11 +54,9 @@ fun CountDownTimer(
     }
 
     Text(
-        text = if (timeData.longValue > 1000) String.format(
-            "%02d:%02d",
-            (timeData.longValue / (1000 * 60) % 60),
-            (timeData.longValue / 1000) % 60
-        ) else "Time's Up",
+        text = if (timeData.longValue > 1000) {
+            getRemainingTimes(timeData.longValue)
+        } else "Time's Up",
         color = if (timeData.longValue > 300000) {
             TextColor
         } else {

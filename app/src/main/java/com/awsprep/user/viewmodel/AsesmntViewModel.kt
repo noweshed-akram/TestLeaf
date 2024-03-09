@@ -4,10 +4,13 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.awsprep.user.domain.models.Acronyms
+import com.awsprep.user.domain.models.Definition
 import com.awsprep.user.domain.models.ResponseState
 import com.awsprep.user.domain.usecase.AsesmntUseCase
 import com.awsprep.user.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -38,6 +41,12 @@ class AsesmntViewModel @Inject constructor(
 
     private val _subSetsData = MutableStateFlow(ResponseState())
     val subSetData: StateFlow<ResponseState> = _subSetsData
+
+    private val _acronymsData = MutableStateFlow(ResponseState())
+    val acronymsData: StateFlow<ResponseState> = _acronymsData
+
+    private val _definitionsData = MutableStateFlow(ResponseState())
+    val definitionsData: StateFlow<ResponseState> = _definitionsData
 
     fun getCourseList(limit: Long) {
         viewModelScope.launch {
@@ -148,6 +157,52 @@ class AsesmntViewModel @Inject constructor(
                     is Resource.Success -> {
                         Log.d("getSubSetList: ", it.data.toString())
                         _subSetsData.value = ResponseState(dataList = it.data)
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
+
+    fun getAcronyms() {
+        viewModelScope.launch {
+            asesmntUseCase.getAcronyms().onEach {
+                when (it) {
+                    is Resource.Loading -> {
+                        Log.d("getAcronyms: ", it.data.toString())
+                        _acronymsData.value = ResponseState(isLoading = true)
+                    }
+
+                    is Resource.Error -> {
+                        Log.d("getAcronyms: ", it.data.toString())
+                        _acronymsData.value = ResponseState(error = it.message ?: "")
+                    }
+
+                    is Resource.Success -> {
+                        Log.d("getAcronyms: ", it.data.toString())
+                        _acronymsData.value = ResponseState(dataList = it.data)
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
+
+    fun getDefinition() {
+        viewModelScope.launch {
+            asesmntUseCase.getDefinition().onEach {
+                when (it) {
+                    is Resource.Loading -> {
+                        Log.d("getDefinition: ", it.data.toString())
+                        _definitionsData.value = ResponseState(isLoading = true)
+                    }
+
+                    is Resource.Error -> {
+                        Log.d("getDefinition: ", it.data.toString())
+                        _definitionsData.value = ResponseState(error = it.message ?: "")
+                    }
+
+                    is Resource.Success -> {
+                        Log.d("getDefinition: ", it.data.toString())
+                        _definitionsData.value = ResponseState(dataList = it.data)
                     }
                 }
             }.launchIn(viewModelScope)
