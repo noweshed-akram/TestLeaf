@@ -38,6 +38,10 @@ class AuthViewModel @Inject constructor(
     var sendEmailVerificationResponse by mutableStateOf<Resource<Boolean>>(Resource.Success(false))
     var sendPasswordResetEmailResponse by mutableStateOf<Resource<Boolean>>(Resource.Success(false))
 
+    fun clearAuthState() {
+        _firebaseUser.value = AuthState()
+    }
+
     fun signUpWithEmailAndPassword(
         email: String,
         password: String,

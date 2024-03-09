@@ -223,6 +223,7 @@ fun HomeScreen(
                         "log_out" -> {
                             println("Log Out")
                             userViewModel.logOut()
+                            authViewModel.clearAuthState()
                             navController.navigate(AuthScreen.EmailSignIn.route)
                         }
 
