@@ -197,7 +197,6 @@ fun HomeScreen(
                         "share" -> {
                             println("Share")
                             shareApp(context)
-                            navController.navigate(AuthScreen.EmailSignIn.route)
                         }
 
                         "terms_conditions" -> {

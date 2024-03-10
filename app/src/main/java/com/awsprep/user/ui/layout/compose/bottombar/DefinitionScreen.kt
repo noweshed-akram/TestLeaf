@@ -9,13 +9,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,7 +42,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.awsprep.user.R
+import com.awsprep.user.domain.models.Course
 import com.awsprep.user.domain.models.Definition
+import com.awsprep.user.ui.component.ChipItemView
 import com.awsprep.user.ui.component.InfoBannerCard
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.ColorAccent
@@ -66,8 +71,34 @@ fun DefinitionScreen(
     var showError by rememberSaveable { mutableStateOf(false) }
     var errorMsg by rememberSaveable { mutableStateOf("") }
 
+    var courseList by rememberSaveable {
+        mutableStateOf(emptyList<Course>())
+    }
+
     var definitionList by rememberSaveable {
         mutableStateOf(emptyList<Definition>())
+    }
+
+    LaunchedEffect(key1 = true) {
+        asesmntViewModel.getCourseList(50)
+
+        asesmntViewModel.coursesData.collect {
+            if (it.isLoading) {
+                showProgress = true
+                Log.d("AssessmentScreen: ", "Loading..")
+            }
+            if (it.error.isNotBlank()) {
+                showProgress = false
+                showError = true
+                errorMsg = it.error
+                Log.d("AssessmentScreen: ", it.error)
+            }
+            it.dataList?.let {
+                showProgress = false
+                courseList = it as List<Course>
+                Log.d("AssessmentScreen: ", courseList.toString())
+            }
+        }
     }
 
     LaunchedEffect(key1 = true) {
@@ -104,85 +135,105 @@ fun DefinitionScreen(
                 onRefresh = {
 
                 }) {
-                LazyColumn(
-                    modifier = Modifier.wrapContentSize(),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    itemsIndexed(
-                        items = definitionList
-                    ) { index, definition ->
 
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight()
-                                .clip(RoundedCornerShape(8.dp))
-                                .background(color = Color.White, shape = RoundedCornerShape(8.dp))
-                                .border(
-                                    width = 1.dp,
-                                    shape = RoundedCornerShape(8.dp),
-                                    color = StrokeColor
-                                )
-                                .clickable {
+                Column {
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        itemsIndexed(
+                            items = courseList
+                        ) { index, course ->
+                            ChipItemView(course.name)
+                        }
+                    }
 
-                                }
-                        ) {
-                            Row(
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    LazyColumn(
+                        modifier = Modifier.wrapContentSize(),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        itemsIndexed(
+                            items = definitionList
+                        ) { index, definition ->
+
+                            Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .wrapContentHeight(),
-                                verticalAlignment = Alignment.CenterVertically
+                                    .wrapContentHeight()
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(
+                                        color = Color.White,
+                                        shape = RoundedCornerShape(8.dp)
+                                    )
+                                    .border(
+                                        width = 1.dp,
+                                        shape = RoundedCornerShape(8.dp),
+                                        color = StrokeColor
+                                    )
+                                    .clickable {
+
+                                    }
                             ) {
 
-                                Box(
+                                Row(
                                     modifier = Modifier
-                                        .padding(10.dp)
-                                        .background(color = ColorAccent, shape = CircleShape)
+                                        .fillMaxWidth()
+                                        .wrapContentHeight(),
+                                    verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    AsyncImage(
-                                        model = ImageRequest.Builder(LocalContext.current)
-                                            .data("")
-                                            .crossfade(true)
-                                            .build(),
-                                        contentDescription = "",
-                                        contentScale = ContentScale.Fit,
+
+                                    Box(
                                         modifier = Modifier
-                                            .size(48.dp)
-                                            .padding(8.dp)
-                                            .clip(CircleShape),
-                                        error = painterResource(id = R.drawable.ic_acronyms),
-                                        colorFilter = ColorFilter.tint(color = PrimaryColor)
-                                    )
-                                }
+                                            .padding(10.dp)
+                                            .background(color = ColorAccent, shape = CircleShape)
+                                    ) {
+                                        AsyncImage(
+                                            model = ImageRequest.Builder(LocalContext.current)
+                                                .data("")
+                                                .crossfade(true)
+                                                .build(),
+                                            contentDescription = "",
+                                            contentScale = ContentScale.Fit,
+                                            modifier = Modifier
+                                                .size(48.dp)
+                                                .padding(8.dp)
+                                                .clip(CircleShape),
+                                            error = painterResource(id = R.drawable.ic_definition),
+                                            colorFilter = ColorFilter.tint(color = PrimaryColor)
+                                        )
+                                    }
 
-                                Column(
-                                    modifier = Modifier
-                                        .weight(1.0f)
-                                        .padding(vertical = 8.dp),
-                                    verticalArrangement = Arrangement.SpaceAround
-                                ) {
+                                    Column(
+                                        modifier = Modifier
+                                            .weight(1.0f)
+                                            .padding(vertical = 8.dp),
+                                        verticalArrangement = Arrangement.SpaceAround
+                                    ) {
 
-                                    Text(
-                                        modifier = Modifier.padding(5.dp),
-                                        text = definition.word,
-                                        style = Typography.titleLarge,
-                                        fontWeight = FontWeight.Bold,
-                                        color = PrimaryColor,
-                                        maxLines = 1
-                                    )
+                                        Text(
+                                            modifier = Modifier.padding(5.dp),
+                                            text = definition.word,
+                                            style = Typography.titleLarge,
+                                            fontWeight = FontWeight.Bold,
+                                            color = PrimaryColor,
+                                            maxLines = 1
+                                        )
 
-                                    Text(
-                                        modifier = Modifier.padding(5.dp),
-                                        text = definition.explanation,
-                                        style = Typography.bodyMedium,
-                                        color = Color.Black,
-                                        maxLines = 1
-                                    )
+                                        Text(
+                                            modifier = Modifier.padding(5.dp),
+                                            text = definition.explanation,
+                                            style = Typography.bodyMedium,
+                                            color = Color.Black,
+                                            maxLines = 1
+                                        )
 
+                                    }
                                 }
                             }
-                        }
 
+                        }
                     }
                 }
             }

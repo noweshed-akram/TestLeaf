@@ -29,7 +29,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,6 +49,7 @@ import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.ErrorColor
 import com.awsprep.user.ui.theme.PrimaryColor
+import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.ui.theme.TextColor
 import com.awsprep.user.ui.theme.Typography
 import com.awsprep.user.ui.theme.WhiteColor
@@ -58,6 +63,9 @@ fun SubscribeScreen(
 ) {
 
     val coroutineScope = rememberCoroutineScope()
+
+    var monthlySubsChecked by rememberSaveable { mutableStateOf(true) }
+    var yearlySubsChecked by rememberSaveable { mutableStateOf(false) }
 
     val modalSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -104,9 +112,13 @@ fun SubscribeScreen(
                                 color = PrimaryColor
                             )
                             .weight(1.0f)
+                            .clickable {
+                                monthlySubsChecked = true
+                                yearlySubsChecked = false
+                            }
                     ) {
 
-                        Text(
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(
@@ -114,11 +126,28 @@ fun SubscribeScreen(
                                     shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
                                 )
                                 .padding(8.dp),
-                            text = "Monthly!",
-                            color = PrimaryColor,
-                            style = Typography.bodyMedium,
-                            textAlign = TextAlign.Center
-                        )
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                modifier = Modifier.wrapContentWidth(),
+                                text = "Monthly!",
+                                color = PrimaryColor,
+                                style = Typography.bodyMedium,
+                                textAlign = TextAlign.Center
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            if (monthlySubsChecked) {
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_check_circle),
+                                    contentDescription = "check",
+                                    modifier = Modifier.size(24.dp),
+                                    tint = SecondaryColor
+                                )
+                            }
+                        }
 
                         Text(
                             modifier = Modifier
@@ -148,9 +177,13 @@ fun SubscribeScreen(
                                 color = PrimaryColor
                             )
                             .weight(1.0f)
+                            .clickable {
+                                yearlySubsChecked = true
+                                monthlySubsChecked = false
+                            }
                     ) {
 
-                        Text(
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(
@@ -158,11 +191,28 @@ fun SubscribeScreen(
                                     shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)
                                 )
                                 .padding(8.dp),
-                            text = "Yearly!",
-                            color = PrimaryColor,
-                            style = Typography.bodyMedium,
-                            textAlign = TextAlign.Center
-                        )
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                modifier = Modifier.wrapContentWidth(),
+                                text = "Yearly!",
+                                color = PrimaryColor,
+                                style = Typography.bodyMedium,
+                                textAlign = TextAlign.Center
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            if (yearlySubsChecked) {
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_check_circle),
+                                    contentDescription = "check",
+                                    modifier = Modifier.size(24.dp),
+                                    tint = SecondaryColor
+                                )
+                            }
+                        }
 
                         Text(
                             modifier = Modifier
@@ -181,7 +231,7 @@ fun SubscribeScreen(
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(bottom = 16.dp),
                     text = "subscribe today. cancel anytime later",
                     style = Typography.bodySmall,
                     maxLines = 1,
@@ -192,7 +242,7 @@ fun SubscribeScreen(
                     onClick = {
 
                     },
-                    buttonText = "continue",
+                    buttonText = if (monthlySubsChecked) "subscribe monthly" else if (yearlySubsChecked) "subscribe yearly" else "continue",
                     backgroundColor = WhiteColor,
                     fontColor = PrimaryColor,
                     borderStrokeColor = PrimaryColor
@@ -269,7 +319,7 @@ fun SubscribeScreen(
                             Text(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                                    .padding(horizontal = 16.dp)
                                     .weight(1.0f),
                                 text = feature.featureName.trim(),
                                 style = typography.bodyMedium,
@@ -288,9 +338,11 @@ fun SubscribeScreen(
                                 contentDescription = "check",
                                 modifier = Modifier
                                     .size(48.dp)
-                                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                                tint = if (feature.freeMember) PrimaryColor else ErrorColor
+                                    .padding(12.dp),
+                                tint = if (feature.freeMember) SecondaryColor else ErrorColor
                             )
+
+                            Spacer(modifier = Modifier.padding(end = 8.dp))
 
                             Icon(
                                 imageVector = if (feature.proMember) {
@@ -303,9 +355,12 @@ fun SubscribeScreen(
                                 contentDescription = "check",
                                 modifier = Modifier
                                     .size(48.dp)
-                                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                                tint = if (feature.proMember) PrimaryColor else ErrorColor
+                                    .padding(12.dp),
+                                tint = if (feature.proMember) SecondaryColor else ErrorColor
                             )
+
+                            Spacer(modifier = Modifier.padding(end = 8.dp))
+
                         }
 
                         Spacer(

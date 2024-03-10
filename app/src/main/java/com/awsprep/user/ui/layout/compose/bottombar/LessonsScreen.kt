@@ -67,7 +67,7 @@ fun LessonsScreen(
             }
         } else {
             InfoBannerCard(
-                icon = R.drawable.ic_qna,
+                icon = R.drawable.ic_book_close,
                 titleText = "No data found!",
                 infoText = "You will find more Practice Questions later.",
                 strokeColor = StrokeColor,

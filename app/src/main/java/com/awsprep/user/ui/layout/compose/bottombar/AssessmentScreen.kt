@@ -150,8 +150,8 @@ fun AssessmentScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(scrollState)
             .padding(vertical = 12.dp)
+            .verticalScroll(scrollState)
     ) {
 
 //        Text(
