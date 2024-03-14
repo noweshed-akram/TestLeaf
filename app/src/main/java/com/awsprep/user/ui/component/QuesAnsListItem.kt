@@ -83,7 +83,7 @@ fun QuesAnsListItem(
                     verticalAlignment = CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    ChipItemView("Q$quesNo")
+                    ChipItemView(text = "Q$quesNo", bgColor = ColorAccent) {}
 
                     if (deleteBtnVisibility) {
                         IconButton(

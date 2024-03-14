@@ -28,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -256,10 +257,9 @@ fun SubscribeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                text = "Become a pro member today and experience advanced lesson's with more practice's...",
-                style = typography.titleMedium,
-                color = PrimaryColor,
-                textAlign = TextAlign.Justify
+                text = "Unlock advanced lesson's with more practice's...",
+                style = typography.headlineSmall,
+                color = PrimaryColor
             )
 
             Row(
@@ -464,24 +464,27 @@ fun SubscribeScreen(
                 textAlign = TextAlign.Center
             )
 
-            Text(
+            TextButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
-                    .clickable {
-                        coroutineScope.launch {
-                            if (modalSheetState.isVisible)
-                                modalSheetState.hide()
-                            else
-                                modalSheetState.show() //(ModalBottomSheetValue.Expanded)
-                        }
-                    },
-                text = "VIEW ALL PLANS",
-                style = Typography.bodyMedium,
-                color = PrimaryColor,
-                maxLines = 1,
-                textAlign = TextAlign.Center
-            )
+                    .padding(16.dp),
+                onClick = {
+                    coroutineScope.launch {
+                        if (modalSheetState.isVisible)
+                            modalSheetState.hide()
+                        else
+                            modalSheetState.show() //(ModalBottomSheetValue.Expanded)
+                    }
+                }) {
+                Text(
+                    text = "VIEW ALL PLANS",
+                    style = Typography.bodyMedium,
+                    color = PrimaryColor,
+                    maxLines = 1,
+                    textAlign = TextAlign.Center
+                )
+            }
+
         }
     }
 

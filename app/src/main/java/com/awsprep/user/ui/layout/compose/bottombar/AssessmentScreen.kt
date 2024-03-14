@@ -22,6 +22,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,13 +31,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.lerp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.awsprep.user.R
@@ -56,8 +60,14 @@ import com.awsprep.user.utils.AppConstant.COLL_COURSES
 import com.awsprep.user.utils.AppConstant.COLL_SETS
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.HorizontalPagerIndicator
+import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
+import kotlinx.coroutines.delay
+import java.lang.Thread.yield
+import kotlin.math.absoluteValue
 
 /**
  * Created by Md. Noweshed Akram on 10/11/23.
@@ -81,8 +91,8 @@ fun AssessmentScreen(
     val pagerState = rememberPagerState(initialPage = 0)
 
     val imageSlider = listOf(
-        painterResource(id = R.drawable.ic_error_icon),
-        painterResource(id = R.drawable.ic_error_icon)
+        "https://firebasestorage.googleapis.com/v0/b/awsprep-89123.appspot.com/o/banner_quiz.png?alt=media&token=dd852845-77e0-4571-a44e-a594eca43a60",
+        "https://t3.ftcdn.net/jpg/01/95/16/90/360_F_195169024_R0XSeqsxvAcpdxVm0Grt3XFdhDWubwGs.jpg"
     )
 
     var courseList by rememberSaveable {
@@ -137,15 +147,15 @@ fun AssessmentScreen(
         }
     }
 
-//    LaunchedEffect(Unit) {
-//        while (true) {
-//            yield()
-//            delay(5000)
-//            pagerState.animateScrollToPage(
-//                page = (pagerState.currentPage + 1) % (pagerState.pageCount)
-//            )
-//        }
-//    }
+    LaunchedEffect(Unit) {
+        while (true) {
+            yield()
+            delay(5000)
+            pagerState.animateScrollToPage(
+                page = (pagerState.currentPage + 1) % (pagerState.pageCount)
+            )
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -154,65 +164,66 @@ fun AssessmentScreen(
             .verticalScroll(scrollState)
     ) {
 
-//        Text(
-//            modifier = Modifier.padding(horizontal = 12.dp),
-//            text = "Quick Quiz",
-//            style = Typography.titleLarge
-//        )
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        HorizontalPager(
-//            count = imageSlider.size,
-//            state = pagerState,
-//            contentPadding = PaddingValues(horizontal = 12.dp),
-//            modifier = Modifier
-//                .height(114.dp)
-//                .fillMaxWidth()
-//        ) { page ->
-//            Card(
-//                shape = RoundedCornerShape(12.dp),
-//                modifier = Modifier
-//                    .graphicsLayer {
-//                        val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
-//
-//                        lerp(
-//                            start = 0.85f,
-//                            stop = 1f,
-//                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
-//                        ).also { scale ->
-//                            scaleX = scale
-//                            scaleY = scale
-//                        }
-//
-//                        alpha = lerp(
-//                            start = 0.5f,
-//                            stop = 1f,
-//                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
-//                        )
-//                    }
-//            ) {
-//                Image(
-//                    painter = imageSlider[page],
-//                    contentDescription = stringResource(R.string.image_slider),
-//                    contentScale = ContentScale.Crop,
-//                    modifier = Modifier.fillMaxSize()
-//                )
-//            }
-//        }
-//
-//        HorizontalPagerIndicator(
-//            pagerState = pagerState,
-//            modifier = Modifier
-//                .align(Alignment.CenterHorizontally)
-//                .padding(16.dp),
-//            indicatorWidth = 24.dp,
-//            indicatorShape = CircleShape,
-//            indicatorHeight = 4.dp,
-//            activeColor = PrimaryColor,
-//            inactiveColor = StrokeColor,
-//            spacing = 4.dp
-//        )
+        Text(
+            modifier = Modifier.padding(horizontal = 12.dp),
+            text = "Quick Quiz",
+            style = Typography.titleLarge
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        HorizontalPager(
+            count = imageSlider.size,
+            state = pagerState,
+            contentPadding = PaddingValues(horizontal = 12.dp),
+            modifier = Modifier
+                .height(114.dp)
+                .fillMaxWidth()
+        ) { page ->
+            Card(
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier
+                    .graphicsLayer {
+                        val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
+
+                        lerp(
+                            start = 0.85f,
+                            stop = 1f,
+                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                        ).also { scale ->
+                            scaleX = scale
+                            scaleY = scale
+                        }
+
+                        alpha = lerp(
+                            start = 0.5f,
+                            stop = 1f,
+                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                        )
+                    }
+            ) {
+                AsyncImage(
+                    model = imageSlider[page],
+                    contentDescription = "Profile picture",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop,
+                    error = painterResource(id = R.drawable.ic_error_icon)
+                )
+            }
+        }
+
+        HorizontalPagerIndicator(
+            pagerState = pagerState,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(16.dp),
+            indicatorWidth = 24.dp,
+            indicatorShape = CircleShape,
+            indicatorHeight = 4.dp,
+            activeColor = PrimaryColor,
+            inactiveColor = StrokeColor,
+            spacing = 4.dp
+        )
 
         Text(
             modifier = Modifier.padding(horizontal = 12.dp),

@@ -95,7 +95,7 @@ fun DefinitionScreen(
             }
             it.dataList?.let {
                 showProgress = false
-                courseList = it as List<Course>
+                courseList = courseList + Course(docId = "001", name = "All") + it as List<Course>
                 Log.d("AssessmentScreen: ", courseList.toString())
             }
         }
@@ -144,7 +144,9 @@ fun DefinitionScreen(
                         itemsIndexed(
                             items = courseList
                         ) { index, course ->
-                            ChipItemView(course.name)
+                            ChipItemView(course.name) {
+
+                            }
                         }
                     }
 
