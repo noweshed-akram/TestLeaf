@@ -10,10 +10,13 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.ui.theme.WhiteColor
+import com.awsprep.user.ui.theme.publicSansFamily
 
 /**
  * Created by Md. Noweshed Akram on 17/11/23.
@@ -41,7 +44,10 @@ fun PrimaryButton(
             text = buttonText,
             color = fontColor,
             textAlign = TextAlign.Center,
-            modifier = modifier
+            modifier = modifier,
+            fontFamily = publicSansFamily,
+            fontWeight = FontWeight.Medium,
+            fontSize = 16.sp
         )
     }
 }

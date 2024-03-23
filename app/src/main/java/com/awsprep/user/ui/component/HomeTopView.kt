@@ -25,11 +25,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.awsprep.user.R
 import com.awsprep.user.ui.theme.PrimaryColor
-import com.awsprep.user.ui.theme.Typography
+import com.awsprep.user.ui.theme.publicSansFamily
 
 /**
  * Created by Md. Noweshed Akram on 14/11/23.
@@ -73,14 +75,22 @@ fun HomeTopView(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Text(text = "Welcome", color = Color.White, style = Typography.headlineSmall)
+                Text(
+                    text = "Welcome",
+                    color = Color.White,
+                    fontFamily = publicSansFamily,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 22.sp
+                )
 
                 Spacer(modifier = Modifier.height(5.dp))
 
                 Text(
                     text = userName,
                     color = Color.White,
-                    style = Typography.bodyMedium
+                    fontFamily = publicSansFamily,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.sp
                 )
 
             }

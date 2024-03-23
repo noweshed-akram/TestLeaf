@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.awsprep.user.R
 import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.theme.PrimaryColor
+import com.awsprep.user.ui.theme.publicSansFamily
 
 /**
  * Created by Md. Noweshed Akram on 17/11/23.
@@ -52,8 +53,9 @@ fun CheckEmailScreen(
 
             Text(
                 text = "Check Your Email",
+                fontFamily = publicSansFamily,
+                fontWeight = FontWeight.Bold,
                 fontSize = 24.sp,
-                fontWeight = FontWeight.ExtraBold,
                 color = PrimaryColor
             )
 
@@ -62,7 +64,10 @@ fun CheckEmailScreen(
             Text(
                 text = "We have sent a password recovery instruction\n" +
                         "to your email.",
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                fontFamily = publicSansFamily,
+                fontWeight = FontWeight.Normal,
+                fontSize = 14.sp
             )
         }
 

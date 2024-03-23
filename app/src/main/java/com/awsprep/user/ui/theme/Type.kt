@@ -2,9 +2,11 @@ package com.awsprep.user.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.awsprep.user.R
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -29,4 +31,11 @@ val Typography = Typography(
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
     )
+)
+
+val publicSansFamily = FontFamily(
+    Font(R.font.publicsans_light, FontWeight.Light),
+    Font(R.font.publicsans_regular, FontWeight.Normal),
+    Font(R.font.publicsans_semibold, FontWeight.Medium),
+    Font(R.font.publicsans_bold, FontWeight.Bold)
 )

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -33,6 +34,7 @@ import com.awsprep.user.ui.theme.GreyColor
 import com.awsprep.user.ui.theme.SecondaryColorLight
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.ui.theme.WhiteColor
+import com.awsprep.user.ui.theme.publicSansFamily
 
 /**
  * Created by Md. Noweshed Akram on 21/11/23.
@@ -74,29 +76,32 @@ fun InfoBannerCard(
                 contentDescription = "Stopwatch",
                 modifier = Modifier
                     .background(color = SecondaryColorLight, shape = CircleShape)
-                    .padding(10.dp)
+                    .height(72.dp)
+                    .width(72.dp)
+                    .padding(12.dp)
             )
 
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             Text(
                 text = titleText,
                 style = TextStyle(
+                    fontFamily = publicSansFamily,
+                    fontWeight = FontWeight.Bold,
                     fontSize = 32.sp,
-                    fontWeight = FontWeight(600),
                     color = Color.Black,
                 )
             )
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             Text(
                 text = infoText,
                 modifier = Modifier.fillMaxWidth(),
                 style = TextStyle(
-                    fontSize = 13.sp,
-                    lineHeight = 20.sp,
-                    fontWeight = FontWeight(400),
+                    fontFamily = publicSansFamily,
+                    fontWeight = FontWeight.Light,
+                    fontSize = 12.sp,
                     color = GreyColor,
                 ),
                 textAlign = TextAlign.Center

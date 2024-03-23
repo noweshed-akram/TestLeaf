@@ -81,6 +81,7 @@ fun DefinitionScreen(
 
     LaunchedEffect(key1 = true) {
         asesmntViewModel.getCourseList(50)
+        courseList = emptyList()
 
         asesmntViewModel.coursesData.collect {
             if (it.isLoading) {

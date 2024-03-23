@@ -34,8 +34,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.TestResult
@@ -46,8 +48,8 @@ import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.GreyColor
 import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.SecondaryColor
-import com.awsprep.user.ui.theme.Typography
 import com.awsprep.user.ui.theme.WhiteColor
+import com.awsprep.user.ui.theme.publicSansFamily
 import com.awsprep.user.viewmodel.UserViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
@@ -156,9 +158,21 @@ fun MyProfileScreen(
             Column(
                 modifier = Modifier.weight(1.0f)
             ) {
-                Text(text = inputName, style = Typography.bodyLarge)
+                Text(
+                    text = inputName,
+                    fontFamily = publicSansFamily,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp,
+                    color = Color.Black
+                )
 
-                Text(text = inputEmail, style = Typography.bodySmall)
+                Text(
+                    text = inputEmail,
+                    fontFamily = publicSansFamily,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.sp,
+                    color = Color.Black
+                )
             }
 
             IconButton(
@@ -181,7 +195,13 @@ fun MyProfileScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(text = "Test Summary", style = Typography.titleLarge)
+        Text(
+            text = "Test Summary",
+            fontFamily = publicSansFamily,
+            fontWeight = FontWeight.Bold,
+            fontSize = 22.sp,
+            color = Color.Black
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -191,7 +211,7 @@ fun MyProfileScreen(
                 .fillMaxWidth()
         ) {
             BarChartView(
-                resultList = resultList
+                resultList = resultList.take(5)
             )
         }
 
@@ -199,7 +219,9 @@ fun MyProfileScreen(
             modifier = Modifier.fillMaxWidth(),
             text = "Last five test summary",
             textAlign = TextAlign.Center,
-            style = Typography.bodySmall,
+            fontFamily = publicSansFamily,
+            fontWeight = FontWeight.Normal,
+            fontSize = 12.sp,
             color = GreyColor,
             maxLines = 1
         )

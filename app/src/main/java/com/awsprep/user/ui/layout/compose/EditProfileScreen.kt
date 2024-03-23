@@ -45,7 +45,6 @@ import com.awsprep.user.R
 import com.awsprep.user.domain.models.User
 import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.component.ProgressBar
-import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.viewmodel.UserViewModel
 import com.google.modernstorage.photopicker.PhotoPicker
@@ -112,19 +111,19 @@ fun EditProfileScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(10.dp),
+            .padding(12.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Box(modifier = Modifier.size(150.dp)) {
+        Box(modifier = Modifier.size(132.dp)) {
             AsyncImage(
                 model = if (selectedImageUri != null) selectedImageUri else imageUrl,
                 contentDescription = "Profile picture",
                 modifier = Modifier
-                    .size(136.dp)
+                    .size(120.dp)
                     .clip(CircleShape)
-                    .border(2.dp, PrimaryColor, CircleShape),
+                    .border(4.dp, SecondaryColor, CircleShape),
                 contentScale = ContentScale.Crop,
                 error = painterResource(id = R.drawable.ic_person)
             )

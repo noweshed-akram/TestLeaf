@@ -29,19 +29,20 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.awsprep.user.R
+import androidx.compose.ui.unit.sp
 import com.awsprep.user.domain.models.User
 import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.PrimaryColor
-import com.awsprep.user.ui.theme.Typography
+import com.awsprep.user.ui.theme.publicSansFamily
 import com.awsprep.user.utils.AppConstant.DATE_TIME_FORMAT
 import com.awsprep.user.utils.Resource
 import com.awsprep.user.utils.getCurrentDateTime
@@ -117,45 +118,40 @@ fun EmailRegisterScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(10.dp),
-        verticalArrangement = Arrangement.Center
     ) {
 
-        Text(
-            text = "Welcome to",
-            textAlign = TextAlign.Start,
-            style = Typography.titleLarge
-        )
-
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         Text(
-            text = "Test Prep",
+            text = "Username",
             textAlign = TextAlign.Start,
-            style = Typography.headlineLarge
+            fontFamily = publicSansFamily,
+            fontWeight = FontWeight.Normal,
+            fontSize = 12.sp
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = "Create an account to continue",
-            textAlign = TextAlign.Start,
-            style = Typography.bodySmall
-        )
-
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(6.dp))
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = inputName,
-            label = {
-                Text(text = "User Name *")
+            textStyle = TextStyle(
+                fontFamily = publicSansFamily,
+                fontWeight = FontWeight.Normal,
+                fontSize = 14.sp
+            ),
+            placeholder = {
+                Text(text = "e.g. Jhon Doe")
             },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_person),
-                    contentDescription = "name"
-                )
-            },
+//            label = {
+//                Text(text = "User Name *")
+//            },
+//            leadingIcon = {
+//                Icon(
+//                    painter = painterResource(id = R.drawable.ic_person),
+//                    contentDescription = "name"
+//                )
+//            },
             onValueChange = { value ->
                 inputName = value
             },
@@ -169,18 +165,36 @@ fun EmailRegisterScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        Text(
+            text = "Email",
+            textAlign = TextAlign.Start,
+            fontFamily = publicSansFamily,
+            fontWeight = FontWeight.Normal,
+            fontSize = 12.sp
+        )
+
+        Spacer(modifier = Modifier.height(6.dp))
+
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = inputEmail,
-            label = {
-                Text(text = "Email *")
+            textStyle = TextStyle(
+                fontFamily = publicSansFamily,
+                fontWeight = FontWeight.Normal,
+                fontSize = 14.sp
+            ),
+            placeholder = {
+                Text(text = "e.g. abc@mail.com")
             },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_email),
-                    contentDescription = "email"
-                )
-            },
+//            label = {
+//                Text(text = "Email *")
+//            },
+//            leadingIcon = {
+//                Icon(
+//                    painter = painterResource(id = R.drawable.ic_email),
+//                    contentDescription = "email"
+//                )
+//            },
             onValueChange = { value ->
                 inputEmail = value
             },
@@ -194,19 +208,37 @@ fun EmailRegisterScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        Text(
+            text = "Password",
+            textAlign = TextAlign.Start,
+            fontFamily = publicSansFamily,
+            fontWeight = FontWeight.Normal,
+            fontSize = 12.sp
+        )
+
+        Spacer(modifier = Modifier.height(6.dp))
+
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = inputPassword,
-            label = {
-                Text(text = "Password *")
+            textStyle = TextStyle(
+                fontFamily = publicSansFamily,
+                fontWeight = FontWeight.Normal,
+                fontSize = 14.sp
+            ),
+            placeholder = {
+                Text(text = "e.g. 123456")
             },
+//            label = {
+//                Text(text = "Password *")
+//            },
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_password),
-                    contentDescription = "password"
-                )
-            },
+//            leadingIcon = {
+//                Icon(
+//                    painter = painterResource(id = R.drawable.ic_password),
+//                    contentDescription = "password"
+//                )
+//            },
             onValueChange = { value ->
                 inputPassword = value
             },
@@ -230,7 +262,59 @@ fun EmailRegisterScreen(
             }
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "Already Have an Account?",
+                fontFamily = publicSansFamily,
+                fontWeight = FontWeight.Normal,
+                fontSize = 14.sp
+            )
+
+            TextButton(onClick = {
+                onPressedBackToLogin()
+            }) {
+                Text(
+                    text = "Login",
+                    fontFamily = publicSansFamily,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 14.sp
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "By joining, you agree to",
+                fontFamily = publicSansFamily,
+                fontWeight = FontWeight.Normal,
+                fontSize = 14.sp
+            )
+
+            TextButton(onClick = {
+
+            }) {
+                Text(
+                    text = "Terms & Conditions",
+                    fontFamily = publicSansFamily,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 14.sp
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(6.dp))
 
         PrimaryButton(
             onClick = {
@@ -252,23 +336,6 @@ fun EmailRegisterScreen(
             backgroundColor = PrimaryColor
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(text = "Already Have an Account?")
-
-            TextButton(onClick = {
-                onPressedBackToLogin()
-            }) {
-                Text(text = "Sign In")
-            }
-        }
     }
 
     if (showProgress) {

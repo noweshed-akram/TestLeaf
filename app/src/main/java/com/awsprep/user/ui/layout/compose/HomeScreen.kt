@@ -33,6 +33,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
@@ -47,6 +48,7 @@ import com.awsprep.user.navigation.AuthScreen
 import com.awsprep.user.navigation.BottomNavScreen
 import com.awsprep.user.navigation.BottomNavigation
 import com.awsprep.user.navigation.ContentNavScreen
+import com.awsprep.user.navigation.Graph
 import com.awsprep.user.navigation.currentRoute
 import com.awsprep.user.ui.component.AppBarWithArrow
 import com.awsprep.user.ui.component.BottomMenu
@@ -223,7 +225,7 @@ fun HomeScreen(
                             println("Log Out")
                             userViewModel.logOut()
                             authViewModel.clearAuthState()
-                            navController.navigate(AuthScreen.EmailSignIn.route)
+                            navController.navigate(Graph.AUTHENTICATION)
                         }
 
                         else -> {}
@@ -251,7 +253,27 @@ fun HomeScreen(
                     navController.navigate(ContentNavScreen.MyProfile.route)
                 })
             } else {
-                if (currentRoute(navController = navController) == ContentNavScreen.MyProfile.route) {
+                if (currentRoute(navController = navController) == AuthScreen.EmailRegistration.route) {
+                    AppBarWithArrow(
+                        scrollBehavior = scrollBehavior,
+                        title = "Sign Up",
+                        titleColor = Color.Black,
+                        topBarColor = Color.White,
+                        backBtnColor = Color.Black
+                    ) {
+                        navController.popBackStack()
+                    }
+                } else if (currentRoute(navController = navController) == AuthScreen.ForgotPassword.route) {
+                    AppBarWithArrow(
+                        scrollBehavior = scrollBehavior,
+                        title = "Forgot Password",
+                        titleColor = Color.Black,
+                        topBarColor = Color.White,
+                        backBtnColor = Color.Black
+                    ) {
+                        navController.popBackStack()
+                    }
+                } else if (currentRoute(navController = navController) == ContentNavScreen.MyProfile.route) {
                     AppBarWithArrow(
                         scrollBehavior = scrollBehavior, title = "My Profile"
                     ) {

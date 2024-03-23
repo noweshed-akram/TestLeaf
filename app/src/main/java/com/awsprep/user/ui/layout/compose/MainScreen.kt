@@ -9,6 +9,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import com.awsprep.user.navigation.AuthScreen
 import com.awsprep.user.navigation.currentRoute
@@ -39,10 +40,23 @@ fun MainScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            if (currentRoute(navController = navController) == AuthScreen.ForgotPassword.route) {
+            if (currentRoute(navController = navController) == AuthScreen.EmailRegistration.route) {
                 AppBarWithArrow(
                     scrollBehavior = scrollBehavior,
-                    title = "Forgot Password"
+                    title = "Sign Up",
+                    titleColor = Color.Black,
+                    topBarColor = Color.White,
+                    backBtnColor = Color.Black
+                ) {
+                    navController.popBackStack()
+                }
+            } else if (currentRoute(navController = navController) == AuthScreen.ForgotPassword.route) {
+                AppBarWithArrow(
+                    scrollBehavior = scrollBehavior,
+                    title = "Forgot Password",
+                    titleColor = Color.Black,
+                    topBarColor = Color.White,
+                    backBtnColor = Color.Black
                 ) {
                     navController.popBackStack()
                 }
