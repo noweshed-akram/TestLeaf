@@ -3,6 +3,7 @@ package com.awsprep.user.ui.layout.compose
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -30,8 +31,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -39,6 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.TestResult
 import com.awsprep.user.ui.component.BarChartView
@@ -60,7 +64,8 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 fun MyProfileScreen(
     userViewModel: UserViewModel,
     onEditBtnClick: () -> Unit,
-    onDashboardBtnClick: () -> Unit
+    onDashboardBtnClick: () -> Unit,
+    onClickSubs: () -> Unit
 ) {
 
     var inputName by rememberSaveable { mutableStateOf("") }
@@ -135,6 +140,16 @@ fun MyProfileScreen(
 
         Spacer(modifier = Modifier.height(12.dp))
 
+        Text(
+            text = "Profile",
+            fontFamily = publicSansFamily,
+            fontWeight = FontWeight.Bold,
+            fontSize = 22.sp,
+            color = Color.Black
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
         Row(
             modifier = Modifier.background(
                 color = ColorAccent,
@@ -193,7 +208,79 @@ fun MyProfileScreen(
 
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = "Subscription",
+            fontFamily = publicSansFamily,
+            fontWeight = FontWeight.Bold,
+            fontSize = 22.sp,
+            color = Color.Black
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Row(
+            modifier = Modifier
+                .background(
+                    color = ColorAccent,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .clickable {
+                    onClickSubs()
+                },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            AsyncImage(
+                model = "",
+                contentDescription = "Profile picture",
+                modifier = Modifier
+                    .size(72.dp)
+                    .padding(8.dp)
+                    .clip(CircleShape)
+                    .border(1.dp, PrimaryColor, CircleShape),
+                contentScale = ContentScale.Inside,
+                error = painterResource(id = R.drawable.ic_person_plus)
+            )
+
+            Column(
+                modifier = Modifier.weight(1.0f)
+            ) {
+                Text(
+                    text = "Become A Pro Member",
+                    fontFamily = publicSansFamily,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp,
+                    color = Color.Black
+                )
+
+                Text(
+                    text = "Unlock advanced feature & more...",
+                    fontFamily = publicSansFamily,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.sp,
+                    color = Color.Black
+                )
+            }
+
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data("")
+                    .crossfade(true)
+                    .build(),
+                contentDescription = "",
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .size(48.dp)
+                    .padding(8.dp),
+                error = painterResource(id = R.drawable.ic_arrow_forward),
+                colorFilter = ColorFilter.tint(color = PrimaryColor)
+            )
+
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
 
         Text(
             text = "Test Summary",
@@ -203,7 +290,7 @@ fun MyProfileScreen(
             color = Color.Black
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         Box(
             modifier = Modifier

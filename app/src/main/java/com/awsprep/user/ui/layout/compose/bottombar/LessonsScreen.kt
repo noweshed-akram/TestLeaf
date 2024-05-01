@@ -3,7 +3,9 @@ package com.awsprep.user.ui.layout.compose.bottombar
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -45,8 +47,10 @@ fun LessonsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(12.dp)
+            .padding(horizontal = 12.dp)
     ) {
+
+        Spacer(modifier = Modifier.height(12.dp))
 
         if (questionList.isNotEmpty()) {
             SwipeRefresh(
@@ -75,6 +79,10 @@ fun LessonsScreen(
                 onCardClick = {}
             )
         }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+
 
     }
 

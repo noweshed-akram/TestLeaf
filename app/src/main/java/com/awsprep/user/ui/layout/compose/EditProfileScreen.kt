@@ -37,15 +37,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.User
 import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.SecondaryColor
+import com.awsprep.user.ui.theme.publicSansFamily
 import com.awsprep.user.viewmodel.UserViewModel
 import com.google.modernstorage.photopicker.PhotoPicker
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
@@ -112,60 +116,76 @@ fun EditProfileScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(12.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalArrangement = Arrangement.Center
     ) {
 
-        Box(modifier = Modifier.size(132.dp)) {
-            AsyncImage(
-                model = if (selectedImageUri != null) selectedImageUri else imageUrl,
-                contentDescription = "Profile picture",
-                modifier = Modifier
-                    .size(120.dp)
-                    .clip(CircleShape)
-                    .border(4.dp, SecondaryColor, CircleShape),
-                contentScale = ContentScale.Crop,
-                error = painterResource(id = R.drawable.ic_person)
-            )
-
-            IconButton(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .align(Alignment.BottomEnd),
-                onClick = {
-                    photoPicker.launch(
-                        PhotoPicker.Args(
-                            PhotoPicker.Type.IMAGES_ONLY,
-                            1
-                        )
-                    )
-                }) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_photo_camera),
-                    contentDescription = "edit_profile",
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            Box(
+                modifier = Modifier.size(132.dp)
+            ) {
+                AsyncImage(
+                    model = if (selectedImageUri != null) selectedImageUri else imageUrl,
+                    contentDescription = "Profile picture",
                     modifier = Modifier
-                        .size(40.dp)
-                        .background(SecondaryColor, CircleShape)
-                        .padding(8.dp),
-                    tint = Color.White
+                        .size(120.dp)
+                        .clip(CircleShape)
+                        .border(4.dp, SecondaryColor, CircleShape),
+                    contentScale = ContentScale.Crop,
+                    error = painterResource(id = R.drawable.ic_person)
                 )
+
+                IconButton(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .align(Alignment.BottomEnd),
+                    onClick = {
+                        photoPicker.launch(
+                            PhotoPicker.Args(
+                                PhotoPicker.Type.IMAGES_ONLY,
+                                1
+                            )
+                        )
+                    }) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_photo_camera),
+                        contentDescription = "edit_profile",
+                        modifier = Modifier
+                            .size(40.dp)
+                            .background(SecondaryColor, CircleShape)
+                            .padding(8.dp),
+                        tint = Color.White
+                    )
+                }
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        Text(
+            text = "User Name",
+            textAlign = TextAlign.Start,
+            fontFamily = publicSansFamily,
+            fontWeight = FontWeight.Normal,
+            fontSize = 12.sp
+        )
+
+        Spacer(modifier = Modifier.height(6.dp))
+
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = inputName,
-            label = {
-                Text(text = "User Name")
-            },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_person),
-                    contentDescription = "name"
-                )
-            },
+//            label = {
+//                Text(text = "User Name")
+//            },
+//            leadingIcon = {
+//                Icon(
+//                    painter = painterResource(id = R.drawable.ic_person),
+//                    contentDescription = "name"
+//                )
+//            },
             onValueChange = { value ->
                 inputName = value
             },
@@ -179,20 +199,30 @@ fun EditProfileScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        Text(
+            text = "Email",
+            textAlign = TextAlign.Start,
+            fontFamily = publicSansFamily,
+            fontWeight = FontWeight.Normal,
+            fontSize = 12.sp
+        )
+
+        Spacer(modifier = Modifier.height(6.dp))
+
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             readOnly = true,
             enabled = false,
             value = inputEmail,
-            label = {
-                Text(text = "Email")
-            },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_email),
-                    contentDescription = "email"
-                )
-            },
+//            label = {
+//                Text(text = "Email")
+//            },
+//            leadingIcon = {
+//                Icon(
+//                    painter = painterResource(id = R.drawable.ic_email),
+//                    contentDescription = "email"
+//                )
+//            },
             onValueChange = { value ->
                 inputEmail = value
             },
@@ -206,18 +236,28 @@ fun EditProfileScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        Text(
+            text = "Phone",
+            textAlign = TextAlign.Start,
+            fontFamily = publicSansFamily,
+            fontWeight = FontWeight.Normal,
+            fontSize = 12.sp
+        )
+
+        Spacer(modifier = Modifier.height(6.dp))
+
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = inputPhone,
-            label = {
-                Text(text = "Phone")
-            },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_phone),
-                    contentDescription = "phone"
-                )
-            },
+//            label = {
+//                Text(text = "Phone")
+//            },
+//            leadingIcon = {
+//                Icon(
+//                    painter = painterResource(id = R.drawable.ic_phone),
+//                    contentDescription = "phone"
+//                )
+//            },
             onValueChange = { value ->
                 inputPhone = value
             },
@@ -231,18 +271,28 @@ fun EditProfileScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        Text(
+            text = "Address",
+            textAlign = TextAlign.Start,
+            fontFamily = publicSansFamily,
+            fontWeight = FontWeight.Normal,
+            fontSize = 12.sp
+        )
+
+        Spacer(modifier = Modifier.height(6.dp))
+
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = inputAddress,
-            label = {
-                Text(text = "Address")
-            },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_flag),
-                    contentDescription = "address"
-                )
-            },
+//            label = {
+//                Text(text = "Address")
+//            },
+//            leadingIcon = {
+//                Icon(
+//                    painter = painterResource(id = R.drawable.ic_flag),
+//                    contentDescription = "address"
+//                )
+//            },
             onValueChange = { value ->
                 inputAddress = value
             },

@@ -60,4 +60,6 @@ sealed class ContentNavScreen(
 
     object SubscribePage : ContentNavScreen(route = "subscribe_page")
 
+    object VideoLecture : ContentNavScreen(route = "video_lec_page")
+
 }

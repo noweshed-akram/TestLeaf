@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.awsprep.user.R
@@ -41,6 +42,7 @@ import com.awsprep.user.ui.theme.ColorAccent
 import com.awsprep.user.ui.theme.GreyColor
 import com.awsprep.user.ui.theme.PrimaryColor
 import com.awsprep.user.ui.theme.SecondaryColor
+import com.awsprep.user.ui.theme.publicSansFamily
 
 /**
  * Created by Md. Noweshed Akram on 9/12/23.
@@ -104,7 +106,10 @@ fun AlertDialog(
                         modifier = Modifier
                             .padding(top = 5.dp)
                             .fillMaxWidth(),
-                        style = MaterialTheme.typography.labelLarge,
+                        fontFamily = publicSansFamily,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 22.sp,
+                        color = Color.Black,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -114,7 +119,10 @@ fun AlertDialog(
                         modifier = Modifier
                             .padding(top = 10.dp, start = 25.dp, end = 25.dp)
                             .fillMaxWidth(),
-                        style = MaterialTheme.typography.bodyMedium
+                        fontFamily = publicSansFamily,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 14.sp,
+                        color = Color.Black,
                     )
                 }
                 //.......................................................................
@@ -136,7 +144,9 @@ fun AlertDialog(
 
                         Text(
                             "Not Now",
-                            fontWeight = FontWeight.Bold,
+                            fontFamily = publicSansFamily,
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 14.sp,
                             color = Color.Red,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                         )
@@ -160,7 +170,9 @@ fun AlertDialog(
                         }) {
                         Text(
                             "Yes",
-                            fontWeight = FontWeight.ExtraBold,
+                            fontFamily = publicSansFamily,
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 14.sp,
                             color = SecondaryColor,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
                         )

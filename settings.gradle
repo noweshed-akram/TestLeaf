@@ -13,5 +13,5 @@ dependencyResolutionManagement {
         maven { url 'https://jitpack.io' }
     }
 }
-rootProject.name = "AwsPrepV2"
+rootProject.name = "TestPrepV2"
 include ':app'

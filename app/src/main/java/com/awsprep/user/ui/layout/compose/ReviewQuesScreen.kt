@@ -105,8 +105,8 @@ fun ReviewQuesScreen(
         } else {
             InfoBannerCard(
                 icon = R.drawable.ic_question_mark,
-                titleText = "No question found",
-                infoText = "You can add review questions during Test",
+                titleText = "No question found!",
+                infoText = "You don't have any question to review.\nYou can add review question while you participate\na test",
                 strokeColor = StrokeColor,
                 bgColor = WhiteColor,
                 onCardClick = {}

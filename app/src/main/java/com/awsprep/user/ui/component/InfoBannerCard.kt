@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -56,7 +57,7 @@ fun InfoBannerCard(
                 shape = RoundedCornerShape(size = 8.dp)
             )
             .fillMaxWidth()
-            .height(200.dp)
+            .wrapContentHeight()
             .clickable {
                 onCardClick()
             },
@@ -70,6 +71,8 @@ fun InfoBannerCard(
             verticalArrangement = Arrangement.Center
         )
         {
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             Image(
                 imageVector = ImageVector.vectorResource(id = icon),
@@ -88,7 +91,7 @@ fun InfoBannerCard(
                 style = TextStyle(
                     fontFamily = publicSansFamily,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 32.sp,
+                    fontSize = 24.sp,
                     color = Color.Black,
                 )
             )
@@ -101,11 +104,13 @@ fun InfoBannerCard(
                 style = TextStyle(
                     fontFamily = publicSansFamily,
                     fontWeight = FontWeight.Light,
-                    fontSize = 12.sp,
+                    fontSize = 14.sp,
                     color = GreyColor,
                 ),
                 textAlign = TextAlign.Center
             )
+
+            Spacer(modifier = Modifier.height(12.dp))
 
         }
     }

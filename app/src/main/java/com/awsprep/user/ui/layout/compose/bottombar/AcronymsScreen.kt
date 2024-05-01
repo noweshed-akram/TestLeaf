@@ -127,8 +127,10 @@ fun AcronymsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(12.dp)
+            .padding(horizontal = 12.dp)
     ) {
+
+        Spacer(modifier = Modifier.height(12.dp))
 
         if (acronymList.isNotEmpty()) {
             SwipeRefresh(
@@ -247,6 +249,8 @@ fun AcronymsScreen(
                 onCardClick = {}
             )
         }
+
+        Spacer(modifier = Modifier.height(12.dp))
 
     }
 

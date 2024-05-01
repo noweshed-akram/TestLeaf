@@ -127,8 +127,10 @@ fun DefinitionScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(12.dp)
+            .padding(horizontal = 12.dp)
     ) {
+
+        Spacer(modifier = Modifier.height(12.dp))
 
         if (definitionList.isNotEmpty()) {
             SwipeRefresh(
@@ -250,6 +252,8 @@ fun DefinitionScreen(
                 onCardClick = {}
             )
         }
+
+        Spacer(modifier = Modifier.height(12.dp))
 
     }
 

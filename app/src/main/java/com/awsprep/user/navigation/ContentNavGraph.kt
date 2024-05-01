@@ -23,6 +23,7 @@ import com.awsprep.user.ui.layout.compose.TestScreen
 import com.awsprep.user.ui.layout.compose.TimerScreen
 import com.awsprep.user.ui.layout.compose.MyProfileScreen
 import com.awsprep.user.ui.layout.compose.SubscribeScreen
+import com.awsprep.user.ui.layout.compose.VideoLectureScreen
 import com.awsprep.user.utils.fromPrettyJson
 import com.awsprep.user.utils.toPrettyJson
 import com.awsprep.user.viewmodel.AsesmntViewModel
@@ -280,6 +281,9 @@ fun NavGraphBuilder.ContentNavGraph(
                 },
                 onDashboardBtnClick = {
                     navController.navigate(ContentNavScreen.ResultDashboard.route)
+                },
+                onClickSubs = {
+                    navController.navigate(ContentNavScreen.SubscribePage.route)
                 }
             )
         }
@@ -291,5 +295,10 @@ fun NavGraphBuilder.ContentNavGraph(
         composable(route = ContentNavScreen.SubscribePage.route) {
             SubscribeScreen(userViewModel = userViewModel)
         }
+
+        composable(route = ContentNavScreen.VideoLecture.route) {
+            VideoLectureScreen()
+        }
+
     }
 }

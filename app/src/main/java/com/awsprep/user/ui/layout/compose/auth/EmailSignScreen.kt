@@ -107,8 +107,10 @@ fun EmailSignScreen(
         verticalArrangement = Arrangement.Center
     ) {
 
-        Box(modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
             Image(
                 modifier = Modifier
                     .background(color = SecondaryColor, shape = CircleShape)

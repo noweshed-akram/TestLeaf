@@ -44,6 +44,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.awsprep.user.R
 import com.awsprep.user.domain.models.SubsFeatures
 import com.awsprep.user.ui.component.PrimaryButton
@@ -257,8 +258,9 @@ fun SubscribeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                text = "Unlock advanced lesson's with more practice's...",
+                text = "Unlock advanced lesson's & more practice's...",
                 style = typography.headlineSmall,
+                fontSize = 22.sp,
                 color = PrimaryColor
             )
 

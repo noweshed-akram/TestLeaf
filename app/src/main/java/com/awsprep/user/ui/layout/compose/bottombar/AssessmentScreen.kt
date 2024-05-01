@@ -152,9 +152,10 @@ fun AssessmentScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(vertical = 12.dp)
             .verticalScroll(scrollState)
     ) {
+
+        Spacer(modifier = Modifier.height(12.dp))
 
         Text(
             modifier = Modifier.padding(horizontal = 12.dp),
@@ -332,6 +333,8 @@ fun AssessmentScreen(
         ) {
             onReviewQuesClick()
         }
+
+        Spacer(modifier = Modifier.height(12.dp))
 
     }
 
