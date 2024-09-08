@@ -168,6 +168,10 @@ dependencies {
     //Image Picker
     implementation 'com.himanshoe:pluck:1.0.0-RC2'
     implementation 'com.google.modernstorage:modernstorage-photopicker:1.0.0-alpha06'
+
+    //media player
+    implementation("androidx.media3:media3-exoplayer:1.2.0")
+    implementation("androidx.media3:media3-ui:1.2.0")
 }
 
 kapt {
