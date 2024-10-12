@@ -8,6 +8,7 @@ import com.awsprep.user.ui.layout.compose.auth.CheckEmailScreen
 import com.awsprep.user.ui.layout.compose.auth.EmailRegisterScreen
 import com.awsprep.user.ui.layout.compose.auth.EmailSignScreen
 import com.awsprep.user.ui.layout.compose.auth.ForgotPasswordScreen
+import com.awsprep.user.viewmodel.ApiViewModel
 import com.awsprep.user.viewmodel.AuthViewModel
 
 /**
@@ -17,7 +18,8 @@ fun NavGraphBuilder.AuthNavGraph(
     navController: NavHostController,
     route: String = Graph.AUTHENTICATION,
     startDestination: String = AuthScreen.EmailSignIn.route,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    apiViewModel: ApiViewModel
 ) {
     navigation(
         route = route,
@@ -27,6 +29,7 @@ fun NavGraphBuilder.AuthNavGraph(
         composable(route = AuthScreen.EmailSignIn.route) {
             EmailSignScreen(
                 authViewModel = authViewModel,
+                apiViewModel = apiViewModel,
                 onSuccessLogin = {
                     navController.navigate(Graph.HOME)
                 },

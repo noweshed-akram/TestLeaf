@@ -58,6 +58,7 @@ import com.awsprep.user.ui.component.HomeTopView
 import com.awsprep.user.ui.theme.StrokeColor
 import com.awsprep.user.utils.openContentLink
 import com.awsprep.user.utils.shareApp
+import com.awsprep.user.viewmodel.ApiViewModel
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.AuthViewModel
 import com.awsprep.user.viewmodel.EntityViewModel
@@ -75,6 +76,7 @@ fun HomeScreen(
     scrollBehavior: TopAppBarScrollBehavior,
     navController: NavHostController = rememberNavController(),
     authViewModel: AuthViewModel,
+    apiViewModel: ApiViewModel,
     userViewModel: UserViewModel,
     asesmntViewModel: AsesmntViewModel,
     quesViewModel: QuesViewModel,
@@ -420,6 +422,7 @@ fun HomeScreen(
                     navController = navController,
                     startDestination = BottomNavScreen.Assessment.route,
                     authViewModel = authViewModel,
+                    apiViewModel = apiViewModel,
                     userViewModel = userViewModel,
                     asesmntViewModel = asesmntViewModel,
                     quesViewModel = quesViewModel,

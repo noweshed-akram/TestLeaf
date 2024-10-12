@@ -50,13 +50,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.awsprep.user.R
+import com.awsprep.user.data.remote.model.req.LoginReq
 import com.awsprep.user.ui.component.PrimaryButton
 import com.awsprep.user.ui.component.ProgressBar
 import com.awsprep.user.ui.theme.SecondaryColor
 import com.awsprep.user.ui.theme.publicSansFamily
+import com.awsprep.user.viewmodel.ApiViewModel
 import com.awsprep.user.viewmodel.AuthViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetError
-import kotlinx.coroutines.launch
 
 /**
  * Created by noweshedakram on 17/7/23.
@@ -64,6 +65,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun EmailSignScreen(
     authViewModel: AuthViewModel,
+    apiViewModel: ApiViewModel,
     onSuccessLogin: () -> Unit,
     onResetBtnClick: () -> Unit,
     onNavigateToRegister: () -> Unit
@@ -79,26 +81,46 @@ fun EmailSignScreen(
     var showError by rememberSaveable { mutableStateOf(false) }
     var errorMsg by rememberSaveable { mutableStateOf("") }
 
-    LaunchedEffect(key1 = true) {
-        coroutineScope.launch {
-            authViewModel.firebaseUser.collect {
-                if (it.isLoading) {
-                    showProgress = true
-                    Log.d("EmailSignScreen: ", "Loading")
-                }
-                if (it.error.isNotBlank()) {
-                    showProgress = false
-                    showError = true
-                    errorMsg = it.error
-                    Log.d("EmailSignScreen: ", it.error)
-                }
-                it.data?.let {
-                    showProgress = false
-                    onSuccessLogin()
-                }
+    LaunchedEffect(key1 = apiViewModel.authResponse) {
+        apiViewModel.authResponse.collect {
+            if (it.isLoading) {
+                showProgress = true
+                Log.d("EmailSignScreen: ", "Loading")
+            }
+            if (it.error.isNotBlank()) {
+                showProgress = false
+                showError = true
+                errorMsg = it.error
+                Log.d("EmailSignScreen: ", it.error)
+            }
+            it.data?.let {
+                showProgress = false
+                Log.d("EmailSignScreen: ", "Login Successful")
+//                onSuccessLogin()
             }
         }
     }
+
+//    LaunchedEffect(key1 = true) {
+//        coroutineScope.launch {
+//            authViewModel.firebaseUser.collect {
+//                if (it.isLoading) {
+//                    showProgress = true
+//                    Log.d("EmailSignScreen: ", "Loading")
+//                }
+//                if (it.error.isNotBlank()) {
+//                    showProgress = false
+//                    showError = true
+//                    errorMsg = it.error
+//                    Log.d("EmailSignScreen: ", it.error)
+//                }
+//                it.data?.let {
+//                    showProgress = false
+//                    onSuccessLogin()
+//                }
+//            }
+//        }
+//    }
 
     Column(
         modifier = Modifier
@@ -286,7 +308,13 @@ fun EmailSignScreen(
             onClick = {
                 if (inputEmail.isNotEmpty() && inputPassword.isNotEmpty()) {
                     Log.d("EmailSignScreen: ", "Click Login Button")
-                    authViewModel.signInWithEmailAndPassword(inputEmail, inputPassword)
+                    apiViewModel.userLogin(
+                        LoginReq(
+                            email = inputEmail,
+                            password = inputPassword
+                        )
+                    )
+//                    authViewModel.signInWithEmailAndPassword(inputEmail, inputPassword)
                 } else {
                     showError = true
                     errorMsg = "Please Fill the required filed"

@@ -16,6 +16,7 @@ import com.awsprep.user.navigation.currentRoute
 import com.awsprep.user.navigation.Graph
 import com.awsprep.user.navigation.RootNavGraph
 import com.awsprep.user.ui.component.AppBarWithArrow
+import com.awsprep.user.viewmodel.ApiViewModel
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.AuthViewModel
 import com.awsprep.user.viewmodel.EntityViewModel
@@ -31,6 +32,7 @@ fun MainScreen(
     scrollBehavior: TopAppBarScrollBehavior,
     navController: NavHostController,
     authViewModel: AuthViewModel,
+    apiViewModel: ApiViewModel,
     userViewModel: UserViewModel,
     asesmntViewModel: AsesmntViewModel,
     quesViewModel: QuesViewModel,
@@ -79,6 +81,7 @@ fun MainScreen(
                 navController = navController,
                 startDestination = startDestination,
                 authViewModel = authViewModel,
+                apiViewModel = apiViewModel,
                 userViewModel = userViewModel,
                 asesmntViewModel = asesmntViewModel,
                 quesViewModel = quesViewModel,

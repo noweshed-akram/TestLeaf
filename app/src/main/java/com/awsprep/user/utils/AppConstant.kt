@@ -5,6 +5,9 @@ package com.awsprep.user.utils
  */
 object AppConstant {
 
+    var BASE_URL = "https://testprep.noweshed.com"
+    var AUTH_TOKEN = ""
+
     // -------------- Notification ---------------
     const val NOTIFICATION_CHANNEL_ID = "notification_channel"
     const val NOTIFICATION_CHANNEL_NAME = "com.awsprep.pushnotification"

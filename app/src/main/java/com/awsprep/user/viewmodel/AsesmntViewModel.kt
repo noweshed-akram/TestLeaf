@@ -4,13 +4,10 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.awsprep.user.domain.models.Acronyms
-import com.awsprep.user.domain.models.Definition
 import com.awsprep.user.domain.models.ResponseState
 import com.awsprep.user.domain.usecase.AsesmntUseCase
 import com.awsprep.user.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn

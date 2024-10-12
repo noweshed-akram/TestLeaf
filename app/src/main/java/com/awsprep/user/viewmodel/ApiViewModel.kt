@@ -1,0 +1,63 @@
+package com.awsprep.user.viewmodel
+
+import android.app.Application
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.awsprep.user.data.remote.model.req.LoginReq
+import com.awsprep.user.domain.models.ResponseState
+import com.awsprep.user.domain.usecase.ApiUseCase
+import com.awsprep.user.utils.Resource
+import com.google.gson.Gson
+import com.google.gson.JsonParser
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+/**
+ * Created by Noweshed on 12/10/24.
+ */
+@HiltViewModel
+class ApiViewModel @Inject constructor(
+    private val app: Application,
+    private val apiUseCase: ApiUseCase
+) : AndroidViewModel(app) {
+
+    private val _authResponse = MutableStateFlow(ResponseState())
+    val authResponse: StateFlow<ResponseState> = _authResponse
+
+    fun userLogin(loginReq: LoginReq) {
+        val gson = Gson()
+        val json = gson.toJson(loginReq)
+        val authInfo = JsonParser.parseString(json).asJsonObject
+
+        Log.d("ApiViewModel: Login Function Called with", authInfo.toString())
+
+        viewModelScope.launch {
+            apiUseCase.userLogin(authInfo).onEach {
+                when (it) {
+                    is Resource.Loading -> {
+                        Log.d("ApiViewModel: ", "loading")
+                        _authResponse.value = ResponseState(isLoading = true)
+                    }
+
+                    is Resource.Error -> {
+                        Log.d("ApiViewModel: error", it.message.toString())
+                        _authResponse.value = ResponseState(error = it.message ?: "")
+                    }
+
+                    is Resource.Success -> {
+                        Log.d("ApiViewModel: success", it.data.toString())
+                        _authResponse.value = ResponseState(data = it.data)
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
+
+    }
+
+}

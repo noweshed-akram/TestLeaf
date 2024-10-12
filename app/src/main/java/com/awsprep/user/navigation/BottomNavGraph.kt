@@ -11,6 +11,7 @@ import com.awsprep.user.ui.layout.compose.bottombar.AssessmentScreen
 import com.awsprep.user.ui.layout.compose.bottombar.DefinitionScreen
 import com.awsprep.user.ui.layout.compose.bottombar.LessonsScreen
 import com.awsprep.user.utils.toPrettyJson
+import com.awsprep.user.viewmodel.ApiViewModel
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.AuthViewModel
 import com.awsprep.user.viewmodel.EntityViewModel
@@ -26,6 +27,7 @@ fun BottomNavigation(
     navController: NavHostController = rememberNavController(),
     startDestination: String = BottomNavScreen.Assessment.route,
     authViewModel: AuthViewModel,
+    apiViewModel: ApiViewModel,
     userViewModel: UserViewModel,
     asesmntViewModel: AsesmntViewModel,
     quesViewModel: QuesViewModel,
@@ -104,7 +106,8 @@ fun BottomNavigation(
 
         AuthNavGraph(
             navController = navController,
-            authViewModel = authViewModel
+            authViewModel = authViewModel,
+            apiViewModel = apiViewModel
         )
     }
 }

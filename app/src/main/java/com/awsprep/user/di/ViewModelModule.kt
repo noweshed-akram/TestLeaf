@@ -1,11 +1,13 @@
 package com.awsprep.user.di
 
 import android.app.Application
+import com.awsprep.user.domain.usecase.ApiUseCase
 import com.awsprep.user.domain.usecase.AsesmntUseCase
 import com.awsprep.user.domain.usecase.AuthUseCase
 import com.awsprep.user.domain.usecase.EntityUseCase
 import com.awsprep.user.domain.usecase.QuesUseCase
 import com.awsprep.user.domain.usecase.UserUseCase
+import com.awsprep.user.viewmodel.ApiViewModel
 import com.awsprep.user.viewmodel.AsesmntViewModel
 import com.awsprep.user.viewmodel.AuthViewModel
 import com.awsprep.user.viewmodel.EntityViewModel
@@ -67,6 +69,15 @@ object ViewModelModule {
         entityUseCase: EntityUseCase
     ): EntityViewModel {
         return EntityViewModel(app, entityUseCase)
+    }
+
+    @Singleton
+    @Provides
+    fun providesApiViewModel(
+        app: Application,
+        apiUseCase: ApiUseCase
+    ): ApiViewModel {
+        return ApiViewModel(app, apiUseCase)
     }
 
 }
