@@ -1,21 +1,22 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.plugin.compose'
     id 'com.google.dagger.hilt.android'
     id 'com.google.gms.google-services'
     id 'kotlin-kapt'
 }
 
 android {
-    namespace 'com.awsprep.user'
+    namespace 'com.testleaf.user'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.awsprep.user"
+        applicationId "com.testleaf.user"
         minSdk 26
         targetSdk 34
         versionCode 1
-        versionName "0.0.56"
+        versionName "0.0.57"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -29,11 +30,11 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-//        debug {
-//            minifyEnabled true
-//            shrinkResources true
-//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-//        }
+        debug {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -57,9 +58,9 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
-    implementation 'androidx.activity:activity-compose:1.8.0'
+    implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.6'
+    implementation 'androidx.activity:activity-compose:1.9.2'
     implementation 'androidx.compose.ui:ui'
     implementation 'androidx.compose.ui:ui-graphics'
     implementation 'androidx.compose.ui:ui-tooling-preview'
@@ -68,8 +69,8 @@ dependencies {
     implementation platform("org.jetbrains.kotlin:kotlin-bom:1.8.0")
 
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     androidTestImplementation platform('androidx.compose:compose-bom:2022.10.00')
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
@@ -88,8 +89,8 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:16.0.0'
 
     // Google maps
-    implementation 'com.google.android.gms:play-services-maps:18.2.0'
-    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'com.google.android.gms:play-services-maps:19.0.0'
+    implementation 'com.google.android.gms:play-services-location:21.3.0'
     implementation 'com.google.maps.android:android-maps-utils:3.8.0'
 
     // retrofit
@@ -115,21 +116,21 @@ dependencies {
     implementation("androidx.room:room-paging:$room_version")
 
     // Kotlin coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
 
     // compose navigation
-    implementation "androidx.navigation:navigation-compose:2.7.4"
-    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
+    implementation "androidx.navigation:navigation-compose:2.8.2"
+    implementation 'androidx.hilt:hilt-navigation-compose:1.2.0'
 
     // Image Slider
     implementation("io.coil-kt:coil-compose:2.4.0")
 
     // hilt
-    implementation "com.google.dagger:hilt-android:2.45"
-    kapt "com.google.dagger:hilt-compiler:2.45"
+    implementation "com.google.dagger:hilt-android:2.51.1"
+    kapt "com.google.dagger:hilt-compiler:2.51.1"
 
     //livedata
-    implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
+    implementation("androidx.compose.runtime:runtime-livedata:1.7.3")
 
     // multidex
     implementation "androidx.multidex:multidex:2.0.1"
@@ -139,7 +140,7 @@ dependencies {
 
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 
-    implementation ("androidx.compose.ui:ui-util:1.5.4")
+    implementation ("androidx.compose.ui:ui-util:1.7.3")
 
     def accompanist_version = "0.28.0"
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version" // Pager
@@ -153,10 +154,10 @@ dependencies {
     implementation "androidx.core:core-splashscreen:1.0.1"
 
     //view model
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6"
 
     //icon
-    implementation "androidx.compose.material:material-icons-extended:1.5.4"
+    implementation "androidx.compose.material:material-icons-extended:1.7.3"
 
     implementation "com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.0.7"
 
@@ -170,8 +171,8 @@ dependencies {
     implementation 'com.google.modernstorage:modernstorage-photopicker:1.0.0-alpha06'
 
     //media player
-    implementation("androidx.media3:media3-exoplayer:1.2.0")
-    implementation("androidx.media3:media3-ui:1.2.0")
+    implementation("androidx.media3:media3-exoplayer:1.4.1")
+    implementation("androidx.media3:media3-ui:1.4.1")
 }
 
 kapt {
