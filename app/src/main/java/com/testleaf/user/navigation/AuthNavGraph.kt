@@ -28,7 +28,6 @@ fun NavGraphBuilder.AuthNavGraph(
 
         composable(route = AuthScreen.EmailSignIn.route) {
             EmailSignScreen(
-                authViewModel = authViewModel,
                 apiViewModel = apiViewModel,
                 onSuccessLogin = {
                     navController.navigate(Graph.HOME)
@@ -61,6 +60,7 @@ fun NavGraphBuilder.AuthNavGraph(
 
         composable(route = AuthScreen.EmailRegistration.route) {
             EmailRegisterScreen(
+                apiViewModel = apiViewModel,
                 authViewModel = authViewModel,
                 onSuccessRegister = {
                     navController.navigate(Graph.HOME)

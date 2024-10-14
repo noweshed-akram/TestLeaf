@@ -16,21 +16,21 @@ import com.testleaf.user.data.local.entity.TestEntity
     exportSchema = false,
     version = 1
 )
-abstract class TestPrepDb : RoomDatabase() {
+abstract class TestLeafDb : RoomDatabase() {
 
     abstract fun entityDao(): EntityDao
 
     companion object {
 
         @Volatile
-        private var INSTANCE: TestPrepDb? = null
+        private var INSTANCE: TestLeafDb? = null
 
-        fun getDatabase(context: Context): TestPrepDb {
+        fun getDatabase(context: Context): TestLeafDb {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    TestPrepDb::class.java,
-                    "com.aws.test_prep_db"
+                    TestLeafDb::class.java,
+                    "com.testleaf.db"
                 ).build()
                 INSTANCE = instance
                 instance

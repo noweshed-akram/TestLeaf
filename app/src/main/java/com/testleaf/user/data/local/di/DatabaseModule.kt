@@ -2,7 +2,7 @@ package com.testleaf.user.data.local.di
 
 import android.content.Context
 import com.testleaf.user.data.local.dao.EntityDao
-import com.testleaf.user.data.local.db.TestPrepDb
+import com.testleaf.user.data.local.db.TestLeafDb
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,14 +20,14 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideAppDatabase(@ApplicationContext context: Context): TestPrepDb {
-        return TestPrepDb.getDatabase(context)
+    fun provideAppDatabase(@ApplicationContext context: Context): TestLeafDb {
+        return TestLeafDb.getDatabase(context)
     }
 
     @Singleton
     @Provides
-    fun providesEntityDao(testPrepDb: TestPrepDb): EntityDao {
-        return testPrepDb.entityDao()
+    fun providesEntityDao(testLeafDb: TestLeafDb): EntityDao {
+        return testLeafDb.entityDao()
     }
 
 }

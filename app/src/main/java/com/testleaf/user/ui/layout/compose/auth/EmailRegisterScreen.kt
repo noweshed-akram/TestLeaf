@@ -38,30 +38,29 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.testleaf.user.domain.models.User
+import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetError
+import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetInfo
+import com.testleaf.user.data.remote.model.req.RegisterReq
 import com.testleaf.user.ui.component.PrimaryButton
 import com.testleaf.user.ui.component.ProgressBar
 import com.testleaf.user.ui.theme.PrimaryColor
 import com.testleaf.user.ui.theme.publicSansFamily
-import com.testleaf.user.utils.AppConstant.DATE_TIME_FORMAT
 import com.testleaf.user.utils.Resource
-import com.testleaf.user.utils.getCurrentDateTime
-import com.testleaf.user.utils.toString
+import com.testleaf.user.viewmodel.ApiViewModel
 import com.testleaf.user.viewmodel.AuthViewModel
-import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetError
-import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetInfo
-import kotlinx.coroutines.launch
 
 /**
  * Created by noweshedakram on 17/7/23.
  */
 @Composable
 fun EmailRegisterScreen(
+    apiViewModel: ApiViewModel,
     authViewModel: AuthViewModel,
     onSuccessRegister: () -> Unit,
     onPressedBackToLogin: () -> Unit
 ) {
 
+    val TAG = "EmailRegisterScreen"
     val coroutineScope = rememberCoroutineScope()
 
     var inputName by rememberSaveable { mutableStateOf("") }
@@ -72,24 +71,22 @@ fun EmailRegisterScreen(
     var showError by rememberSaveable { mutableStateOf(false) }
     var errorMsg by rememberSaveable { mutableStateOf("") }
 
-    LaunchedEffect(key1 = true) {
-        coroutineScope.launch {
-            authViewModel.firebaseUser.collect {
-                if (it.isLoading) {
-                    showProgress = true
-                    Log.d("EmailSignScreen: ", "Loading")
-                }
-                if (it.error.isNotBlank()) {
-                    showProgress = false
-                    showError = true
-                    errorMsg = it.error
-                    Log.d("EmailSignScreen: ", it.error)
-                }
-                it.data?.let {
-                    showProgress = false
-                    authViewModel.sendEmailVerification()
-                    onSuccessRegister()
-                }
+    LaunchedEffect(key1 = apiViewModel.authResponse) {
+        apiViewModel.authResponse.collect {
+            if (it.isLoading) {
+                showProgress = true
+                Log.d(TAG, "Loading")
+            }
+            if (it.error.isNotBlank()) {
+                showProgress = false
+                showError = true
+                errorMsg = it.error
+                Log.d(TAG, it.error)
+            }
+            it.data?.let {
+                showProgress = false
+                Log.d(TAG, "Registration Successful")
+                onSuccessRegister()
             }
         }
     }
@@ -319,12 +316,17 @@ fun EmailRegisterScreen(
         PrimaryButton(
             onClick = {
                 if (inputEmail.isNotEmpty() && inputName.isNotEmpty() && inputPassword.isNotEmpty()) {
-                    authViewModel.signUpWithEmailAndPassword(
-                        inputEmail, inputPassword, user = User(
-                            name = inputName,
-                            email = inputEmail,
-                            createdAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
-                            updatedAt = getCurrentDateTime().toString(DATE_TIME_FORMAT)
+//                    authViewModel.signUpWithEmailAndPassword(
+//                        inputEmail, inputPassword, user = User(
+//                            name = inputName,
+//                            email = inputEmail,
+//                            createdAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
+//                            updatedAt = getCurrentDateTime().toString(DATE_TIME_FORMAT)
+//                        )
+//                    )
+                    apiViewModel.userRegistration(
+                        RegisterReq(
+                            inputName, inputEmail, inputPassword, inputPassword
                         )
                     )
                 } else {

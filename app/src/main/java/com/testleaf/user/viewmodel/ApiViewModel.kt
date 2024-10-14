@@ -10,6 +10,7 @@ import com.testleaf.user.domain.usecase.ApiUseCase
 import com.testleaf.user.utils.Resource
 import com.google.gson.Gson
 import com.google.gson.JsonParser
+import com.testleaf.user.data.remote.model.req.RegisterReq
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,6 +30,36 @@ class ApiViewModel @Inject constructor(
 
     private val _authResponse = MutableStateFlow(ResponseState())
     val authResponse: StateFlow<ResponseState> = _authResponse
+
+
+    fun userRegistration(registerReq: RegisterReq) {
+        val gson = Gson()
+        val json = gson.toJson(registerReq)
+        val authInfo = JsonParser.parseString(json).asJsonObject
+
+        Log.d("ApiViewModel: Login Function Called with", authInfo.toString())
+
+        viewModelScope.launch {
+            apiUseCase.userRegistration(authInfo).onEach {
+                when (it) {
+                    is Resource.Loading -> {
+                        Log.d("ApiViewModel: ", "loading")
+                        _authResponse.value = ResponseState(isLoading = true)
+                    }
+
+                    is Resource.Error -> {
+                        Log.d("ApiViewModel: error", it.message.toString())
+                        _authResponse.value = ResponseState(error = it.message ?: "")
+                    }
+
+                    is Resource.Success -> {
+                        Log.d("ApiViewModel: success", it.data.toString())
+                        _authResponse.value = ResponseState(data = it.data)
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
 
     fun userLogin(loginReq: LoginReq) {
         val gson = Gson()
@@ -57,7 +88,6 @@ class ApiViewModel @Inject constructor(
                 }
             }.launchIn(viewModelScope)
         }
-
     }
 
 }

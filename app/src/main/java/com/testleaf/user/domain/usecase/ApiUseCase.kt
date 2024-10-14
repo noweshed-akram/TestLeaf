@@ -14,7 +14,7 @@ import javax.inject.Inject
 class ApiUseCase @Inject constructor(
     private val apiRepository: ApiRepository
 ) {
-    suspend fun userRegistration(@Body jsonObject: JsonObject): Resource<AuthResponse> {
+    suspend fun userRegistration(@Body jsonObject: JsonObject): Flow<Resource<AuthResponse>> {
         return apiRepository.userRegistration(jsonObject)
     }
 

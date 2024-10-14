@@ -31,9 +31,23 @@ class ApiRepoImpl @Inject constructor(
         return Resource.Error(message = "${response.errorBody()?.string()}")
     }
 
-    override suspend fun userRegistration(jsonObject: JsonObject): Resource<AuthResponse> {
-        return authResponse(apiService.userRegistration(jsonObject))
-    }
+    override suspend fun userRegistration(jsonObject: JsonObject): Flow<Resource<AuthResponse>> =
+        flow {
+            emit(Resource.Loading())
+            try {
+                emit(
+                    authResponse(apiService.userRegistration(jsonObject))
+                )
+            } catch (e: HttpException) {
+                emit(Resource.Error(message = e.localizedMessage ?: "Unknown Error"))
+            } catch (e: IOException) {
+                emit(
+                    Resource.Error(message = e.localizedMessage ?: "Check Your Internet Connection")
+                )
+            } catch (e: Exception) {
+                emit(Resource.Error(message = e.localizedMessage ?: ""))
+            }
+        }
 
     override suspend fun userLogin(jsonObject: JsonObject): Flow<Resource<AuthResponse>> = flow {
         emit(Resource.Loading())

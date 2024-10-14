@@ -49,6 +49,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetError
 import com.testleaf.user.R
 import com.testleaf.user.data.remote.model.req.LoginReq
 import com.testleaf.user.ui.component.PrimaryButton
@@ -56,21 +57,19 @@ import com.testleaf.user.ui.component.ProgressBar
 import com.testleaf.user.ui.theme.SecondaryColor
 import com.testleaf.user.ui.theme.publicSansFamily
 import com.testleaf.user.viewmodel.ApiViewModel
-import com.testleaf.user.viewmodel.AuthViewModel
-import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetError
 
 /**
  * Created by noweshedakram on 17/7/23.
  */
 @Composable
 fun EmailSignScreen(
-    authViewModel: AuthViewModel,
     apiViewModel: ApiViewModel,
     onSuccessLogin: () -> Unit,
     onResetBtnClick: () -> Unit,
     onNavigateToRegister: () -> Unit
 ) {
 
+    val TAG = "EmailSignScreen"
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
@@ -85,42 +84,21 @@ fun EmailSignScreen(
         apiViewModel.authResponse.collect {
             if (it.isLoading) {
                 showProgress = true
-                Log.d("EmailSignScreen: ", "Loading")
+                Log.d(TAG, "Loading")
             }
             if (it.error.isNotBlank()) {
                 showProgress = false
                 showError = true
                 errorMsg = it.error
-                Log.d("EmailSignScreen: ", it.error)
+                Log.d(TAG, it.error)
             }
             it.data?.let {
                 showProgress = false
-                Log.d("EmailSignScreen: ", "Login Successful")
-//                onSuccessLogin()
+                Log.d(TAG, "Login Successful")
+                onSuccessLogin()
             }
         }
     }
-
-//    LaunchedEffect(key1 = true) {
-//        coroutineScope.launch {
-//            authViewModel.firebaseUser.collect {
-//                if (it.isLoading) {
-//                    showProgress = true
-//                    Log.d("EmailSignScreen: ", "Loading")
-//                }
-//                if (it.error.isNotBlank()) {
-//                    showProgress = false
-//                    showError = true
-//                    errorMsg = it.error
-//                    Log.d("EmailSignScreen: ", it.error)
-//                }
-//                it.data?.let {
-//                    showProgress = false
-//                    onSuccessLogin()
-//                }
-//            }
-//        }
-//    }
 
     Column(
         modifier = Modifier
@@ -314,7 +292,6 @@ fun EmailSignScreen(
                             password = inputPassword
                         )
                     )
-//                    authViewModel.signInWithEmailAndPassword(inputEmail, inputPassword)
                 } else {
                     showError = true
                     errorMsg = "Please Fill the required filed"
@@ -366,7 +343,7 @@ fun EmailSignScreen(
 @Composable
 fun EmailSignScreenPreview() {
 //    EmailSignScreen(
-//        authViewModel = ,
+//        apiViewModel = ,
 //        onSuccessLogin = { },
 //        onResetBtnClick = { },
 //        onNavigateToRegister = { }

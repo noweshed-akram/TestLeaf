@@ -12,7 +12,7 @@ import retrofit2.http.Body
  */
 interface ApiRepository {
 
-    suspend fun userRegistration(@Body jsonObject: JsonObject): Resource<AuthResponse>
+    suspend fun userRegistration(@Body jsonObject: JsonObject): Flow<Resource<AuthResponse>>
 
     suspend fun userLogin(@Body jsonObject: JsonObject): Flow<Resource<AuthResponse>>
 
