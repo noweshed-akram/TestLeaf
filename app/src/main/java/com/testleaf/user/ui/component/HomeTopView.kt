@@ -117,7 +117,7 @@ fun HomeTopView(
                     model = userImage,
                     contentDescription = "Profile picture",
                     modifier = Modifier
-                        .size(40.dp)
+                        .size(32.dp)
                         .padding(4.dp)
                         .clip(CircleShape)
                         .border(1.dp, Color.White, CircleShape),

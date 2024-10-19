@@ -107,7 +107,8 @@ fun BottomNavigation(
         AuthNavGraph(
             navController = navController,
             authViewModel = authViewModel,
-            apiViewModel = apiViewModel
+            apiViewModel = apiViewModel,
+            entityViewModel = entityViewModel
         )
     }
 }

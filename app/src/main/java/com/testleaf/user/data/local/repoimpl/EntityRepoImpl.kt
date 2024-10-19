@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.testleaf.user.data.local.dao.EntityDao
 import com.testleaf.user.data.local.entity.NotificationEntity
 import com.testleaf.user.data.local.entity.TestEntity
+import com.testleaf.user.data.local.entity.UserEntity
 import com.testleaf.user.domain.repositories.EntityRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -14,6 +15,14 @@ import javax.inject.Inject
 class EntityRepoImpl @Inject constructor(
     private val entityDao: EntityDao
 ) : EntityRepository {
+
+    override suspend fun insertUserData(userEntity: UserEntity) {
+        entityDao.insertUserData(userEntity)
+    }
+
+    override fun getUserData(): Flow<UserEntity> {
+        return entityDao.getUserData()
+    }
 
     override suspend fun insertTestData(testEntity: TestEntity) {
         entityDao.insertTestData(testEntity)

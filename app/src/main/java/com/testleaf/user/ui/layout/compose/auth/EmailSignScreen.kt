@@ -49,14 +49,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.talhafaki.composablesweettoast.util.SweetToastUtil
 import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetError
 import com.testleaf.user.R
+import com.testleaf.user.data.local.entity.UserEntity
 import com.testleaf.user.data.remote.model.req.LoginReq
+import com.testleaf.user.data.remote.model.response.AuthResponse
 import com.testleaf.user.ui.component.PrimaryButton
 import com.testleaf.user.ui.component.ProgressBar
 import com.testleaf.user.ui.theme.SecondaryColor
 import com.testleaf.user.ui.theme.publicSansFamily
+import com.testleaf.user.utils.checkStringIsNull
+import com.testleaf.user.utils.fromPrettyJson
+import com.testleaf.user.utils.toPrettyJson
 import com.testleaf.user.viewmodel.ApiViewModel
+import com.testleaf.user.viewmodel.EntityViewModel
 
 /**
  * Created by noweshedakram on 17/7/23.
@@ -64,6 +71,7 @@ import com.testleaf.user.viewmodel.ApiViewModel
 @Composable
 fun EmailSignScreen(
     apiViewModel: ApiViewModel,
+    entityViewModel: EntityViewModel,
     onSuccessLogin: () -> Unit,
     onResetBtnClick: () -> Unit,
     onNavigateToRegister: () -> Unit
@@ -79,9 +87,11 @@ fun EmailSignScreen(
     var showProgress by rememberSaveable { mutableStateOf(false) }
     var showError by rememberSaveable { mutableStateOf(false) }
     var errorMsg by rememberSaveable { mutableStateOf("") }
+    var showSuccess by rememberSaveable { mutableStateOf(false) }
+    var successMsg by rememberSaveable { mutableStateOf("") }
 
-    LaunchedEffect(key1 = apiViewModel.authResponse) {
-        apiViewModel.authResponse.collect {
+    LaunchedEffect(key1 = apiViewModel.loginResponse) {
+        apiViewModel.loginResponse.collect {
             if (it.isLoading) {
                 showProgress = true
                 Log.d(TAG, "Loading")
@@ -94,7 +104,29 @@ fun EmailSignScreen(
             }
             it.data?.let {
                 showProgress = false
+                val userData = it.toPrettyJson().fromPrettyJson<AuthResponse>().data
                 Log.d(TAG, "Login Successful")
+                showSuccess = true
+                successMsg = "Login Successful"
+                entityViewModel.insertUserData(
+                    UserEntity(
+                        userId = userData?.userDetails?.id!!,
+                        name = checkStringIsNull(userData.userDetails?.profile?.name!!),
+                        email = checkStringIsNull(userData.userDetails?.email!!),
+                        isEmailVerified = 0,
+                        countryCode = checkStringIsNull(userData.userDetails?.profile?.countryCode),
+                        phoneNumber = checkStringIsNull(userData.userDetails?.profile?.phoneNumber),
+                        birthDate = checkStringIsNull(userData.userDetails?.profile?.birthDate),
+                        gender = checkStringIsNull(userData.userDetails?.profile?.gender),
+                        address = checkStringIsNull(userData.userDetails?.profile?.address),
+                        profileAvatar = checkStringIsNull(userData.userDetails?.profile?.profileAvatar),
+                        accessToken = checkStringIsNull(userData.accessToken),
+                        expiresIn = userData.expiresIn!!,
+                        isActive = userData.userDetails?.isActive!!,
+                        createdAt = checkStringIsNull(userData.userDetails?.createdAt),
+                        updatedAt = checkStringIsNull(userData.userDetails?.updatedAt)
+                    )
+                )
                 onSuccessLogin()
             }
         }
@@ -336,6 +368,10 @@ fun EmailSignScreen(
         SweetError(message = errorMsg, padding = PaddingValues(10.dp))
     }
 
+    if (showSuccess) {
+        showSuccess = false
+        SweetToastUtil.SweetInfo(message = successMsg, padding = PaddingValues(10.dp))
+    }
 }
 
 @Preview(name = "Sign in light theme", uiMode = Configuration.UI_MODE_NIGHT_NO)

@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.testleaf.user.data.local.entity.NotificationEntity
 import com.testleaf.user.data.local.entity.TestEntity
+import com.testleaf.user.data.local.entity.UserEntity
 import com.testleaf.user.domain.usecase.EntityUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +27,16 @@ class EntityViewModel @Inject constructor(
 
     val multiChoiceAns: MutableList<String> = mutableListOf()
     val singleChoiceAns: MutableState<String> = mutableStateOf("")
+
+    fun insertUserData(userEntity: UserEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            entityUseCase.insertUserData(userEntity)
+        }
+    }
+
+    fun getUserData(): Flow<UserEntity> {
+        return entityUseCase.getUserData()
+    }
 
     fun insertTestData(testEntity: TestEntity) {
         viewModelScope.launch(Dispatchers.IO) {

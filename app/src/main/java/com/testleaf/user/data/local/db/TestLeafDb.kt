@@ -7,12 +7,13 @@ import androidx.room.RoomDatabase
 import com.testleaf.user.data.local.dao.EntityDao
 import com.testleaf.user.data.local.entity.NotificationEntity
 import com.testleaf.user.data.local.entity.TestEntity
+import com.testleaf.user.data.local.entity.UserEntity
 
 /**
  * Created by Md. Noweshed Akram on 15/12/23.
  */
 @Database(
-    entities = [TestEntity::class, NotificationEntity::class],
+    entities = [UserEntity::class, TestEntity::class, NotificationEntity::class],
     exportSchema = false,
     version = 1
 )

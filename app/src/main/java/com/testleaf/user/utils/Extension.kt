@@ -40,8 +40,8 @@ inline fun <reified T : Any> T.toPrettyJson(): String = Gson().toJson(this, T::c
 
 inline fun <reified T : Any> String.fromPrettyJson(): T = Gson().fromJson(this, T::class.java)
 
-fun checkStringIsNull(value: String): String {
-    return if (value != "null") {
+fun checkStringIsNull(value: String?): String {
+    return if (value != null) {
         value
     } else {
         ""

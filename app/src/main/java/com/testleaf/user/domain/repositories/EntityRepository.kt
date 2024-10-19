@@ -3,12 +3,17 @@ package com.testleaf.user.domain.repositories
 import androidx.lifecycle.LiveData
 import com.testleaf.user.data.local.entity.NotificationEntity
 import com.testleaf.user.data.local.entity.TestEntity
+import com.testleaf.user.data.local.entity.UserEntity
 import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by Md. Noweshed Akram on 15/12/23.
  */
 interface EntityRepository {
+
+    suspend fun insertUserData(userEntity: UserEntity)
+
+    fun getUserData(): Flow<UserEntity>
 
     suspend fun insertTestData(testEntity: TestEntity)
 

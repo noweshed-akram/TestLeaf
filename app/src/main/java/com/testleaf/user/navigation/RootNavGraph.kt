@@ -41,7 +41,8 @@ fun RootNavGraph(
         AuthNavGraph(
             navController = navController,
             authViewModel = authViewModel,
-            apiViewModel = apiViewModel
+            apiViewModel = apiViewModel,
+            entityViewModel = entityViewModel
         )
 
         composable(Graph.HOME) {

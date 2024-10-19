@@ -3,6 +3,7 @@ package com.testleaf.user.domain.usecase
 import androidx.lifecycle.LiveData
 import com.testleaf.user.data.local.entity.NotificationEntity
 import com.testleaf.user.data.local.entity.TestEntity
+import com.testleaf.user.data.local.entity.UserEntity
 import com.testleaf.user.domain.repositories.EntityRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -13,6 +14,14 @@ import javax.inject.Inject
 class EntityUseCase @Inject constructor(
     private val entityRepository: EntityRepository
 ) {
+
+    suspend fun insertUserData(userEntity: UserEntity) {
+        entityRepository.insertUserData(userEntity)
+    }
+
+    fun getUserData(): Flow<UserEntity> {
+        return entityRepository.getUserData()
+    }
 
     suspend fun insertTestData(testEntity: TestEntity) {
         entityRepository.insertTestData(testEntity)

@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.testleaf.user.data.local.entity.NotificationEntity
 import com.testleaf.user.data.local.entity.TestEntity
+import com.testleaf.user.data.local.entity.UserEntity
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -15,6 +16,16 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface EntityDao {
+
+    /**
+     * User Entity
+     * Store user data
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertUserData(userEntity: UserEntity)
+
+    @Query("select * from userentity")
+    fun getUserData(): Flow<UserEntity>
 
     /**
      * Test Entity

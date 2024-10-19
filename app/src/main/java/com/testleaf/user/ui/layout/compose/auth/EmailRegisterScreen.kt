@@ -40,14 +40,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetError
 import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetInfo
+import com.testleaf.user.data.local.entity.UserEntity
 import com.testleaf.user.data.remote.model.req.RegisterReq
+import com.testleaf.user.data.remote.model.response.AuthResponse
 import com.testleaf.user.ui.component.PrimaryButton
 import com.testleaf.user.ui.component.ProgressBar
 import com.testleaf.user.ui.theme.PrimaryColor
 import com.testleaf.user.ui.theme.publicSansFamily
-import com.testleaf.user.utils.Resource
+import com.testleaf.user.utils.checkStringIsNull
+import com.testleaf.user.utils.fromPrettyJson
+import com.testleaf.user.utils.toPrettyJson
 import com.testleaf.user.viewmodel.ApiViewModel
-import com.testleaf.user.viewmodel.AuthViewModel
+import com.testleaf.user.viewmodel.EntityViewModel
 
 /**
  * Created by noweshedakram on 17/7/23.
@@ -55,7 +59,7 @@ import com.testleaf.user.viewmodel.AuthViewModel
 @Composable
 fun EmailRegisterScreen(
     apiViewModel: ApiViewModel,
-    authViewModel: AuthViewModel,
+    entityViewModel: EntityViewModel,
     onSuccessRegister: () -> Unit,
     onPressedBackToLogin: () -> Unit
 ) {
@@ -70,9 +74,11 @@ fun EmailRegisterScreen(
     var showProgress by rememberSaveable { mutableStateOf(false) }
     var showError by rememberSaveable { mutableStateOf(false) }
     var errorMsg by rememberSaveable { mutableStateOf("") }
+    var showSuccess by rememberSaveable { mutableStateOf(false) }
+    var successMsg by rememberSaveable { mutableStateOf("") }
 
-    LaunchedEffect(key1 = apiViewModel.authResponse) {
-        apiViewModel.authResponse.collect {
+    LaunchedEffect(key1 = apiViewModel.registrationResponse) {
+        apiViewModel.registrationResponse.collect {
             if (it.isLoading) {
                 showProgress = true
                 Log.d(TAG, "Loading")
@@ -85,28 +91,30 @@ fun EmailRegisterScreen(
             }
             it.data?.let {
                 showProgress = false
-                Log.d(TAG, "Registration Successful")
-                onSuccessRegister()
-            }
-        }
-    }
-
-    when (val sendEmailVerificationResponse = authViewModel.sendEmailVerificationResponse) {
-        is Resource.Loading -> ProgressBar()
-        is Resource.Success -> {
-            val isVerificationEmailSent = sendEmailVerificationResponse.data
-            if (isVerificationEmailSent == true) {
-                SweetInfo(
-                    message = "Verification Email Sent. Please Verify Your Email",
-                    padding = PaddingValues(10.dp)
+                val userData = it.toPrettyJson().fromPrettyJson<AuthResponse>().data
+                Log.d(TAG, "Registration Successful $userData")
+                showSuccess = true
+                successMsg = "Registration Successful"
+                entityViewModel.insertUserData(
+                    UserEntity(
+                        userId = userData?.userDetails?.id!!,
+                        name = checkStringIsNull(userData.userDetails?.profile?.name!!),
+                        email = checkStringIsNull(userData.userDetails?.email!!),
+                        isEmailVerified = 0,
+                        countryCode = checkStringIsNull(userData.userDetails?.profile?.countryCode),
+                        phoneNumber = checkStringIsNull(userData.userDetails?.profile?.phoneNumber),
+                        birthDate = checkStringIsNull(userData.userDetails?.profile?.birthDate),
+                        gender = checkStringIsNull(userData.userDetails?.profile?.gender),
+                        address = checkStringIsNull(userData.userDetails?.profile?.address),
+                        profileAvatar = checkStringIsNull(userData.userDetails?.profile?.profileAvatar),
+                        accessToken = checkStringIsNull(userData.accessToken),
+                        expiresIn = userData.expiresIn!!,
+                        isActive = userData.userDetails?.isActive!!,
+                        createdAt = checkStringIsNull(userData.userDetails?.createdAt),
+                        updatedAt = checkStringIsNull(userData.userDetails?.updatedAt)
+                    )
                 )
-            }
-        }
-
-        is Resource.Error -> sendEmailVerificationResponse.apply {
-            SweetError(message = message.toString(), padding = PaddingValues(10.dp))
-            LaunchedEffect(message) {
-                print(message)
+                onSuccessRegister()
             }
         }
     }
@@ -316,14 +324,6 @@ fun EmailRegisterScreen(
         PrimaryButton(
             onClick = {
                 if (inputEmail.isNotEmpty() && inputName.isNotEmpty() && inputPassword.isNotEmpty()) {
-//                    authViewModel.signUpWithEmailAndPassword(
-//                        inputEmail, inputPassword, user = User(
-//                            name = inputName,
-//                            email = inputEmail,
-//                            createdAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
-//                            updatedAt = getCurrentDateTime().toString(DATE_TIME_FORMAT)
-//                        )
-//                    )
                     apiViewModel.userRegistration(
                         RegisterReq(
                             inputName, inputEmail, inputPassword, inputPassword
@@ -347,6 +347,11 @@ fun EmailRegisterScreen(
     if (showError) {
         showError = false
         SweetError(message = errorMsg, padding = PaddingValues(10.dp))
+    }
+
+    if (showSuccess) {
+        showSuccess = false
+        SweetInfo(message = successMsg, padding = PaddingValues(10.dp))
     }
 
 }

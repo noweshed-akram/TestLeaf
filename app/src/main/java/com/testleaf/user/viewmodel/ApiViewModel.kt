@@ -28,33 +28,33 @@ class ApiViewModel @Inject constructor(
     private val apiUseCase: ApiUseCase
 ) : AndroidViewModel(app) {
 
-    private val _authResponse = MutableStateFlow(ResponseState())
-    val authResponse: StateFlow<ResponseState> = _authResponse
+    private val _loginResponse = MutableStateFlow(ResponseState())
+    val loginResponse: StateFlow<ResponseState> = _loginResponse
 
+    private val _registrationResponse = MutableStateFlow(ResponseState())
+    val registrationResponse: StateFlow<ResponseState> = _registrationResponse
 
     fun userRegistration(registerReq: RegisterReq) {
         val gson = Gson()
         val json = gson.toJson(registerReq)
         val authInfo = JsonParser.parseString(json).asJsonObject
 
-        Log.d("ApiViewModel: Login Function Called with", authInfo.toString())
-
         viewModelScope.launch {
             apiUseCase.userRegistration(authInfo).onEach {
                 when (it) {
                     is Resource.Loading -> {
                         Log.d("ApiViewModel: ", "loading")
-                        _authResponse.value = ResponseState(isLoading = true)
+                        _registrationResponse.value = ResponseState(isLoading = true)
                     }
 
                     is Resource.Error -> {
                         Log.d("ApiViewModel: error", it.message.toString())
-                        _authResponse.value = ResponseState(error = it.message ?: "")
+                        _registrationResponse.value = ResponseState(error = it.message ?: "")
                     }
 
                     is Resource.Success -> {
                         Log.d("ApiViewModel: success", it.data.toString())
-                        _authResponse.value = ResponseState(data = it.data)
+                        _registrationResponse.value = ResponseState(data = it.data)
                     }
                 }
             }.launchIn(viewModelScope)
@@ -66,24 +66,22 @@ class ApiViewModel @Inject constructor(
         val json = gson.toJson(loginReq)
         val authInfo = JsonParser.parseString(json).asJsonObject
 
-        Log.d("ApiViewModel: Login Function Called with", authInfo.toString())
-
         viewModelScope.launch {
             apiUseCase.userLogin(authInfo).onEach {
                 when (it) {
                     is Resource.Loading -> {
                         Log.d("ApiViewModel: ", "loading")
-                        _authResponse.value = ResponseState(isLoading = true)
+                        _loginResponse.value = ResponseState(isLoading = true)
                     }
 
                     is Resource.Error -> {
                         Log.d("ApiViewModel: error", it.message.toString())
-                        _authResponse.value = ResponseState(error = it.message ?: "")
+                        _loginResponse.value = ResponseState(error = it.message ?: "")
                     }
 
                     is Resource.Success -> {
                         Log.d("ApiViewModel: success", it.data.toString())
-                        _authResponse.value = ResponseState(data = it.data)
+                        _loginResponse.value = ResponseState(data = it.data)
                     }
                 }
             }.launchIn(viewModelScope)
