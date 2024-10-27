@@ -14,6 +14,7 @@ import javax.inject.Inject
 class ApiUseCase @Inject constructor(
     private val apiRepository: ApiRepository
 ) {
+
     suspend fun userRegistration(@Body jsonObject: JsonObject): Flow<Resource<AuthResponse>> {
         return apiRepository.userRegistration(jsonObject)
     }
@@ -21,4 +22,21 @@ class ApiUseCase @Inject constructor(
     suspend fun userLogin(@Body jsonObject: JsonObject): Flow<Resource<AuthResponse>> {
         return apiRepository.userLogin(jsonObject)
     }
+
+    suspend fun updateProfile(@Body jsonObject: JsonObject): Flow<Resource<AuthResponse>> {
+        return apiRepository.updateProfile(jsonObject)
+    }
+
+    suspend fun updateProfileImage(@Body jsonObject: JsonObject): Flow<Resource<AuthResponse>> {
+        return apiRepository.updateProfileImage(jsonObject)
+    }
+
+    suspend fun userLogout(): Flow<Resource<AuthResponse>> {
+        return apiRepository.userLogout()
+    }
+
+    suspend fun getProfile(): Flow<Resource<AuthResponse>> {
+        return apiRepository.getProfile()
+    }
+
 }

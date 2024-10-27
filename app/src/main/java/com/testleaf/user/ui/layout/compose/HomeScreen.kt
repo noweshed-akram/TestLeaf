@@ -64,6 +64,7 @@ import com.testleaf.user.viewmodel.AuthViewModel
 import com.testleaf.user.viewmodel.EntityViewModel
 import com.testleaf.user.viewmodel.QuesViewModel
 import com.testleaf.user.viewmodel.UserViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
@@ -103,19 +104,10 @@ fun HomeScreen(
     }
 
     LaunchedEffect(key1 = true) {
-
-        userViewModel.getUserData()
-
-        userViewModel.userData.collect { it ->
-            if (it.error.isNotBlank()) {
-                Log.d("EmailSignScreen: ", it.error)
-                navController.navigate(AuthScreen.EmailSignIn.route)
-            }
-            it.data?.let {
-                userName = it.name
-                userEmail = it.email
-                userProfileImage = it.image
-            }
+        entityViewModel.getUserData().collectLatest { user ->
+            userName = user.name
+            userEmail = user.email
+            userProfileImage = user.profileAvatar
         }
     }
 

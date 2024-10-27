@@ -98,6 +98,7 @@ fun BottomNavigation(
 
         ContentNavGraph(
             navController = navController,
+            apiViewModel = apiViewModel,
             userViewModel = userViewModel,
             asesmntViewModel = asesmntViewModel,
             quesViewModel = quesViewModel,

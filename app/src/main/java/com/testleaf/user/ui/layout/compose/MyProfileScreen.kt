@@ -56,6 +56,8 @@ import com.testleaf.user.ui.theme.WhiteColor
 import com.testleaf.user.ui.theme.publicSansFamily
 import com.testleaf.user.viewmodel.UserViewModel
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
+import com.testleaf.user.viewmodel.EntityViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 /**
  * Created by Md. Noweshed Akram on 10/11/23.
@@ -63,6 +65,7 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 @Composable
 fun MyProfileScreen(
     userViewModel: UserViewModel,
+    entityViewModel: EntityViewModel,
     onEditBtnClick: () -> Unit,
     onDashboardBtnClick: () -> Unit,
     onClickSubs: () -> Unit
@@ -82,28 +85,12 @@ fun MyProfileScreen(
     }
 
     LaunchedEffect(key1 = true) {
-
-        userViewModel.userData.collect {
-            if (it.isLoading) {
-                showProgress = true
-                Log.d("EmailSignScreen: ", "Loading")
-            }
-            if (it.error.isNotBlank()) {
-                showProgress = false
-                showError = true
-                errorMsg = it.error
-                Log.d("EmailSignScreen: ", it.error)
-                userViewModel.getUserData()
-            }
-            it.data?.let {
-                showProgress = false
-                inputName = it.name
-                inputEmail = it.email
-                inputPhone = it.phone
-                imageUrl = it.image
-            }
+        entityViewModel.getUserData().collectLatest { user ->
+            inputName = user.name
+            inputEmail = user.email
+            inputPhone = user.phoneNumber
+            imageUrl = user.profileAvatar
         }
-
     }
 
     LaunchedEffect(key1 = true) {

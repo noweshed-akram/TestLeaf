@@ -1,9 +1,8 @@
 package com.testleaf.user.domain.repositories
 
-import com.testleaf.user.data.remote.model.response.AuthResponse
-import com.testleaf.user.domain.models.User
-import com.testleaf.user.utils.Resource
 import com.google.gson.JsonObject
+import com.testleaf.user.data.remote.model.response.AuthResponse
+import com.testleaf.user.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import retrofit2.http.Body
 
@@ -12,15 +11,19 @@ import retrofit2.http.Body
  */
 interface ApiRepository {
 
+    /**
+     * User API
+     */
     suspend fun userRegistration(@Body jsonObject: JsonObject): Flow<Resource<AuthResponse>>
 
     suspend fun userLogin(@Body jsonObject: JsonObject): Flow<Resource<AuthResponse>>
 
-    suspend fun updateProfile(@Body jsonObject: JsonObject): Resource<User>
+    suspend fun updateProfile(@Body jsonObject: JsonObject): Flow<Resource<AuthResponse>>
 
-    suspend fun updateProfileImage(@Body jsonObject: JsonObject): Resource<User>
+    suspend fun updateProfileImage(@Body jsonObject: JsonObject): Flow<Resource<AuthResponse>>
 
-    suspend fun userLogout(@Body jsonObject: JsonObject): Resource<User>
+    suspend fun userLogout(): Flow<Resource<AuthResponse>>
 
-    suspend fun getProfile(@Body jsonObject: JsonObject): Resource<User>
+    suspend fun getProfile(): Flow<Resource<AuthResponse>>
+
 }

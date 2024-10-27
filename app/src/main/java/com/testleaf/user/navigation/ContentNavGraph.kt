@@ -31,6 +31,7 @@ import com.testleaf.user.viewmodel.EntityViewModel
 import com.testleaf.user.viewmodel.QuesViewModel
 import com.testleaf.user.viewmodel.UserViewModel
 import com.google.gson.Gson
+import com.testleaf.user.viewmodel.ApiViewModel
 
 /**
  * Created by noweshedakram on 16/8/23.
@@ -40,6 +41,7 @@ fun NavGraphBuilder.ContentNavGraph(
     navController: NavHostController,
     route: String = Graph.CONTENT,
     startDestination: String = ContentNavScreen.EditProfile.route,
+    apiViewModel: ApiViewModel,
     userViewModel: UserViewModel,
     asesmntViewModel: AsesmntViewModel,
     quesViewModel: QuesViewModel,
@@ -51,7 +53,11 @@ fun NavGraphBuilder.ContentNavGraph(
     ) {
 
         composable(ContentNavScreen.EditProfile.route) {
-            EditProfileScreen(userViewModel = userViewModel)
+            EditProfileScreen(
+                apiViewModel = apiViewModel,
+                userViewModel = userViewModel,
+                entityViewModel = entityViewModel
+            )
         }
 
         composable(ContentNavScreen.Notification.route) {
@@ -276,6 +282,7 @@ fun NavGraphBuilder.ContentNavGraph(
         composable(route = ContentNavScreen.MyProfile.route) {
             MyProfileScreen(
                 userViewModel = userViewModel,
+                entityViewModel = entityViewModel,
                 onEditBtnClick = {
                     navController.navigate(ContentNavScreen.EditProfile.route)
                 },

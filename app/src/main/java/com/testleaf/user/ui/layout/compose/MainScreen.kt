@@ -7,6 +7,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,6 +27,7 @@ import com.testleaf.user.viewmodel.AuthViewModel
 import com.testleaf.user.viewmodel.EntityViewModel
 import com.testleaf.user.viewmodel.QuesViewModel
 import com.testleaf.user.viewmodel.UserViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 /**
  * Created by noweshedakram on 24/6/23.
@@ -38,6 +44,14 @@ fun MainScreen(
     quesViewModel: QuesViewModel,
     entityViewModel: EntityViewModel
 ) {
+
+    var isLoggedIn by rememberSaveable { (mutableStateOf(false)) }
+
+    LaunchedEffect(key1 = true) {
+        entityViewModel.getUserData().collectLatest { user ->
+            isLoggedIn = user.userId != null
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -70,7 +84,7 @@ fun MainScreen(
             modifier = Modifier.padding(top = it.calculateBottomPadding() + it.calculateTopPadding())
         ) {
 
-            val startDestination = if (userViewModel.isUserAuthenticated) {
+            val startDestination = if (isLoggedIn) {
                 Graph.HOME
             } else {
                 Graph.AUTHENTICATION

@@ -53,6 +53,9 @@ import com.testleaf.user.ui.theme.publicSansFamily
 import com.testleaf.user.viewmodel.UserViewModel
 import com.google.modernstorage.photopicker.PhotoPicker
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
+import com.testleaf.user.viewmodel.ApiViewModel
+import com.testleaf.user.viewmodel.EntityViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 /**
  * Created by Md. Noweshed Akram on 10/11/23.
@@ -60,7 +63,9 @@ import com.talhafaki.composablesweettoast.util.SweetToastUtil
 @androidx.core.os.BuildCompat.PrereleaseSdkCheck
 @Composable
 fun EditProfileScreen(
-    userViewModel: UserViewModel
+    apiViewModel: ApiViewModel,
+    userViewModel: UserViewModel,
+    entityViewModel: EntityViewModel
 ) {
     val context = LocalContext.current
 
@@ -87,29 +92,12 @@ fun EditProfileScreen(
     }
 
     LaunchedEffect(key1 = true) {
-
-        userViewModel.userData.collect {
-            if (it.isLoading) {
-                showProgress = true
-                Log.d("EmailSignScreen: ", "Loading")
-            }
-            if (it.error.isNotBlank()) {
-                showProgress = false
-                showError = true
-                errorMsg = it.error
-                Log.d("EmailSignScreen: ", it.error)
-                userViewModel.getUserData()
-            }
-            it.data?.let {
-                showProgress = false
-                inputName = it.name
-                inputEmail = it.email
-                inputPhone = it.phone
-                imageUrl = it.image
-                inputAddress = it.address
-            }
+        entityViewModel.getUserData().collectLatest { user ->
+            inputName = user.name
+            inputEmail = user.email
+            inputPhone = user.phoneNumber
+            imageUrl = user.profileAvatar
         }
-
     }
 
     Column(
@@ -132,7 +120,7 @@ fun EditProfileScreen(
                     modifier = Modifier
                         .size(120.dp)
                         .clip(CircleShape)
-                        .border(4.dp, SecondaryColor, CircleShape),
+                        .border(2.dp, SecondaryColor, CircleShape),
                     contentScale = ContentScale.Crop,
                     error = painterResource(id = R.drawable.ic_person)
                 )
@@ -308,6 +296,8 @@ fun EditProfileScreen(
 
         PrimaryButton(
             onClick = {
+//                apiViewModel
+
                 userViewModel.updateUser(
                     user = User(
                         name = inputName,
