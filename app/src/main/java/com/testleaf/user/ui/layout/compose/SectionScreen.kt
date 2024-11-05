@@ -47,24 +47,24 @@ fun SectionScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        asesmntViewModel.getSectionList(examMetaData.courseId!!, examMetaData.chapterId!!)
-
-        asesmntViewModel.sectionsData.collect {
-            if (it.isLoading) {
-                showProgress = true
-                Log.d("SectionScreen: ", "Loading")
-            }
-            if (it.error.isNotBlank()) {
-                showProgress = false
-                showError = true
-                errorMsg = it.error
-                Log.d("SectionScreen: ", it.error)
-            }
-            it.dataList?.let {
-                showProgress = false
-                sectionsList = it as List<Course>
-            }
-        }
+//        asesmntViewModel.getSectionList(examMetaData.courseId!!, examMetaData.chapterId!!)
+//
+//        asesmntViewModel.sectionsData.collect {
+//            if (it.isLoading) {
+//                showProgress = true
+//                Log.d("SectionScreen: ", "Loading")
+//            }
+//            if (it.error.isNotBlank()) {
+//                showProgress = false
+//                showError = true
+//                errorMsg = it.error
+//                Log.d("SectionScreen: ", it.error)
+//            }
+//            it.dataList?.let {
+//                showProgress = false
+//                sectionsList = it as List<Course>
+//            }
+//        }
     }
 
     Column(

@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.testleaf.user.ui.layout.compose.MainScreen
 import com.testleaf.user.ui.theme.AwsPrepTheme
-import com.testleaf.user.viewmodel.ApiViewModel
 import com.testleaf.user.viewmodel.AsesmntViewModel
 import com.testleaf.user.viewmodel.AuthViewModel
 import com.testleaf.user.viewmodel.EntityViewModel
@@ -52,7 +51,6 @@ class MainActivity : ComponentActivity() {
                     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
                     val navController = rememberNavController()
                     val authViewModel: AuthViewModel by viewModels()
-                    val apiViewModel: ApiViewModel by viewModels()
                     val userViewModel: UserViewModel by viewModels()
                     val asesmntViewModel: AsesmntViewModel by viewModels()
                     val quesViewModel: QuesViewModel by viewModels()
@@ -62,7 +60,6 @@ class MainActivity : ComponentActivity() {
                         scrollBehavior = scrollBehavior,
                         navController = navController,
                         authViewModel = authViewModel,
-                        apiViewModel = apiViewModel,
                         userViewModel = userViewModel,
                         asesmntViewModel = asesmntViewModel,
                         quesViewModel = quesViewModel,

@@ -63,37 +63,37 @@ fun TimerScreen(
             "${examMetaData.courseId} ${examMetaData.chapterId} ${examMetaData.sectionId}"
         )
 
-        if (examMetaData.examType == COLL_COURSES) {
-            quesViewModel.getQuestions(
-                examMetaData.courseId!!,
-                examMetaData.chapterId!!,
-                examMetaData.sectionId!!,
-                30
-            )
-        } else if (examMetaData.examType == COLL_SETS) {
-            quesViewModel.getQuestions(
-                examMetaData.setId!!,
-                examMetaData.setFlag!!,
-                examMetaData.subsetId!!
-            )
-        }
-
-        quesViewModel.questionData.collect {
-            if (it.isLoading) {
-                showProgress = true
-                Log.d("TimerScreen: ", "Loading")
-            }
-            if (it.error.isNotBlank()) {
-                showProgress = false
-                showError = true
-                errorMsg = it.error
-                Log.d("TimerScreen: ", it.error)
-            }
-            it.dataList?.let {
-                showProgress = false
-                questionList = it as List<Question>
-            }
-        }
+//        if (examMetaData.examType == COLL_COURSES) {
+//            quesViewModel.getQuestions(
+//                examMetaData.courseId!!,
+//                examMetaData.chapterId!!,
+//                examMetaData.sectionId!!,
+//                30
+//            )
+//        } else if (examMetaData.examType == COLL_SETS) {
+//            quesViewModel.getQuestions(
+//                examMetaData.setId!!,
+//                examMetaData.setFlag!!,
+//                examMetaData.subsetId!!
+//            )
+//        }
+//
+//        quesViewModel.questionData.collect {
+//            if (it.isLoading) {
+//                showProgress = true
+//                Log.d("TimerScreen: ", "Loading")
+//            }
+//            if (it.error.isNotBlank()) {
+//                showProgress = false
+//                showError = true
+//                errorMsg = it.error
+//                Log.d("TimerScreen: ", it.error)
+//            }
+//            it.dataList?.let {
+//                showProgress = false
+//                questionList = it as List<Question>
+//            }
+//        }
     }
 
     Column(

@@ -14,7 +14,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -30,15 +29,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetError
 import com.testleaf.user.R
 import com.testleaf.user.ui.component.PrimaryButton
 import com.testleaf.user.ui.component.ProgressBar
 import com.testleaf.user.ui.theme.PrimaryColor
 import com.testleaf.user.ui.theme.publicSansFamily
-import com.testleaf.user.utils.Resource
 import com.testleaf.user.viewmodel.AuthViewModel
-import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetError
-import com.talhafaki.composablesweettoast.util.SweetToastUtil.SweetInfo
 
 /**
  * Created by noweshedakram on 21/7/23.
@@ -53,26 +50,6 @@ fun ForgotPasswordScreen(
     var showProgress by rememberSaveable { mutableStateOf(false) }
     var showError by rememberSaveable { mutableStateOf(false) }
     var errorMsg by rememberSaveable { mutableStateOf("") }
-
-    when (val sendPasswordResetEmailResponse = authViewModel.sendPasswordResetEmailResponse) {
-        is Resource.Loading -> ProgressBar()
-        is Resource.Success -> {
-            val isPasswordResetEmailSent = sendPasswordResetEmailResponse.data
-            if (isPasswordResetEmailSent == true) {
-                SweetInfo(message = "Password Reset Email Sent. Please Check Inbox/Spam Folder!")
-                LaunchedEffect(isPasswordResetEmailSent) {
-                    onResetEmailSent()
-                }
-            }
-        }
-
-        is Resource.Error -> sendPasswordResetEmailResponse.apply {
-            SweetError(message = message.toString())
-            LaunchedEffect(message) {
-                print(message)
-            }
-        }
-    }
 
     Column(
         modifier = Modifier
@@ -158,7 +135,7 @@ fun ForgotPasswordScreen(
         PrimaryButton(
             onClick = {
                 if (inputEmail.isNotEmpty()) {
-                    authViewModel.sendPasswordResetEmail(inputEmail)
+
                 } else {
                     showError = true
                     errorMsg = "Please Fill the required filed"

@@ -21,7 +21,7 @@ import com.testleaf.user.navigation.currentRoute
 import com.testleaf.user.navigation.Graph
 import com.testleaf.user.navigation.RootNavGraph
 import com.testleaf.user.ui.component.AppBarWithArrow
-import com.testleaf.user.viewmodel.ApiViewModel
+import com.testleaf.user.utils.AppConstant.AUTH_TOKEN
 import com.testleaf.user.viewmodel.AsesmntViewModel
 import com.testleaf.user.viewmodel.AuthViewModel
 import com.testleaf.user.viewmodel.EntityViewModel
@@ -38,7 +38,6 @@ fun MainScreen(
     scrollBehavior: TopAppBarScrollBehavior,
     navController: NavHostController,
     authViewModel: AuthViewModel,
-    apiViewModel: ApiViewModel,
     userViewModel: UserViewModel,
     asesmntViewModel: AsesmntViewModel,
     quesViewModel: QuesViewModel,
@@ -49,7 +48,12 @@ fun MainScreen(
 
     LaunchedEffect(key1 = true) {
         entityViewModel.getUserData().collectLatest { user ->
-            isLoggedIn = user.userId != null
+            if (user != null) {
+                AUTH_TOKEN = user.accessToken
+                isLoggedIn = true
+            } else {
+                isLoggedIn = false
+            }
         }
     }
 
@@ -95,7 +99,6 @@ fun MainScreen(
                 navController = navController,
                 startDestination = startDestination,
                 authViewModel = authViewModel,
-                apiViewModel = apiViewModel,
                 userViewModel = userViewModel,
                 asesmntViewModel = asesmntViewModel,
                 quesViewModel = quesViewModel,

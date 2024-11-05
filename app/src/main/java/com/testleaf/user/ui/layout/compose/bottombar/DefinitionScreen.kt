@@ -1,6 +1,5 @@
 package com.testleaf.user.ui.layout.compose.bottombar
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -41,6 +40,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.talhafaki.composablesweettoast.util.SweetToastUtil
 import com.testleaf.user.R
 import com.testleaf.user.domain.models.Course
 import com.testleaf.user.domain.models.Definition
@@ -54,9 +56,6 @@ import com.testleaf.user.ui.theme.Typography
 import com.testleaf.user.ui.theme.WhiteColor
 import com.testleaf.user.viewmodel.AsesmntViewModel
 import com.testleaf.user.viewmodel.UserViewModel
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 /**
  * Created by Md. Noweshed Akram on 10/11/23.
@@ -80,48 +79,48 @@ fun DefinitionScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        asesmntViewModel.getCourseList(50)
-        courseList = emptyList()
-
-        asesmntViewModel.coursesData.collect {
-            if (it.isLoading) {
-                showProgress = true
-                Log.d("AssessmentScreen: ", "Loading..")
-            }
-            if (it.error.isNotBlank()) {
-                showProgress = false
-                showError = true
-                errorMsg = it.error
-                Log.d("AssessmentScreen: ", it.error)
-            }
-            it.dataList?.let {
-                showProgress = false
-                courseList = courseList + Course(docId = "001", name = "All") + it as List<Course>
-                Log.d("AssessmentScreen: ", courseList.toString())
-            }
-        }
+//        asesmntViewModel.getCourseList(50)
+//        courseList = emptyList()
+//
+//        asesmntViewModel.coursesData.collect {
+//            if (it.isLoading) {
+//                showProgress = true
+//                Log.d("AssessmentScreen: ", "Loading..")
+//            }
+//            if (it.error.isNotBlank()) {
+//                showProgress = false
+//                showError = true
+//                errorMsg = it.error
+//                Log.d("AssessmentScreen: ", it.error)
+//            }
+//            it.dataList?.let {
+//                showProgress = false
+//                courseList = courseList + Course(docId = "001", name = "All") + it as List<Course>
+//                Log.d("AssessmentScreen: ", courseList.toString())
+//            }
+//        }
     }
 
     LaunchedEffect(key1 = true) {
-        asesmntViewModel.getDefinition()
-
-        asesmntViewModel.definitionsData.collect {
-            if (it.isLoading) {
-                showProgress = true
-                Log.d("DefinitionScreen: ", "Loading..")
-            }
-            if (it.error.isNotBlank()) {
-                showProgress = false
-                showError = true
-                errorMsg = it.error
-                Log.d("DefinitionScreen: ", it.error)
-            }
-            it.dataList?.let {
-                showProgress = false
-                definitionList = it as List<Definition>
-                Log.d("DefinitionScreen: ", definitionList.toString())
-            }
-        }
+//        asesmntViewModel.getDefinition()
+//
+//        asesmntViewModel.definitionsData.collect {
+//            if (it.isLoading) {
+//                showProgress = true
+//                Log.d("DefinitionScreen: ", "Loading..")
+//            }
+//            if (it.error.isNotBlank()) {
+//                showProgress = false
+//                showError = true
+//                errorMsg = it.error
+//                Log.d("DefinitionScreen: ", it.error)
+//            }
+//            it.dataList?.let {
+//                showProgress = false
+//                definitionList = it as List<Definition>
+//                Log.d("DefinitionScreen: ", definitionList.toString())
+//            }
+//        }
     }
 
     Column(

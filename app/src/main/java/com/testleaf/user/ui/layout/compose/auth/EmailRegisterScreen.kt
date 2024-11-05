@@ -47,10 +47,11 @@ import com.testleaf.user.ui.component.PrimaryButton
 import com.testleaf.user.ui.component.ProgressBar
 import com.testleaf.user.ui.theme.PrimaryColor
 import com.testleaf.user.ui.theme.publicSansFamily
+import com.testleaf.user.utils.AppConstant.AUTH_TOKEN
 import com.testleaf.user.utils.checkStringIsNull
 import com.testleaf.user.utils.fromPrettyJson
 import com.testleaf.user.utils.toPrettyJson
-import com.testleaf.user.viewmodel.ApiViewModel
+import com.testleaf.user.viewmodel.AuthViewModel
 import com.testleaf.user.viewmodel.EntityViewModel
 
 /**
@@ -58,7 +59,7 @@ import com.testleaf.user.viewmodel.EntityViewModel
  */
 @Composable
 fun EmailRegisterScreen(
-    apiViewModel: ApiViewModel,
+    authViewModel: AuthViewModel,
     entityViewModel: EntityViewModel,
     onSuccessRegister: () -> Unit,
     onPressedBackToLogin: () -> Unit
@@ -77,8 +78,8 @@ fun EmailRegisterScreen(
     var showSuccess by rememberSaveable { mutableStateOf(false) }
     var successMsg by rememberSaveable { mutableStateOf("") }
 
-    LaunchedEffect(key1 = apiViewModel.registrationResponse) {
-        apiViewModel.registrationResponse.collect {
+    LaunchedEffect(key1 = authViewModel.registrationResponse) {
+        authViewModel.registrationResponse.collect {
             if (it.isLoading) {
                 showProgress = true
                 Log.d(TAG, "Loading")
@@ -92,12 +93,13 @@ fun EmailRegisterScreen(
             it.data?.let {
                 showProgress = false
                 val userData = it.toPrettyJson().fromPrettyJson<AuthResponse>().data
+                AUTH_TOKEN = userData?.accessToken!!
                 Log.d(TAG, "Registration Successful $userData")
                 showSuccess = true
                 successMsg = "Registration Successful"
                 entityViewModel.insertUserData(
                     UserEntity(
-                        userId = userData?.userDetails?.id!!,
+                        userId = userData.userDetails?.id!!,
                         name = checkStringIsNull(userData.userDetails?.profile?.name!!),
                         email = checkStringIsNull(userData.userDetails?.email!!),
                         isEmailVerified = 0,
@@ -109,6 +111,7 @@ fun EmailRegisterScreen(
                         profileAvatar = checkStringIsNull(userData.userDetails?.profile?.profileAvatar),
                         accessToken = checkStringIsNull(userData.accessToken),
                         expiresIn = userData.expiresIn!!,
+                        expiresAt = userData.expiredAt!!,
                         isActive = userData.userDetails?.isActive!!,
                         createdAt = checkStringIsNull(userData.userDetails?.createdAt),
                         updatedAt = checkStringIsNull(userData.userDetails?.updatedAt)
@@ -324,7 +327,7 @@ fun EmailRegisterScreen(
         PrimaryButton(
             onClick = {
                 if (inputEmail.isNotEmpty() && inputName.isNotEmpty() && inputPassword.isNotEmpty()) {
-                    apiViewModel.userRegistration(
+                    authViewModel.userRegistration(
                         RegisterReq(
                             inputName, inputEmail, inputPassword, inputPassword
                         )

@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,10 +33,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import coil.compose.AsyncImage
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.HorizontalPagerIndicator
+import com.google.accompanist.pager.calculateCurrentOffsetForPage
+import com.google.accompanist.pager.rememberPagerState
+import com.talhafaki.composablesweettoast.util.SweetToastUtil
 import com.testleaf.user.R
-import com.testleaf.user.domain.models.Course
+import com.testleaf.user.data.remote.model.response.CourseData
 import com.testleaf.user.domain.models.ExamMetaData
-import com.testleaf.user.domain.models.Set
 import com.testleaf.user.ui.component.GridItemView
 import com.testleaf.user.ui.component.PrimaryButton
 import com.testleaf.user.ui.component.ProgressBar
@@ -49,14 +52,7 @@ import com.testleaf.user.ui.theme.StrokeColor
 import com.testleaf.user.ui.theme.WhiteColor
 import com.testleaf.user.ui.theme.publicSansFamily
 import com.testleaf.user.utils.AppConstant.COLL_COURSES
-import com.testleaf.user.utils.AppConstant.COLL_SETS
 import com.testleaf.user.viewmodel.AsesmntViewModel
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.HorizontalPagerIndicator
-import com.google.accompanist.pager.calculateCurrentOffsetForPage
-import com.google.accompanist.pager.rememberPagerState
-import com.talhafaki.composablesweettoast.util.SweetToastUtil
 import kotlinx.coroutines.delay
 import java.lang.Thread.yield
 import kotlin.math.absoluteValue
@@ -74,6 +70,7 @@ fun AssessmentScreen(
     onReviewQuesClick: () -> Unit
 ) {
 
+    val TAG = "AssessmentScreen"
     var showProgress by rememberSaveable { mutableStateOf(false) }
     var showError by rememberSaveable { mutableStateOf(false) }
     var errorMsg by rememberSaveable { mutableStateOf("") }
@@ -88,53 +85,30 @@ fun AssessmentScreen(
     )
 
     var courseList by rememberSaveable {
-        mutableStateOf(emptyList<Course>())
+        mutableStateOf(emptyList<CourseData>())
     }
 
-    var setList by rememberSaveable {
-        mutableStateOf(emptyList<Set>())
-    }
+//    var setList by rememberSaveable {
+//        mutableStateOf(emptyList<Set>())
+//    }
 
     LaunchedEffect(key1 = true) {
-        asesmntViewModel.getCourseList(6)
+        asesmntViewModel.getCourseList()
 
-        asesmntViewModel.coursesData.collect {
+        asesmntViewModel.courseResponse.collect {
             if (it.isLoading) {
                 showProgress = true
-                Log.d("AssessmentScreen: ", "Loading..")
+                Log.d(TAG, "Loading")
             }
             if (it.error.isNotBlank()) {
                 showProgress = false
                 showError = true
                 errorMsg = it.error
-                Log.d("AssessmentScreen: ", it.error)
+                Log.d(TAG, it.error)
             }
             it.dataList?.let {
                 showProgress = false
-                courseList = it as List<Course>
-                Log.d("AssessmentScreen: ", courseList.toString())
-            }
-        }
-    }
-
-    LaunchedEffect(key1 = true) {
-        asesmntViewModel.getSetList()
-
-        asesmntViewModel.setData.collect {
-            if (it.isLoading) {
-                showProgress = true
-                Log.d("AssessmentScreen: ", "Loading..")
-            }
-            if (it.error.isNotBlank()) {
-                showProgress = false
-                showError = true
-                errorMsg = it.error
-                Log.d("AssessmentScreen: ", it.error)
-            }
-            it.dataList?.let {
-                showProgress = false
-                setList = it as List<Set>
-                Log.d("AssessmentScreen: ", setList.toString())
+                courseList = it as List<CourseData>
             }
         }
     }
@@ -240,16 +214,15 @@ fun AssessmentScreen(
         ) {
             courseList.forEachIndexed { index, course ->
                 GridItemView(
-                    title = "${index + 1}. ${course.name}",
+                    title = "${index + 1}. ${course.courseName}",
                     subTitle = "10+ Chapters",
-                    iconUrl = course.icon
+                    iconUrl = course.iconData?.url!!
                 ) {
                     val examMetaData = ExamMetaData(
-                        examName = course.name,
+                        examName = course.courseName,
                         examType = COLL_COURSES,
-                        courseId = course.docId
+                        courseId = course.id.toString()
                     )
-
                     onCourseItemClick(examMetaData)
                 }
             }
@@ -282,35 +255,35 @@ fun AssessmentScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height((setList.size * 92).dp),
-            userScrollEnabled = false,
-        ) {
-            items(setList) { set ->
-
-                SetsItemView(
-                    modifier = Modifier.padding(horizontal = 12.dp),
-                    setsIcon = R.drawable.ic_edit,
-                    title = set.name,
-                    subTitle = "100+ Practice Test Sets"
-                ) {
-
-                    val examMetaData = ExamMetaData(
-                        examName = set.name,
-                        examType = COLL_SETS,
-                        setId = set.setId,
-                        setFlag = set.flag
-                    )
-
-                    onSetItemClick(examMetaData)
-
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-        }
+//        LazyColumn(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height((setList.size * 92).dp),
+//            userScrollEnabled = false,
+//        ) {
+//            items(setList) { set ->
+//
+//                SetsItemView(
+//                    modifier = Modifier.padding(horizontal = 12.dp),
+//                    setsIcon = R.drawable.ic_edit,
+//                    title = set.name,
+//                    subTitle = "100+ Practice Test Sets"
+//                ) {
+//
+//                    val examMetaData = ExamMetaData(
+//                        examName = set.name,
+//                        examType = COLL_SETS,
+//                        setId = set.setId,
+//                        setFlag = set.flag
+//                    )
+//
+//                    onSetItemClick(examMetaData)
+//
+//                }
+//
+//                Spacer(modifier = Modifier.height(16.dp))
+//            }
+//        }
 
         Spacer(modifier = Modifier.height(16.dp))
 

@@ -99,29 +99,29 @@ fun TestScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        quesViewModel.questionData.collect {
-            if (it.isLoading) {
-                showProgress = true
-                Log.d(TAG, "Loading")
-            }
-            if (it.error.isNotBlank()) {
-                showProgress = false
-                showError = true
-                errorMsg = it.error
-                Log.d(TAG, it.error)
-            }
-            it.data?.let {
-                showProgress = false
-                showSuccess = true
-                successMsg = "Question added successfully to your review section"
-            }
-            it.dataList?.let {
-                showProgress = false
-                questionList = it as List<Question>
-                testViewModel.questionOrder = questionList
-                totalQs = questionList.size
-            }
-        }
+//        quesViewModel.questionData.collect {
+//            if (it.isLoading) {
+//                showProgress = true
+//                Log.d(TAG, "Loading")
+//            }
+//            if (it.error.isNotBlank()) {
+//                showProgress = false
+//                showError = true
+//                errorMsg = it.error
+//                Log.d(TAG, it.error)
+//            }
+//            it.data?.let {
+//                showProgress = false
+//                showSuccess = true
+//                successMsg = "Question added successfully to your review section"
+//            }
+//            it.dataList?.let {
+//                showProgress = false
+//                questionList = it as List<Question>
+//                testViewModel.questionOrder = questionList
+//                totalQs = questionList.size
+//            }
+//        }
     }
 
     val questionIndexData = testViewModel.questionIndexData ?: return
@@ -139,18 +139,18 @@ fun TestScreen(
             timeInMinutes = totalQs.toLong(),
             onBackPressed = onBackPressed,
             onClickToAddReviewQs = {
-                quesViewModel.addToReviewQues(questionIndexData.question)
+//                quesViewModel.addToReviewQues(questionIndexData.question)
             },
             onFeedbackSend = { msg ->
-                quesViewModel.sendQuesFeedback(
-                    Feedback(
-                        userId = FirebaseAuth.getInstance().uid,
-                        questionId = questionIndexData.question.quesId,
-                        feedback = msg,
-                        createdAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
-                        updatedAt = getCurrentDateTime().toString(DATE_TIME_FORMAT)
-                    )
-                )
+//                quesViewModel.sendQuesFeedback(
+//                    Feedback(
+//                        userId = FirebaseAuth.getInstance().uid,
+//                        questionId = questionIndexData.question.quesId,
+//                        feedback = msg,
+//                        createdAt = getCurrentDateTime().toString(DATE_TIME_FORMAT),
+//                        updatedAt = getCurrentDateTime().toString(DATE_TIME_FORMAT)
+//                    )
+//                )
             },
             onPreviousPressed = { testViewModel.onPreviousPressed() },
             onNextPressed = {

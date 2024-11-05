@@ -47,25 +47,25 @@ fun SubSetsScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        asesmntViewModel.getSubSetList(examMetaData.setId!!, examMetaData.setFlag!!)
-
-        asesmntViewModel.subSetData.collect {
-            if (it.isLoading) {
-                showProgress = true
-                Log.d("SubSetsScreen: ", "Loading..")
-            }
-            if (it.error.isNotBlank()) {
-                showProgress = false
-                showError = true
-                errorMsg = it.error
-                Log.d("SubSetsScreen: ", it.error)
-            }
-            it.dataList?.let {
-                showProgress = false
-                subSetList = it as List<Course>
-                Log.d("SubSetsScreen: ", subSetList.toString())
-            }
-        }
+//        asesmntViewModel.getSubSetList(examMetaData.setId!!, examMetaData.setFlag!!)
+//
+//        asesmntViewModel.subSetData.collect {
+//            if (it.isLoading) {
+//                showProgress = true
+//                Log.d("SubSetsScreen: ", "Loading..")
+//            }
+//            if (it.error.isNotBlank()) {
+//                showProgress = false
+//                showError = true
+//                errorMsg = it.error
+//                Log.d("SubSetsScreen: ", it.error)
+//            }
+//            it.dataList?.let {
+//                showProgress = false
+//                subSetList = it as List<Course>
+//                Log.d("SubSetsScreen: ", subSetList.toString())
+//            }
+//        }
     }
 
 

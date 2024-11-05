@@ -31,7 +31,7 @@ import com.testleaf.user.viewmodel.EntityViewModel
 import com.testleaf.user.viewmodel.QuesViewModel
 import com.testleaf.user.viewmodel.UserViewModel
 import com.google.gson.Gson
-import com.testleaf.user.viewmodel.ApiViewModel
+import com.testleaf.user.viewmodel.AuthViewModel
 
 /**
  * Created by noweshedakram on 16/8/23.
@@ -41,7 +41,7 @@ fun NavGraphBuilder.ContentNavGraph(
     navController: NavHostController,
     route: String = Graph.CONTENT,
     startDestination: String = ContentNavScreen.EditProfile.route,
-    apiViewModel: ApiViewModel,
+    authViewModel: AuthViewModel,
     userViewModel: UserViewModel,
     asesmntViewModel: AsesmntViewModel,
     quesViewModel: QuesViewModel,
@@ -54,7 +54,7 @@ fun NavGraphBuilder.ContentNavGraph(
 
         composable(ContentNavScreen.EditProfile.route) {
             EditProfileScreen(
-                apiViewModel = apiViewModel,
+                authViewModel = authViewModel,
                 userViewModel = userViewModel,
                 entityViewModel = entityViewModel
             )

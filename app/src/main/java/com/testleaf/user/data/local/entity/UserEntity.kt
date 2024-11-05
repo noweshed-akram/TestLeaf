@@ -24,7 +24,8 @@ data class UserEntity(
     val address: String,
     val profileAvatar: String,
     val accessToken: String,
-    val expiresIn: Int,
+    val expiresIn: Long,
+    val expiresAt: String,
     val isActive: Int,
     val createdAt: String,
     val updatedAt: String

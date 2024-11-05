@@ -1,4 +1,4 @@
-package com.testleaf.user.utils
+package com.testleaf.user.data.remote.di
 
 import android.util.Patterns
 import com.testleaf.user.utils.AppConstant.BASE_URL

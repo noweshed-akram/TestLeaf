@@ -11,6 +11,6 @@ data class UserData(
     @SerializedName("user_details") var userDetails: UserDetails? = UserDetails(),
     @SerializedName("access_token") var accessToken: String? = null,
     @SerializedName("token_type") var tokenType: String? = null,
-    @SerializedName("expires_in") var expiresIn: Int? = null,
+    @SerializedName("expires_in") var expiresIn: Long? = null,
     @SerializedName("expired_at") var expiredAt: String? = null
 )

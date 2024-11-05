@@ -10,7 +10,6 @@ import androidx.navigation.compose.rememberNavController
 import com.testleaf.user.viewmodel.AuthViewModel
 import com.testleaf.user.viewmodel.UserViewModel
 import com.testleaf.user.ui.layout.compose.HomeScreen
-import com.testleaf.user.viewmodel.ApiViewModel
 import com.testleaf.user.viewmodel.AsesmntViewModel
 import com.testleaf.user.viewmodel.EntityViewModel
 import com.testleaf.user.viewmodel.QuesViewModel
@@ -26,7 +25,6 @@ fun RootNavGraph(
     route: String = Graph.ROOT,
     startDestination: String = Graph.AUTHENTICATION,
     authViewModel: AuthViewModel,
-    apiViewModel: ApiViewModel,
     userViewModel: UserViewModel,
     asesmntViewModel: AsesmntViewModel,
     quesViewModel: QuesViewModel,
@@ -41,7 +39,6 @@ fun RootNavGraph(
         AuthNavGraph(
             navController = navController,
             authViewModel = authViewModel,
-            apiViewModel = apiViewModel,
             entityViewModel = entityViewModel
         )
 
@@ -49,7 +46,6 @@ fun RootNavGraph(
             HomeScreen(
                 scrollBehavior = scrollBehavior,
                 authViewModel = authViewModel,
-                apiViewModel = apiViewModel,
                 userViewModel = userViewModel,
                 asesmntViewModel = asesmntViewModel,
                 quesViewModel = quesViewModel,

@@ -23,6 +23,15 @@ class EntityUseCase @Inject constructor(
         return entityRepository.getUserData()
     }
 
+    suspend fun updateAccessToken(
+        userId: Int,
+        accessToken: String,
+        expireIn: Long,
+        expireAt: String
+    ): Void {
+        return entityRepository.updateAccessToken(userId, accessToken, expireIn, expireAt)
+    }
+
     suspend fun insertTestData(testEntity: TestEntity) {
         entityRepository.insertTestData(testEntity)
     }

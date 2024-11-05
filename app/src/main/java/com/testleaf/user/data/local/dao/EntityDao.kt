@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.Flow
 /**
  * Created by Md. Noweshed Akram on 15/12/23.
  */
-
 @Dao
 interface EntityDao {
 
@@ -26,6 +25,18 @@ interface EntityDao {
 
     @Query("select * from userentity")
     fun getUserData(): Flow<UserEntity>
+
+    @Query(
+        "update userentity " +
+                "set accessToken= :accessToken, expiresIn= :expireIn, expiresAt= :expireAt " +
+                "where userId= :userId"
+    )
+    suspend fun updateAccessToken(
+        userId: Int,
+        accessToken: String,
+        expireIn: Long,
+        expireAt: String
+    ): Void
 
     /**
      * Test Entity

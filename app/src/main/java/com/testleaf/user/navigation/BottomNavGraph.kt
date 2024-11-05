@@ -11,7 +11,6 @@ import com.testleaf.user.ui.layout.compose.bottombar.AssessmentScreen
 import com.testleaf.user.ui.layout.compose.bottombar.DefinitionScreen
 import com.testleaf.user.ui.layout.compose.bottombar.LessonsScreen
 import com.testleaf.user.utils.toPrettyJson
-import com.testleaf.user.viewmodel.ApiViewModel
 import com.testleaf.user.viewmodel.AsesmntViewModel
 import com.testleaf.user.viewmodel.AuthViewModel
 import com.testleaf.user.viewmodel.EntityViewModel
@@ -27,7 +26,6 @@ fun BottomNavigation(
     navController: NavHostController = rememberNavController(),
     startDestination: String = BottomNavScreen.Assessment.route,
     authViewModel: AuthViewModel,
-    apiViewModel: ApiViewModel,
     userViewModel: UserViewModel,
     asesmntViewModel: AsesmntViewModel,
     quesViewModel: QuesViewModel,
@@ -98,7 +96,7 @@ fun BottomNavigation(
 
         ContentNavGraph(
             navController = navController,
-            apiViewModel = apiViewModel,
+            authViewModel = authViewModel,
             userViewModel = userViewModel,
             asesmntViewModel = asesmntViewModel,
             quesViewModel = quesViewModel,
@@ -108,7 +106,6 @@ fun BottomNavigation(
         AuthNavGraph(
             navController = navController,
             authViewModel = authViewModel,
-            apiViewModel = apiViewModel,
             entityViewModel = entityViewModel
         )
     }

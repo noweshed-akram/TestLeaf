@@ -49,28 +49,28 @@ fun ReviewQuesScreen(
 
     LaunchedEffect(key1 = true) {
 
-        quesViewModel.getReviewQues()
-
-        quesViewModel.reviewQuesData.collect {
-            if (it.isLoading) {
-                showProgress = true
-                Log.d("ReviewQuesScreen: ", "Loading")
-            }
-            if (it.error.isNotBlank()) {
-                showProgress = false
-                showError = true
-                errorMsg = it.error
-                Log.d("ReviewQuesScreen: ", it.error)
-            }
-            it.dataList?.let {
-                showProgress = false
-                questionList = it as List<Question>
-            }
-            it.data?.let {
-                showProgress = false
-                quesViewModel.getReviewQues()
-            }
-        }
+//        quesViewModel.getReviewQues()
+//
+//        quesViewModel.reviewQuesData.collect {
+//            if (it.isLoading) {
+//                showProgress = true
+//                Log.d("ReviewQuesScreen: ", "Loading")
+//            }
+//            if (it.error.isNotBlank()) {
+//                showProgress = false
+//                showError = true
+//                errorMsg = it.error
+//                Log.d("ReviewQuesScreen: ", it.error)
+//            }
+//            it.dataList?.let {
+//                showProgress = false
+//                questionList = it as List<Question>
+//            }
+//            it.data?.let {
+//                showProgress = false
+//                quesViewModel.getReviewQues()
+//            }
+//        }
     }
 
     Column(
@@ -97,7 +97,7 @@ fun ReviewQuesScreen(
                             question = question,
                             deleteBtnVisibility = true
                         ) { quesId ->
-                            quesViewModel.deleteReviewQues(quesId)
+//                            quesViewModel.deleteReviewQues(quesId)
                         }
                     }
                 }

@@ -8,7 +8,6 @@ import com.testleaf.user.ui.layout.compose.auth.CheckEmailScreen
 import com.testleaf.user.ui.layout.compose.auth.EmailRegisterScreen
 import com.testleaf.user.ui.layout.compose.auth.EmailSignScreen
 import com.testleaf.user.ui.layout.compose.auth.ForgotPasswordScreen
-import com.testleaf.user.viewmodel.ApiViewModel
 import com.testleaf.user.viewmodel.AuthViewModel
 import com.testleaf.user.viewmodel.EntityViewModel
 
@@ -20,7 +19,6 @@ fun NavGraphBuilder.AuthNavGraph(
     route: String = Graph.AUTHENTICATION,
     startDestination: String = AuthScreen.EmailSignIn.route,
     authViewModel: AuthViewModel,
-    apiViewModel: ApiViewModel,
     entityViewModel: EntityViewModel
 ) {
     navigation(
@@ -30,7 +28,7 @@ fun NavGraphBuilder.AuthNavGraph(
 
         composable(route = AuthScreen.EmailSignIn.route) {
             EmailSignScreen(
-                apiViewModel = apiViewModel,
+                authViewModel = authViewModel,
                 entityViewModel = entityViewModel,
                 onSuccessLogin = {
                     navController.navigate(Graph.HOME)
@@ -63,7 +61,7 @@ fun NavGraphBuilder.AuthNavGraph(
 
         composable(route = AuthScreen.EmailRegistration.route) {
             EmailRegisterScreen(
-                apiViewModel = apiViewModel,
+                authViewModel = authViewModel,
                 entityViewModel = entityViewModel,
                 onSuccessRegister = {
                     navController.navigate(Graph.HOME)

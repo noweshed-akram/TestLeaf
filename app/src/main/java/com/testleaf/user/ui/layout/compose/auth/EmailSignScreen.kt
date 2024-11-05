@@ -59,10 +59,11 @@ import com.testleaf.user.ui.component.PrimaryButton
 import com.testleaf.user.ui.component.ProgressBar
 import com.testleaf.user.ui.theme.SecondaryColor
 import com.testleaf.user.ui.theme.publicSansFamily
+import com.testleaf.user.utils.AppConstant.AUTH_TOKEN
 import com.testleaf.user.utils.checkStringIsNull
 import com.testleaf.user.utils.fromPrettyJson
 import com.testleaf.user.utils.toPrettyJson
-import com.testleaf.user.viewmodel.ApiViewModel
+import com.testleaf.user.viewmodel.AuthViewModel
 import com.testleaf.user.viewmodel.EntityViewModel
 
 /**
@@ -70,7 +71,7 @@ import com.testleaf.user.viewmodel.EntityViewModel
  */
 @Composable
 fun EmailSignScreen(
-    apiViewModel: ApiViewModel,
+    authViewModel: AuthViewModel,
     entityViewModel: EntityViewModel,
     onSuccessLogin: () -> Unit,
     onResetBtnClick: () -> Unit,
@@ -90,8 +91,8 @@ fun EmailSignScreen(
     var showSuccess by rememberSaveable { mutableStateOf(false) }
     var successMsg by rememberSaveable { mutableStateOf("") }
 
-    LaunchedEffect(key1 = apiViewModel.loginResponse) {
-        apiViewModel.loginResponse.collect {
+    LaunchedEffect(key1 = authViewModel.loginResponse) {
+        authViewModel.loginResponse.collect {
             if (it.isLoading) {
                 showProgress = true
                 Log.d(TAG, "Loading")
@@ -105,12 +106,13 @@ fun EmailSignScreen(
             it.data?.let {
                 showProgress = false
                 val userData = it.toPrettyJson().fromPrettyJson<AuthResponse>().data
+                AUTH_TOKEN = userData?.accessToken!!
                 Log.d(TAG, "Login Successful")
                 showSuccess = true
                 successMsg = "Login Successful"
                 entityViewModel.insertUserData(
                     UserEntity(
-                        userId = userData?.userDetails?.id!!,
+                        userId = userData.userDetails?.id!!,
                         name = checkStringIsNull(userData.userDetails?.profile?.name!!),
                         email = checkStringIsNull(userData.userDetails?.email!!),
                         isEmailVerified = 0,
@@ -122,6 +124,7 @@ fun EmailSignScreen(
                         profileAvatar = checkStringIsNull(userData.userDetails?.profile?.profileAvatar),
                         accessToken = checkStringIsNull(userData.accessToken),
                         expiresIn = userData.expiresIn!!,
+                        expiresAt = userData.expiredAt!!,
                         isActive = userData.userDetails?.isActive!!,
                         createdAt = checkStringIsNull(userData.userDetails?.createdAt),
                         updatedAt = checkStringIsNull(userData.userDetails?.updatedAt)
@@ -318,7 +321,7 @@ fun EmailSignScreen(
             onClick = {
                 if (inputEmail.isNotEmpty() && inputPassword.isNotEmpty()) {
                     Log.d("EmailSignScreen: ", "Click Login Button")
-                    apiViewModel.userLogin(
+                    authViewModel.userLogin(
                         LoginReq(
                             email = inputEmail,
                             password = inputPassword

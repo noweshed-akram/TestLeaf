@@ -15,6 +15,13 @@ interface EntityRepository {
 
     fun getUserData(): Flow<UserEntity>
 
+    suspend fun updateAccessToken(
+        userId: Int,
+        accessToken: String,
+        expireIn: Long,
+        expireAt: String
+    ): Void
+
     suspend fun insertTestData(testEntity: TestEntity)
 
     fun getTestMark(marks: Int): LiveData<Int>

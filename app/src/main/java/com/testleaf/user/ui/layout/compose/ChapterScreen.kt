@@ -47,24 +47,24 @@ fun ChapterScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        asesmntViewModel.getChapterList(examMetaData.courseId!!)
-
-        asesmntViewModel.chaptersData.collect {
-            if (it.isLoading) {
-                showProgress = true
-                Log.d("ChapterScreen: ", "Loading")
-            }
-            if (it.error.isNotBlank()) {
-                showProgress = false
-                showError = true
-                errorMsg = it.error
-                Log.d("ChapterScreen: ", it.error)
-            }
-            it.dataList?.let {
-                showProgress = false
-                chapterList = it as List<Course>
-            }
-        }
+//        asesmntViewModel.getChapterList(examMetaData.courseId!!)
+//
+//        asesmntViewModel.chaptersData.collect {
+//            if (it.isLoading) {
+//                showProgress = true
+//                Log.d("ChapterScreen: ", "Loading")
+//            }
+//            if (it.error.isNotBlank()) {
+//                showProgress = false
+//                showError = true
+//                errorMsg = it.error
+//                Log.d("ChapterScreen: ", it.error)
+//            }
+//            it.dataList?.let {
+//                showProgress = false
+//                chapterList = it as List<Course>
+//            }
+//        }
     }
 
     Column(

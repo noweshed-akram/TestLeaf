@@ -53,7 +53,7 @@ import com.testleaf.user.ui.theme.publicSansFamily
 import com.testleaf.user.viewmodel.UserViewModel
 import com.google.modernstorage.photopicker.PhotoPicker
 import com.talhafaki.composablesweettoast.util.SweetToastUtil
-import com.testleaf.user.viewmodel.ApiViewModel
+import com.testleaf.user.viewmodel.AuthViewModel
 import com.testleaf.user.viewmodel.EntityViewModel
 import kotlinx.coroutines.flow.collectLatest
 
@@ -63,7 +63,7 @@ import kotlinx.coroutines.flow.collectLatest
 @androidx.core.os.BuildCompat.PrereleaseSdkCheck
 @Composable
 fun EditProfileScreen(
-    apiViewModel: ApiViewModel,
+    authViewModel: AuthViewModel,
     userViewModel: UserViewModel,
     entityViewModel: EntityViewModel
 ) {

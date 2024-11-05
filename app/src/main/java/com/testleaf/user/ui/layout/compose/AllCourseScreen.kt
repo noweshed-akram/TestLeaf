@@ -15,13 +15,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.testleaf.user.domain.models.Course
+import com.talhafaki.composablesweettoast.util.SweetToastUtil
+import com.testleaf.user.data.remote.model.response.CourseData
 import com.testleaf.user.domain.models.ExamMetaData
 import com.testleaf.user.ui.component.GridItemView
 import com.testleaf.user.ui.component.ProgressBar
 import com.testleaf.user.utils.AppConstant.COLL_COURSES
 import com.testleaf.user.viewmodel.AsesmntViewModel
-import com.talhafaki.composablesweettoast.util.SweetToastUtil
 
 /**
  * Created by Md. Noweshed Akram on 17/11/23.
@@ -32,31 +32,33 @@ fun AllCourseScreen(
     onCourseItemClick: (ExamMetaData) -> Unit
 ) {
 
+    val TAG = "AllCourseScreen"
+
     var showProgress by rememberSaveable { mutableStateOf(false) }
     var showError by rememberSaveable { mutableStateOf(false) }
     var errorMsg by rememberSaveable { mutableStateOf("") }
 
     var courseList by rememberSaveable {
-        mutableStateOf(emptyList<Course>())
+        mutableStateOf(emptyList<CourseData>())
     }
 
     LaunchedEffect(key1 = true) {
-        asesmntViewModel.getCourseList(50)
+        asesmntViewModel.getCourseList()
 
-        asesmntViewModel.coursesData.collect {
+        asesmntViewModel.courseResponse.collect {
             if (it.isLoading) {
                 showProgress = true
-                Log.d("AssessmentScreen: ", "Loading")
+                Log.d(TAG, "Loading")
             }
             if (it.error.isNotBlank()) {
                 showProgress = false
                 showError = true
                 errorMsg = it.error
-                Log.d("AssessmentScreen: ", it.error)
+                Log.d(TAG, it.error)
             }
             it.dataList?.let {
                 showProgress = false
-                courseList = it as List<Course>
+                courseList = it as List<CourseData>
             }
         }
     }
@@ -73,14 +75,14 @@ fun AllCourseScreen(
         ) {
             items(courseList.size) {
                 GridItemView(
-                    title = "${it + 1}. ${courseList[it].name}",
+                    title = "${it + 1}. ${courseList[it].courseName}",
                     subTitle = "10+ Chapters",
-                    iconUrl = courseList[it].icon
+                    iconUrl = courseList[it].iconData?.url!!
                 ) {
                     val examMetaData = ExamMetaData(
-                        examName = courseList[it].name,
+                        examName = courseList[it].courseName,
                         examType = COLL_COURSES,
-                        courseId = courseList[it].docId
+                        courseId = courseList[it].id.toString()
                     )
 
                     onCourseItemClick(examMetaData)

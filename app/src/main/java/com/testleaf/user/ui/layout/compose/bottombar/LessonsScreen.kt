@@ -46,9 +46,9 @@ fun LessonsScreen(
 
     val exoPlayer = ExoPlayer.Builder(context).build()
 
-    var questionList by rememberSaveable {
-        mutableStateOf(emptyList<Question>())
-    }
+//    var questionList by rememberSaveable {
+//        mutableStateOf(emptyList<Question>())
+//    }
 
     Column(
         modifier = Modifier
@@ -58,35 +58,35 @@ fun LessonsScreen(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        if (questionList.isNotEmpty()) {
-            SwipeRefresh(
-                state = rememberSwipeRefreshState(isRefreshing = false),
-                onRefresh = {
-
-                }) {
-                LazyColumn(
-                    modifier = Modifier.wrapContentSize(),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    itemsIndexed(
-                        items = questionList
-                    ) { index, question ->
-
-                    }
-                }
-            }
-        } else {
-            InfoBannerCard(
-                icon = R.drawable.ic_book_close,
-                titleText = "No data found!",
-                infoText = "You will find more Practice Questions later.",
-                strokeColor = StrokeColor,
-                bgColor = WhiteColor,
-                onCardClick = {}
-            )
-        }
-
-        Spacer(modifier = Modifier.height(12.dp))
+//        if (questionList.isNotEmpty()) {
+//            SwipeRefresh(
+//                state = rememberSwipeRefreshState(isRefreshing = false),
+//                onRefresh = {
+//
+//                }) {
+//                LazyColumn(
+//                    modifier = Modifier.wrapContentSize(),
+//                    verticalArrangement = Arrangement.spacedBy(16.dp)
+//                ) {
+//                    itemsIndexed(
+//                        items = questionList
+//                    ) { index, question ->
+//
+//                    }
+//                }
+//            }
+//        } else {
+//            InfoBannerCard(
+//                icon = R.drawable.ic_book_close,
+//                titleText = "No data found!",
+//                infoText = "You will find more Practice Questions later.",
+//                strokeColor = StrokeColor,
+//                bgColor = WhiteColor,
+//                onCardClick = {}
+//            )
+//        }
+//
+//        Spacer(modifier = Modifier.height(12.dp))
 
 
 

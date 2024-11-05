@@ -4,10 +4,8 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.testleaf.user.domain.models.Feedback
-import com.testleaf.user.domain.models.Question
 import com.testleaf.user.domain.models.ResponseState
-import com.testleaf.user.domain.usecase.QuesUseCase
+import com.testleaf.user.domain.usecase.ApiUseCase
 import com.testleaf.user.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,161 +21,57 @@ import javax.inject.Inject
 @HiltViewModel
 class QuesViewModel @Inject constructor(
     private val app: Application,
-    private val quesUseCase: QuesUseCase
+    private val apiUseCase: ApiUseCase
 ) : AndroidViewModel(app) {
 
-    private val _questionData = MutableStateFlow(ResponseState())
-    val questionData: StateFlow<ResponseState> = _questionData
+    val TAG = "QuesViewModel"
 
+    private val _questionResponse = MutableStateFlow(ResponseState())
+    val questionResponse: StateFlow<ResponseState> = _questionResponse
 
-    private val _reviewQuesData = MutableStateFlow(ResponseState())
-    val reviewQuesData: StateFlow<ResponseState> = _reviewQuesData
+    private val _courseResponse = MutableStateFlow(ResponseState())
+    val courseResponse: StateFlow<ResponseState> = _courseResponse
 
-    fun getQuestions(
-        courseId: String,
-        chapterId: String,
-        sectionId: String,
-        limit: Long
-    ) {
+    fun getCourseList() {
         viewModelScope.launch {
-            quesUseCase.getQuestions(courseId, chapterId, sectionId, limit).onEach {
+            apiUseCase.getCourseList().onEach {
                 when (it) {
                     is Resource.Loading -> {
-                        Log.d("getQuestions: ", it.data.toString())
-                        _questionData.value = ResponseState(isLoading = true)
+                        Log.d(TAG, "loading")
+                        _courseResponse.value = ResponseState(isLoading = true)
                     }
 
                     is Resource.Error -> {
-                        Log.d("getQuestions: ", it.data.toString())
-                        _questionData.value = ResponseState(error = it.message ?: "")
+                        Log.d(TAG, it.message.toString())
+                        _courseResponse.value = ResponseState(error = it.message ?: "")
                     }
 
                     is Resource.Success -> {
-                        Log.d("getQuestions: ", it.data.toString())
-                        _questionData.value = ResponseState(dataList = it.data)
+                        Log.d(TAG, it.data.toString())
+                        _courseResponse.value = ResponseState(data = it.data)
                     }
                 }
             }.launchIn(viewModelScope)
         }
     }
 
-    fun getQuestions(
-        setId: String,
-        subSetId: String,
-        sectionId: String,
-    ) {
+    fun getQuestionList() {
         viewModelScope.launch {
-            quesUseCase.getQuestions(setId, subSetId, sectionId).onEach {
+            apiUseCase.getQuestionList().onEach {
                 when (it) {
                     is Resource.Loading -> {
-                        Log.d("getQuestions: ", it.data.toString())
-                        _questionData.value = ResponseState(isLoading = true)
+                        Log.d(TAG, "loading")
+                        _questionResponse.value = ResponseState(isLoading = true)
                     }
 
                     is Resource.Error -> {
-                        Log.d("getQuestions: ", it.data.toString())
-                        _questionData.value = ResponseState(error = it.message ?: "")
+                        Log.d(TAG, it.message.toString())
+                        _questionResponse.value = ResponseState(error = it.message ?: "")
                     }
 
                     is Resource.Success -> {
-                        Log.d("getQuestions: ", it.data.toString())
-                        _questionData.value = ResponseState(dataList = it.data)
-                    }
-                }
-            }.launchIn(viewModelScope)
-        }
-    }
-
-    fun addToReviewQues(
-        question: Question
-    ) {
-        viewModelScope.launch {
-            quesUseCase.addToReviewQues(question).onEach {
-                when (it) {
-                    is Resource.Loading -> {
-                        Log.d("addToReviewQues: ", it.data.toString())
-                        _questionData.value = ResponseState(isLoading = true)
-                    }
-
-                    is Resource.Error -> {
-                        Log.d("addToReviewQues: ", it.data.toString())
-                        _questionData.value = ResponseState(error = it.message ?: "")
-                    }
-
-                    is Resource.Success -> {
-                        Log.d("addToReviewQues: ", it.data.toString())
-                        _questionData.value = ResponseState(data = it.data)
-                    }
-                }
-            }.launchIn(viewModelScope)
-        }
-    }
-
-    fun getReviewQues() {
-        viewModelScope.launch {
-            quesUseCase.getReviewQues().onEach {
-                when (it) {
-                    is Resource.Loading -> {
-                        Log.d("getQuestions: ", it.data.toString())
-                        _reviewQuesData.value = ResponseState(isLoading = true)
-                    }
-
-                    is Resource.Error -> {
-                        Log.d("getQuestions: ", it.data.toString())
-                        _reviewQuesData.value = ResponseState(error = it.message ?: "")
-                    }
-
-                    is Resource.Success -> {
-                        Log.d("getQuestions: ", it.data.toString())
-                        _reviewQuesData.value = ResponseState(dataList = it.data)
-                    }
-                }
-            }.launchIn(viewModelScope)
-        }
-    }
-
-    fun deleteReviewQues(quesId: String) {
-        viewModelScope.launch {
-            quesUseCase.deleteReviewQues(quesId).onEach {
-                when (it) {
-                    is Resource.Loading -> {
-                        Log.d("getQuestions: ", it.data.toString())
-                        _reviewQuesData.value = ResponseState(isLoading = true)
-                    }
-
-                    is Resource.Error -> {
-                        Log.d("getQuestions: ", it.data.toString())
-                        _reviewQuesData.value = ResponseState(error = it.message ?: "")
-                    }
-
-                    is Resource.Success -> {
-                        Log.d("getQuestions: ", it.data.toString())
-                        _reviewQuesData.value = ResponseState(data = it.data)
-                    }
-                }
-            }.launchIn(viewModelScope)
-        }
-    }
-
-    fun sendQuesFeedback(
-        feedback: Feedback
-    ) {
-        viewModelScope.launch {
-            quesUseCase.sendQuesFeedback(feedback).onEach {
-                when (it) {
-                    is Resource.Loading -> {
-                        Log.d("sendQuesFeedback: ", it.data.toString())
-                        _questionData.value = ResponseState(isLoading = true)
-                    }
-
-                    is Resource.Error -> {
-                        Log.d("sendQuesFeedback: ", it.data.toString())
-                        _questionData.value = ResponseState(error = it.message ?: "")
-                    }
-
-                    is Resource.Success -> {
-                        Log.d("sendQuesFeedback: ", it.data.toString())
-                        _questionData.value = ResponseState(data = it.data)
+                        Log.d(TAG, it.data.toString())
+                        _questionResponse.value = ResponseState(data = it.data)
                     }
                 }
             }.launchIn(viewModelScope)

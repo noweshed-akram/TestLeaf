@@ -24,6 +24,15 @@ class EntityRepoImpl @Inject constructor(
         return entityDao.getUserData()
     }
 
+    override suspend fun updateAccessToken(
+        userId: Int,
+        accessToken: String,
+        expireIn: Long,
+        expireAt: String
+    ): Void {
+       return entityDao.updateAccessToken(userId, accessToken, expireIn, expireAt)
+    }
+
     override suspend fun insertTestData(testEntity: TestEntity) {
         entityDao.insertTestData(testEntity)
     }

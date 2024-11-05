@@ -2,12 +2,8 @@ package com.testleaf.user.di
 
 import android.app.Application
 import com.testleaf.user.domain.usecase.ApiUseCase
-import com.testleaf.user.domain.usecase.AsesmntUseCase
-import com.testleaf.user.domain.usecase.AuthUseCase
 import com.testleaf.user.domain.usecase.EntityUseCase
-import com.testleaf.user.domain.usecase.QuesUseCase
 import com.testleaf.user.domain.usecase.UserUseCase
-import com.testleaf.user.viewmodel.ApiViewModel
 import com.testleaf.user.viewmodel.AsesmntViewModel
 import com.testleaf.user.viewmodel.AuthViewModel
 import com.testleaf.user.viewmodel.EntityViewModel
@@ -30,9 +26,9 @@ object ViewModelModule {
     @Provides
     fun providesAuthViewModel(
         app: Application,
-        authUseCase: AuthUseCase
+        apiUseCase: ApiUseCase
     ): AuthViewModel {
-        return AuthViewModel(app, authUseCase)
+        return AuthViewModel(app, apiUseCase)
     }
 
     @Singleton
@@ -48,18 +44,18 @@ object ViewModelModule {
     @Provides
     fun providesAsesmntViewModel(
         app: Application,
-        asesmntUseCase: AsesmntUseCase
+        apiUseCase: ApiUseCase
     ): AsesmntViewModel {
-        return AsesmntViewModel(app, asesmntUseCase)
+        return AsesmntViewModel(app, apiUseCase)
     }
 
     @Singleton
     @Provides
     fun providesQuesViewModel(
         app: Application,
-        quesUseCase: QuesUseCase
+        apiUseCase: ApiUseCase
     ): QuesViewModel {
-        return QuesViewModel(app, quesUseCase)
+        return QuesViewModel(app, apiUseCase)
     }
 
     @Singleton
@@ -69,15 +65,6 @@ object ViewModelModule {
         entityUseCase: EntityUseCase
     ): EntityViewModel {
         return EntityViewModel(app, entityUseCase)
-    }
-
-    @Singleton
-    @Provides
-    fun providesApiViewModel(
-        app: Application,
-        apiUseCase: ApiUseCase
-    ): ApiViewModel {
-        return ApiViewModel(app, apiUseCase)
     }
 
 }

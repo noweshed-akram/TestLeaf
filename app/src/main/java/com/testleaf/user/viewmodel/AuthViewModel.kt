@@ -2,14 +2,14 @@ package com.testleaf.user.viewmodel
 
 import android.app.Application
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.testleaf.user.domain.models.AuthState
-import com.testleaf.user.domain.models.User
-import com.testleaf.user.domain.usecase.AuthUseCase
+import com.google.gson.Gson
+import com.google.gson.JsonParser
+import com.testleaf.user.data.remote.model.req.LoginReq
+import com.testleaf.user.data.remote.model.req.RegisterReq
+import com.testleaf.user.domain.models.ResponseState
+import com.testleaf.user.domain.usecase.ApiUseCase
 import com.testleaf.user.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,85 +25,103 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val app: Application,
-    private val authUseCase: AuthUseCase
+    private val apiUseCase: ApiUseCase
 ) : AndroidViewModel(app) {
 
     private val TAG = "AuthViewModel"
-    private val _firebaseUser = MutableStateFlow(AuthState())
-    val firebaseUser: StateFlow<AuthState> = _firebaseUser
+    private val _loginResponse = MutableStateFlow(ResponseState())
+    val loginResponse: StateFlow<ResponseState> = _loginResponse
 
-    /**
-     * Firebase Sign in Methods for Email and Password
-     */
-    var sendEmailVerificationResponse by mutableStateOf<Resource<Boolean>>(Resource.Success(false))
-    var sendPasswordResetEmailResponse by mutableStateOf<Resource<Boolean>>(Resource.Success(false))
+    private val _registrationResponse = MutableStateFlow(ResponseState())
+    val registrationResponse: StateFlow<ResponseState> = _registrationResponse
 
-    fun clearAuthState() {
-        _firebaseUser.value = AuthState()
-    }
+    fun userRegistration(registerReq: RegisterReq) {
+        val gson = Gson()
+        val json = gson.toJson(registerReq)
+        val authInfo = JsonParser.parseString(json).asJsonObject
 
-    fun signUpWithEmailAndPassword(
-        email: String,
-        password: String,
-        user: User
-    ) {
         viewModelScope.launch {
-            authUseCase.signUpWithEmailAndPassword(email, password, user).onEach {
+            apiUseCase.userRegistration(authInfo).onEach {
                 when (it) {
                     is Resource.Loading -> {
-                        Log.d(TAG, "emailRegister: " + it.data.toString())
-                        _firebaseUser.value = AuthState(isLoading = true)
+                        Log.d(TAG, "loading")
+                        _registrationResponse.value = ResponseState(isLoading = true)
                     }
 
                     is Resource.Error -> {
-                        Log.d(TAG, "emailRegister: " + it.data.toString())
-                        _firebaseUser.value = AuthState(error = it.message ?: "")
+                        Log.d(TAG, it.message.toString())
+                        _registrationResponse.value = ResponseState(error = it.message ?: "")
                     }
 
                     is Resource.Success -> {
-                        Log.d(TAG, "emailRegister: " + it.data.toString())
-                        _firebaseUser.value = AuthState(data = it.data)
+                        Log.d(TAG, it.data.toString())
+                        _registrationResponse.value = ResponseState(data = it.data)
                     }
                 }
             }.launchIn(viewModelScope)
         }
     }
 
-    fun sendEmailVerification() = viewModelScope.launch {
-        sendEmailVerificationResponse = Resource.Loading()
-        sendEmailVerificationResponse = authUseCase.sendEmailVerification()
-    }
+    fun userLogin(loginReq: LoginReq) {
+        val gson = Gson()
+        val json = gson.toJson(loginReq)
+        val authInfo = JsonParser.parseString(json).asJsonObject
 
-    fun sendPasswordResetEmail(email: String) = viewModelScope.launch {
-        sendPasswordResetEmailResponse = Resource.Loading()
-        sendPasswordResetEmailResponse = authUseCase.sendPasswordResetEmail(email)
-    }
-
-    fun signInWithEmailAndPassword(email: String, password: String) {
         viewModelScope.launch {
-            authUseCase.signInWithEmailAndPassword(email, password).onEach {
+            apiUseCase.userLogin(authInfo).onEach {
                 when (it) {
                     is Resource.Loading -> {
-                        Log.d(TAG, "loginWithEmail: " + it.data.toString())
-                        _firebaseUser.value = AuthState(isLoading = true)
+                        Log.d(TAG, "loading")
+                        _loginResponse.value = ResponseState(isLoading = true)
                     }
 
                     is Resource.Error -> {
-                        Log.d(TAG, "loginWithEmail: " + it.message.toString())
-                        _firebaseUser.value = AuthState(error = it.message ?: "")
+                        Log.d(TAG, it.message.toString())
+                        _loginResponse.value = ResponseState(error = it.message ?: "")
                     }
 
                     is Resource.Success -> {
-                        Log.d(TAG, "loginWithEmail: " + it.data.toString())
-                        _firebaseUser.value = AuthState(data = it.data)
+                        Log.d(TAG, it.data.toString())
+                        _loginResponse.value = ResponseState(data = it.data)
                     }
                 }
             }.launchIn(viewModelScope)
         }
     }
-    /**
-     * End of
-     * Firebase Sign in Methods for Email and Password
-     */
+
+    fun refreshToken() {
+
+    }
+
+    fun forgotPassword() {
+
+    }
+
+    fun resetPassword() {
+
+    }
+
+    fun userLogout() {
+        viewModelScope.launch {
+            apiUseCase.userLogout().onEach {
+                when (it) {
+                    is Resource.Loading -> {
+                        Log.d(TAG, "loading")
+                        _loginResponse.value = ResponseState(isLoading = true)
+                    }
+
+                    is Resource.Error -> {
+                        Log.d(TAG, it.message.toString())
+                        _loginResponse.value = ResponseState(error = it.message ?: "")
+                    }
+
+                    is Resource.Success -> {
+                        Log.d(TAG, it.data.toString())
+                        _loginResponse.value = ResponseState(data = it.data)
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
 
 }

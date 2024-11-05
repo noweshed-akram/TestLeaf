@@ -1,7 +1,6 @@
 package com.testleaf.user.ui.layout.compose
 
 import android.content.pm.PackageManager
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -58,7 +57,6 @@ import com.testleaf.user.ui.component.HomeTopView
 import com.testleaf.user.ui.theme.StrokeColor
 import com.testleaf.user.utils.openContentLink
 import com.testleaf.user.utils.shareApp
-import com.testleaf.user.viewmodel.ApiViewModel
 import com.testleaf.user.viewmodel.AsesmntViewModel
 import com.testleaf.user.viewmodel.AuthViewModel
 import com.testleaf.user.viewmodel.EntityViewModel
@@ -77,7 +75,6 @@ fun HomeScreen(
     scrollBehavior: TopAppBarScrollBehavior,
     navController: NavHostController = rememberNavController(),
     authViewModel: AuthViewModel,
-    apiViewModel: ApiViewModel,
     userViewModel: UserViewModel,
     asesmntViewModel: AsesmntViewModel,
     quesViewModel: QuesViewModel,
@@ -217,8 +214,7 @@ fun HomeScreen(
 
                         "log_out" -> {
                             println("Log Out")
-                            userViewModel.logOut()
-                            authViewModel.clearAuthState()
+//                            authViewModel.userLogout()
                             navController.navigate(Graph.AUTHENTICATION)
                         }
 
@@ -414,7 +410,6 @@ fun HomeScreen(
                     navController = navController,
                     startDestination = BottomNavScreen.Assessment.route,
                     authViewModel = authViewModel,
-                    apiViewModel = apiViewModel,
                     userViewModel = userViewModel,
                     asesmntViewModel = asesmntViewModel,
                     quesViewModel = quesViewModel,

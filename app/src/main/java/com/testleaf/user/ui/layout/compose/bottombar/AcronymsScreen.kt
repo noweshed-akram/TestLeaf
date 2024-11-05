@@ -80,48 +80,48 @@ fun AcronymsScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        asesmntViewModel.getCourseList(50)
-        courseList = emptyList()
-
-        asesmntViewModel.coursesData.collect {
-            if (it.isLoading) {
-                showProgress = true
-                Log.d("AssessmentScreen: ", "Loading..")
-            }
-            if (it.error.isNotBlank()) {
-                showProgress = false
-                showError = true
-                errorMsg = it.error
-                Log.d("AssessmentScreen: ", it.error)
-            }
-            it.dataList?.let {
-                showProgress = false
-                courseList = courseList + Course(docId = "001", name = "All") + it as List<Course>
-                Log.d("AssessmentScreen: ", courseList.toString())
-            }
-        }
+//        asesmntViewModel.getCourseList(50)
+//        courseList = emptyList()
+//
+//        asesmntViewModel.coursesData.collect {
+//            if (it.isLoading) {
+//                showProgress = true
+//                Log.d("AssessmentScreen: ", "Loading..")
+//            }
+//            if (it.error.isNotBlank()) {
+//                showProgress = false
+//                showError = true
+//                errorMsg = it.error
+//                Log.d("AssessmentScreen: ", it.error)
+//            }
+//            it.dataList?.let {
+//                showProgress = false
+//                courseList = courseList + Course(docId = "001", name = "All") + it as List<Course>
+//                Log.d("AssessmentScreen: ", courseList.toString())
+//            }
+//        }
     }
 
     LaunchedEffect(key1 = true) {
-        asesmntViewModel.getAcronyms()
-
-        asesmntViewModel.acronymsData.collect {
-            if (it.isLoading) {
-                showProgress = true
-                Log.d("AcronymsScreen: ", "Loading..")
-            }
-            if (it.error.isNotBlank()) {
-                showProgress = false
-                showError = true
-                errorMsg = it.error
-                Log.d("AcronymsScreen: ", it.error)
-            }
-            it.dataList?.let {
-                showProgress = false
-                acronymList = it as List<Acronyms>
-                Log.d("AcronymsScreen: ", acronymList.toString())
-            }
-        }
+//        asesmntViewModel.getAcronyms()
+//
+//        asesmntViewModel.acronymsData.collect {
+//            if (it.isLoading) {
+//                showProgress = true
+//                Log.d("AcronymsScreen: ", "Loading..")
+//            }
+//            if (it.error.isNotBlank()) {
+//                showProgress = false
+//                showError = true
+//                errorMsg = it.error
+//                Log.d("AcronymsScreen: ", it.error)
+//            }
+//            it.dataList?.let {
+//                showProgress = false
+//                acronymList = it as List<Acronyms>
+//                Log.d("AcronymsScreen: ", acronymList.toString())
+//            }
+//        }
     }
 
     Column(
