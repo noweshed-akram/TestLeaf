@@ -23,15 +23,20 @@ class SessionManager @Inject constructor(
     fun getRefreshToken(): String {
         runBlocking {
             val response = tokenService.refreshToken()
-            // Update the refreshed access token and its expiration time in the session
-            entityUseCase.updateAccessToken(
-                response.body()?.data?.userDetails?.id!!,
-                response.body()?.data?.accessToken!!,
-                response.body()?.data?.expiresIn!!,
-                response.body()?.data?.expiredAt!!
-            )
 
-            refreshToken = response.body()?.data?.accessToken!!
+            if (response.code() == 200) {
+                refreshToken = response.body()?.data?.accessToken!!
+
+                // Update the refreshed access token and its expiration time in the session
+                entityUseCase.updateAccessToken(
+                    response.body()?.data?.userDetails?.id!!,
+                    response.body()?.data?.accessToken!!,
+                    response.body()?.data?.expiresIn!!,
+                    response.body()?.data?.expiredAt!!
+                )
+            } else {
+                refreshToken = ""
+            }
         }
 
         Log.d(TAG, "refreshToken: $refreshToken")

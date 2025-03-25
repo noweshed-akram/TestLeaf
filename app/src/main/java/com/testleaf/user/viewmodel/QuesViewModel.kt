@@ -29,35 +29,9 @@ class QuesViewModel @Inject constructor(
     private val _questionResponse = MutableStateFlow(ResponseState())
     val questionResponse: StateFlow<ResponseState> = _questionResponse
 
-    private val _courseResponse = MutableStateFlow(ResponseState())
-    val courseResponse: StateFlow<ResponseState> = _courseResponse
-
-    fun getCourseList() {
+    fun getQuestionList(limit: Int) {
         viewModelScope.launch {
-            apiUseCase.getCourseList().onEach {
-                when (it) {
-                    is Resource.Loading -> {
-                        Log.d(TAG, "loading")
-                        _courseResponse.value = ResponseState(isLoading = true)
-                    }
-
-                    is Resource.Error -> {
-                        Log.d(TAG, it.message.toString())
-                        _courseResponse.value = ResponseState(error = it.message ?: "")
-                    }
-
-                    is Resource.Success -> {
-                        Log.d(TAG, it.data.toString())
-                        _courseResponse.value = ResponseState(data = it.data)
-                    }
-                }
-            }.launchIn(viewModelScope)
-        }
-    }
-
-    fun getQuestionList() {
-        viewModelScope.launch {
-            apiUseCase.getQuestionList().onEach {
+            apiUseCase.getQuestionList(limit).onEach {
                 when (it) {
                     is Resource.Loading -> {
                         Log.d(TAG, "loading")

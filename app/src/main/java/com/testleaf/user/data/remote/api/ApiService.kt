@@ -11,6 +11,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
@@ -43,31 +44,48 @@ interface ApiService {
     suspend fun getProfile(@Body jsonObject: JsonObject): Response<User>
 
     /**
-     * Course APi
+     * Segments API
      */
     @GET("api/v1/course-list")
     suspend fun getCourseList(): Response<CourseResponse>
 
-    @GET("api/v1/course-search")
-    suspend fun searchCourse(@Query("search") searchValue: String): Response<CourseResponse>
+    @GET("api/v1/course-list")
+    suspend fun getCourseList(@Query("limit") limit: Int): Response<CourseResponse>
 
     @GET("api/v1/service-list")
     suspend fun getServiceList(): Response<ServiceResponse>
 
-    @GET("api/v1/service-search")
-    suspend fun searchService(@Query("search") searchValue: String): Response<ServiceResponse>
+    @GET("api/v1/service-list")
+    suspend fun getServiceList(@Query("limit") limit: Int): Response<ServiceResponse>
 
     @GET("api/v1/chapter-list")
     suspend fun getChapterList(): Response<ChapterResponse>
 
-    @GET("api/v1/chapter-search")
-    suspend fun searchChapter(@Query("search") searchValue: String): Response<ChapterResponse>
+    @GET("api/v1/chapter-list")
+    suspend fun getChapterList(@Query("limit") limit: Int): Response<ChapterResponse>
 
     /**
-     * Question APi
+     * Questions API
      */
     @GET("api/v1/question-list")
-    suspend fun getQuestionList(): Response<QuestionResponse>
+    suspend fun getQuestionList(@Query("limit") limit: Int): Response<QuestionResponse>
 
+    @GET("api/v1/question-list/{course_id}")
+    suspend fun getQuestionByCourse(
+        @Path("course_id") courseId: Int,
+        @Query("limit") limit: Int
+    ): Response<QuestionResponse>
+
+    @GET("api/v1/question-list/course/{chapter_id}")
+    suspend fun getQuestionByChapter(
+        @Path("chapter_id") chapterId: Int,
+        @Query("limit") limit: Int
+    ): Response<QuestionResponse>
+
+    @GET("api/v1/question-list/course/chapter/{section_id}")
+    suspend fun getQuestionBySection(
+        @Path("section_id") sectionId: Int,
+        @Query("limit") limit: Int
+    ): Response<QuestionResponse>
 
 }

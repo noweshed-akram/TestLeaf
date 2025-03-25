@@ -32,6 +32,29 @@ class AsesmntViewModel @Inject constructor(
     private val _courseResponse = MutableStateFlow(ResponseState())
     val courseResponse: StateFlow<ResponseState> = _courseResponse
 
+    fun getCourseList(limit: Int) {
+        viewModelScope.launch {
+            apiUseCase.getCourseList(limit).onEach {
+                when (it) {
+                    is Resource.Loading -> {
+                        Log.d(TAG, "loading")
+                        _courseResponse.value = ResponseState(isLoading = true)
+                    }
+
+                    is Resource.Error -> {
+                        Log.d(TAG, it.message.toString())
+                        _courseResponse.value = ResponseState(error = it.message ?: "")
+                    }
+
+                    is Resource.Success -> {
+                        Log.d(TAG, it.data.toString())
+                        _courseResponse.value = ResponseState(dataList = it.data?.data)
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
+
     fun getCourseList() {
         viewModelScope.launch {
             apiUseCase.getCourseList().onEach {
@@ -55,9 +78,9 @@ class AsesmntViewModel @Inject constructor(
         }
     }
 
-    fun getQuestionList() {
+    fun getQuestionList(limit: Int) {
         viewModelScope.launch {
-            apiUseCase.getQuestionList().onEach {
+            apiUseCase.getQuestionList(limit).onEach {
                 when (it) {
                     is Resource.Loading -> {
                         Log.d(TAG, "loading")

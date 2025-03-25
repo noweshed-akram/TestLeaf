@@ -69,6 +69,7 @@ object RetrofitModule {
         authInterceptor: AuthInterceptor,
         loggingInterceptor: HttpLoggingInterceptor,
         hostUrlInterceptor: HostUrlInterceptor,
+        curlLoggingInterceptor: CurlLoggingInterceptor
     ): OkHttpClient {
         val okHttpClient = OkHttpClient().newBuilder()
 
@@ -79,6 +80,7 @@ object RetrofitModule {
             .addInterceptor(authInterceptor)
             .addInterceptor(hostUrlInterceptor)
             .addInterceptor(loggingInterceptor)
+            .addInterceptor(curlLoggingInterceptor)
             .addInterceptor(ChuckerInterceptor(appContext))
 
         return okHttpClient.build()

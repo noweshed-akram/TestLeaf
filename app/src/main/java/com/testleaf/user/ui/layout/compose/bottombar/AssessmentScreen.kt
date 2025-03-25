@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -46,7 +48,6 @@ import com.testleaf.user.ui.component.GridItemView
 import com.testleaf.user.ui.component.PrimaryButton
 import com.testleaf.user.ui.component.ProgressBar
 import com.testleaf.user.ui.component.SetsItemView
-import com.testleaf.user.ui.component.VerticalGrid
 import com.testleaf.user.ui.theme.PrimaryColor
 import com.testleaf.user.ui.theme.StrokeColor
 import com.testleaf.user.ui.theme.WhiteColor
@@ -93,7 +94,7 @@ fun AssessmentScreen(
 //    }
 
     LaunchedEffect(key1 = true) {
-        asesmntViewModel.getCourseList()
+        asesmntViewModel.getCourseList(4)
 
         asesmntViewModel.courseResponse.collect {
             if (it.isLoading) {
@@ -206,28 +207,52 @@ fun AssessmentScreen(
 
         Spacer(modifier = Modifier.height(4.dp))
 
-        VerticalGrid(
+        LazyVerticalGrid(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            columns = 2
+            columns = GridCells.Fixed(2)
         ) {
-            courseList.forEachIndexed { index, course ->
-                GridItemView(
-                    title = "${index + 1}. ${course.courseName}",
-                    subTitle = "10+ Chapters",
-                    iconUrl = course.iconData?.url!!
-                ) {
-                    val examMetaData = ExamMetaData(
-                        examName = course.courseName,
-                        examType = COLL_COURSES,
-                        courseId = course.id.toString()
-                    )
-                    onCourseItemClick(examMetaData)
+            item {
+                courseList.forEachIndexed { index, course ->
+                    GridItemView(
+                        title = "${index + 1}. ${course.courseName}",
+                        subTitle = "10+ Chapters",
+                        iconUrl = course.iconData?.url!!
+                    ) {
+                        val examMetaData = ExamMetaData(
+                            examName = course.courseName,
+                            examType = COLL_COURSES,
+                            courseId = course.id.toString()
+                        )
+                        onCourseItemClick(examMetaData)
+                    }
                 }
             }
-
         }
+
+//        VerticalGrid(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .wrapContentHeight(),
+//            columns = 2
+//        ) {
+//            courseList.forEachIndexed { index, course ->
+//                GridItemView(
+//                    title = "${index + 1}. ${course.courseName}",
+//                    subTitle = "10+ Chapters",
+//                    iconUrl = course.iconData?.url!!
+//                ) {
+//                    val examMetaData = ExamMetaData(
+//                        examName = course.courseName,
+//                        examType = COLL_COURSES,
+//                        courseId = course.id.toString()
+//                    )
+//                    onCourseItemClick(examMetaData)
+//                }
+//            }
+//
+//        }
 
         Spacer(modifier = Modifier.height(12.dp))
 

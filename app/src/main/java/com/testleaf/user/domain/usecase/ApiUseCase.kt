@@ -18,6 +18,9 @@ class ApiUseCase @Inject constructor(
     private val apiRepository: ApiRepository
 ) {
 
+    /**
+     * User API
+     */
     suspend fun userRegistration(jsonObject: JsonObject): Flow<Resource<AuthResponse>> {
         return apiRepository.userRegistration(jsonObject)
     }
@@ -26,7 +29,7 @@ class ApiUseCase @Inject constructor(
         return apiRepository.userLogin(jsonObject)
     }
 
-    suspend fun refreshToken(): Flow<Resource<AuthResponse>>{
+    suspend fun refreshToken(): Flow<Resource<AuthResponse>> {
         return apiRepository.refreshToken()
     }
 
@@ -46,35 +49,59 @@ class ApiUseCase @Inject constructor(
         return apiRepository.userLogout()
     }
 
+    /**
+     * Segments API
+     */
     suspend fun getCourseList(): Flow<Resource<CourseResponse>> {
         return apiRepository.getCourseList()
     }
 
-    suspend fun searchCourse(searchValue: String): Flow<Resource<CourseResponse>> {
-        return apiRepository.searchCourse(searchValue)
+    suspend fun getCourseList(limit: Int): Flow<Resource<CourseResponse>> {
+        return apiRepository.getCourseList(limit)
     }
 
     suspend fun getServiceList(): Flow<Resource<ServiceResponse>> {
         return apiRepository.getServiceList()
     }
 
-    suspend fun searchService(searchValue: String): Flow<Resource<ServiceResponse>> {
-        return apiRepository.searchService(searchValue)
+    suspend fun getServiceList(limit: Int): Flow<Resource<ServiceResponse>> {
+        return apiRepository.getServiceList(limit)
     }
 
     suspend fun getChapterList(): Flow<Resource<ChapterResponse>> {
         return apiRepository.getChapterList()
     }
 
-    suspend fun searchChapter(searchValue: String): Flow<Resource<ChapterResponse>> {
-        return apiRepository.searchChapter(searchValue)
+    suspend fun getChapterList(limit: Int): Flow<Resource<ChapterResponse>> {
+        return apiRepository.getChapterList(limit)
     }
 
     /**
-     * Question APi
+     * Question API
      */
-    suspend fun getQuestionList(): Flow<Resource<QuestionResponse>> {
-        return apiRepository.getQuestionList()
+    suspend fun getQuestionList(limit: Int): Flow<Resource<QuestionResponse>> {
+        return apiRepository.getQuestionList(limit)
+    }
+
+    suspend fun getQuestionByCourse(
+        courseId: Int,
+        limit: Int
+    ): Flow<Resource<QuestionResponse>> {
+        return apiRepository.getQuestionByCourse(courseId, limit)
+    }
+
+    suspend fun getQuestionByChapter(
+        chapterId: Int,
+        limit: Int
+    ): Flow<Resource<QuestionResponse>> {
+        return apiRepository.getQuestionByChapter(chapterId, limit)
+    }
+
+    suspend fun getQuestionBySection(
+        sectionId: Int,
+        limit: Int
+    ): Flow<Resource<QuestionResponse>> {
+        return apiRepository.getQuestionBySection(sectionId, limit)
     }
 
 }
